@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="description" content="진실한숲교회 설교 시리즈 『깊은 샘에서 흐르는 말』 4주 워크북">
+<meta name="description" content="진실한숲교회 2026년 10월 설교 시리즈 「말의 구원 — 깊은 샘에서 흘러나오는 말」 4주 워크북">
 <meta name="theme-color" content="#F3ECDB" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0F1B28" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="깊은 샘">
+<meta name="apple-mobile-web-app-title" content="말의 구원">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>깊은 샘에서 흐르는 말</title>
+<title>말의 구원 — 깊은 샘에서 흘러나오는 말</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -141,7 +141,18 @@ p{ margin:.55em 0; }
 .layer > .lh .n{ font-family:var(--serif); font-size:1.5em; color:var(--teal); font-weight:700; line-height:1; }
 .layer > .lh h2{ font-family:var(--serif); font-size:1.28em; margin:0; font-weight:700; }
 .layer > .lh .min{ margin-left:auto; font-size:.8em; color:var(--muted); }
-.donebar{ margin-top:18px; display:flex; justify-content:flex-end; }
+.donebar{ margin-top:22px; display:flex; gap:10px; justify-content:flex-end; }
+.donebar .btn.primary{ flex:1; }
+.flowbar{ margin:4px 0 18px; }
+.flowbar .fb-n{ font-size:.8em; color:var(--muted); margin-bottom:6px; }
+.fb-steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+.fb-steps .fs{ font-size:.82em; text-align:center; padding:8px 4px; border-radius:var(--r-s); background:var(--sheet); border:1px solid var(--line); color:var(--muted); }
+.fb-steps .fs.done{ color:var(--teal); border-color:var(--teal-soft); }
+.fb-steps .fs.now{ background:var(--teal); color:var(--teal-ink); border-color:var(--teal); font-weight:700; }
+.dayflow .layer{ display:none; }
+.dayflow[data-cur="1"] #L1, .dayflow[data-cur="2"] #L2, .dayflow[data-cur="3"] #L3, .dayflow[data-cur="4"] #L4{ display:block; }
+#lg-type{ display:grid; gap:8px; }
+#lg-type .opt .tx{ font-weight:700; }
 .donebar .btn{ min-width:150px; }
 .donebar .btn.is-done{ background:var(--teal-soft); border-color:transparent; color:var(--ink); }
 
@@ -203,6 +214,7 @@ p{ margin:.55em 0; }
 .pair .said{ font-family:var(--serif); }
 .pair .voice-t{ color:var(--ink-soft); }
 .pair .meta{ grid-column:1/-1; font-size:.78em; color:var(--muted); }
+.pair .new-t{ grid-column:1/-1; font-family:var(--serif); color:var(--teal); border-left:3px solid var(--teal-soft); padding-left:10px; }
 .empty{ color:var(--muted); font-size:.92em; padding:18px 0; text-align:left; }
 
 .cmp{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
@@ -294,12 +306,13 @@ table.simple th{ font-weight:600; color:var(--muted); font-size:.85em; }
 <main id="app" aria-live="off"></main>
 <script>
 const SERIES = {
-  title: "깊은 샘에서 흐르는 말",
+  title: "말의 구원",
+  subtitle: "깊은 샘에서 흘러나오는 말",
   weeks: [
     { n:1, tag:"말의 시작", q:"태초에 말이 있었다", sub:"내 안의 가장 큰 목소리", open:true },
-    { n:2, tag:"참된 말", q:"빛 가운데 말하다", sub:"가리지 않아도 되는 말", open:false },
+    { n:2, tag:"참된 말", q:"빛 가운데 말하다", sub:"가리는 말을 넘어 참된 말로", open:false },
     { n:3, tag:"온유한 말", q:"성내기를 더디 하라", sub:"날 선 말 밑의 싸움", open:false },
-    { n:4, tag:"세우는 말", q:"도리어 복을 빌라", sub:"무너뜨리는 말 대신 세우는 말", open:false }
+    { n:4, tag:"세우는 말", q:"도리어 복을 빌라", sub:"서로를 세우는 말", open:false }
   ]
 };
 
@@ -349,13 +362,13 @@ const SCR = {
 
 /* 일곱 목소리 */
 const TYPES = [
-  { id:"perfect", nm:"완벽주의자", self:"조금만 부족해도 실패야.", other:"이것밖에 못 해?", guard:"비난받지 않게, 거절당하지 않게", from:"결과로만 인정받던 경험, 작은 실수에도 엄했던 어른", bible:"큰아들 — \u201c여러 해 동안 아버지를 섬기며 명령을 어긴 적이 한 번도 없는데\u201d(눅 15:29)", answer:"lk15_31", cats:["value","grace"], promise:"내가 없으면 넌 사람들에게 무시당할 거야." },
-  { id:"driver", nm:"감독관", self:"쉬면 안 돼. 아직 멀었어.", other:"지금 쉴 때야? 빨리빨리.", guard:"게을러지지 않게, 뒤처지지 않게", from:"쉬는 것이 눈치 보이던 집, 성과로만 칭찬받던 학교", bible:"많은 일로 마음이 분주했던 마르다(눅 10:40)", answer:"lk10_41", cats:["grace","value"], promise:"내가 채찍질하지 않으면 넌 게을러질 거야." },
-  { id:"under", nm:"깎아내리는 자", self:"네가 뭘 한다고. 괜히 나섰다 망신당하지 마.", other:"그게 되겠어? 됐어, 내가 할게.", guard:"도전했다가 실패하는 창피를 겪지 않게", from:"시도를 비웃던 말, \u201c나대지 마\u201d, \u201c주제를 알아라\u201d", bible:"모세 — \u201c나는 입이 뻣뻣하고 혀가 둔한 사람입니다\u201d(출 4:10) · 예레미야 — \u201c나는 아이라서 말할 줄 모릅니다\u201d(렘 1:6)", answer:"ex4_11", cats:["value","failure"], promise:"내 말 들어. 나섰다가 망신당하는 것보다 낫잖아." },
-  { id:"cond", nm:"조건을 거는 자", self:"진짜 그리스도인이라면. 좋은 엄마라면.", other:"교인이라는 사람이. 엄마가 돼서.", guard:"가족·교회·사회의 틀에 맞춰 버림받지 않게", from:"잘해야 사랑받던 경험, \u2018이래야 한다\u2019는 문화", bible:"광야에서 예수께 온 말 — \u201c네가 하나님의 아들이라면\u201d(마 4:3)", answer:"mt3_17", cats:["value","faith"], promise:"기준에 맞춰야 사람들이 너를 받아 줄 거야." },
-  { id:"comp", nm:"비교하는 자", self:"쟤는 되는데 나는…", other:"옆집 애는 하는데 너는.", guard:"뒤처지지 않게, 부끄럽지 않게", from:"형제·친척·친구와의 비교, 성적표", bible:"베드로 — \u201c주님, 이 사람은 어떻게 되겠습니까?\u201d(요 21:21)", answer:"jn21_22", cats:["value","love"], promise:"남들만큼은 해야 뒤처지지 않아." },
-  { id:"guilt", nm:"죄책감을 붙드는 자", self:"그 일은 절대 용서받을 수 없어.", other:"너 저번에도 그랬잖아.", guard:"같은 잘못을 되풀이하지 않게", from:"\u201c다 너 때문이야\u201d라는 말, 용서와 회복이 없던 분위기", bible:"예수를 세 번 부인한 뒤 밖에 나가 슬피 운 베드로(눅 22:61–62)", answer:"lk22_32", cats:["godcritic","failure"], promise:"잊어버리면 넌 또 그럴 거야." },
-  { id:"destroy", nm:"무너뜨리는 자", self:"난 존재 자체가 문제야.", other:"넌 도대체 왜 그 모양이니.", guard:"더 상처받지 않게, 아예 사라지려고", from:"존재를 거부당한 경험, 반복된 수치", bible:"엘리야 — \u201c여호와여, 이제 충분합니다. 내 생명을 거두어 주십시오\u201d(왕상 19:4)", answer:"ki19_7", cats:["love","shame","alone"], promise:"아무것도 바라지 않으면 더는 다치지 않아.", care:true }
+  { id:"perfect", nm:"완벽해야 한다는 마음", self:"조금만 부족해도 실패야.", other:"이것밖에 못 해?", guard:"비난받지 않게, 거절당하지 않게", from:"결과로만 인정받던 경험, 작은 실수에도 엄했던 어른", bible:"큰아들 — \u201c여러 해 동안 아버지를 섬기며 명령을 어긴 적이 한 번도 없는데\u201d(눅 15:29)", answer:"lk15_31", cats:["value","grace"], promise:"내가 없으면 넌 사람들에게 무시당할 거야." },
+  { id:"driver", nm:"쉬지 말라고 몰아붙이는 마음", self:"쉬면 안 돼. 아직 멀었어.", other:"지금 쉴 때야? 빨리빨리.", guard:"게을러지지 않게, 뒤처지지 않게", from:"쉬는 것이 눈치 보이던 집, 성과로만 칭찬받던 학교", bible:"많은 일로 마음이 분주했던 마르다(눅 10:40)", answer:"lk10_41", cats:["grace","value"], promise:"내가 채찍질하지 않으면 넌 게을러질 거야." },
+  { id:"under", nm:"나서지 말라고 주저앉히는 마음", self:"네가 뭘 한다고. 괜히 나섰다 망신당하지 마.", other:"그게 되겠어? 됐어, 내가 할게.", guard:"도전했다가 실패하는 창피를 겪지 않게", from:"시도를 비웃던 말, \u201c나대지 마\u201d, \u201c주제를 알아라\u201d", bible:"모세 — \u201c나는 입이 뻣뻣하고 혀가 둔한 사람입니다\u201d(출 4:10) · 예레미야 — \u201c나는 아이라서 말할 줄 모릅니다\u201d(렘 1:6)", answer:"ex4_11", cats:["value","failure"], promise:"내 말 들어. 나섰다가 망신당하는 것보다 낫잖아." },
+  { id:"cond", nm:"조건을 다는 마음", self:"진짜 그리스도인이라면. 좋은 엄마라면.", other:"교인이라는 사람이. 엄마가 돼서.", guard:"가족·교회·사회의 틀에 맞춰 버림받지 않게", from:"잘해야 사랑받던 경험, \u2018이래야 한다\u2019는 문화", bible:"광야에서 예수께 온 말 — \u201c네가 하나님의 아들이라면\u201d(마 4:3)", answer:"mt3_17", cats:["value","faith"], promise:"기준에 맞춰야 사람들이 너를 받아 줄 거야." },
+  { id:"comp", nm:"남과 견주는 마음", self:"쟤는 되는데 나는…", other:"옆집 애는 하는데 너는.", guard:"뒤처지지 않게, 부끄럽지 않게", from:"형제·친척·친구와의 비교, 성적표", bible:"베드로 — \u201c주님, 이 사람은 어떻게 되겠습니까?\u201d(요 21:21)", answer:"jn21_22", cats:["value","love"], promise:"남들만큼은 해야 뒤처지지 않아." },
+  { id:"guilt", nm:"지난 잘못을 붙드는 마음", self:"그 일은 절대 용서받을 수 없어.", other:"너 저번에도 그랬잖아.", guard:"같은 잘못을 되풀이하지 않게", from:"\u201c다 너 때문이야\u201d라는 말, 용서와 회복이 없던 분위기", bible:"예수를 세 번 부인한 뒤 밖에 나가 슬피 운 베드로(눅 22:61–62)", answer:"lk22_32", cats:["godcritic","failure"], promise:"잊어버리면 넌 또 그럴 거야." },
+  { id:"destroy", nm:"나를 통째로 부정하는 마음", self:"난 존재 자체가 문제야.", other:"넌 도대체 왜 그 모양이니.", guard:"더 상처받지 않게, 아예 사라지려고", from:"존재를 거부당한 경험, 반복된 수치", bible:"엘리야 — \u201c여호와여, 이제 충분합니다. 내 생명을 거두어 주십시오\u201d(왕상 19:4)", answer:"ki19_7", cats:["love","shame","alone"], promise:"아무것도 바라지 않으면 더는 다치지 않아.", care:true }
 ];
 const TYPE = Object.fromEntries(TYPES.map(t=>[t.id,t]));
 
@@ -383,6 +396,39 @@ const PHRASES = [
   {id:"i6", t:"또 그랬네. 넌 안 돼.", type:"guilt", dir:"in"},
   {id:"i7", t:"나 같은 게 뭘.", type:"destroy", dir:"in"}
 ];
+/* 2일째 점검 — 2부 보강(마음마다 두 문장) */
+PHRASES.push(
+  {id:"i8", t:"또 틀렸네. 제대로 하는 게 없어.", type:"perfect", dir:"in"},
+  {id:"i9", t:"이렇게 쉬고 있을 때가 아니야.", type:"driver", dir:"in"},
+  {id:"i10", t:"괜히 나섰다가 망신만 당할 거야.", type:"under", dir:"in"},
+  {id:"i11", t:"그리스도인이라는 사람이 이게 뭐야.", type:"cond", dir:"in"},
+  {id:"i12", t:"나만 뒤처지고 있어.", type:"comp", dir:"in"},
+  {id:"i13", t:"그 일은 절대 용서받지 못해.", type:"guilt", dir:"in"},
+  {id:"i14", t:"나는 원래 이런 사람이야. 달라질 수 없어.", type:"destroy", dir:"in"}
+);
+/* 2일째 점검 — 3부: FSCRS(Gilbert 외 2004; 한국판 조현주 2011)의 세 구분을 바탕으로 새로 쓴 문항 */
+const SELF3=[
+  {id:"c1",f:"crit",t:"작은 실수 하나로 하루 종일 나를 탓한다."},
+  {id:"c2",f:"crit",t:"“그것도 제대로 못 하냐”는 말이 머릿속에서 맴돈다."},
+  {id:"c3",f:"crit",t:"잘한 일보다 못한 일이 훨씬 오래 기억에 남는다."},
+  {id:"c4",f:"crit",t:"나는 아직 한참 모자란 사람이라는 생각이 든다."},
+  {id:"c5",f:"crit",t:"나를 다그치는 속말 때문에 기운이 빠진다."},
+  {id:"a1",f:"attack",t:"그런 내가 정말 싫어진다."},
+  {id:"a2",f:"attack",t:"속으로 나를 “바보”, “한심하다” 같은 말로 부른다."},
+  {id:"a3",f:"attack",t:"이런 나는 사랑받을 자격이 없다는 생각이 든다."},
+  {id:"a4",f:"attack",t:"먹고 쉬는 것처럼 나를 돌보는 일을 아무렇게나 내버려 둔다."},
+  {id:"r1",f:"reassure",t:"“그럴 수 있어” 하고 나에게 말해 줄 수 있다."},
+  {id:"r2",f:"reassure",t:"그래도 내가 잘해 온 것들을 떠올릴 수 있다."},
+  {id:"r3",f:"reassure",t:"실수한 나도 하나님께 사랑받는다는 사실을 붙든다."},
+  {id:"r4",f:"reassure",t:"나를 용서하고 다시 시작할 수 있다."},
+  {id:"r5",f:"reassure",t:"다음에는 나아질 수 있다고 나를 격려한다."}
+];
+const FACTORS={crit:{nm:"부족함을 다그치는 마음",d:"실수를 곱씹고, 모자란 나를 몰아세웁니다"},attack:{nm:"나를 미워하는 마음",d:"실수한 나를 싫어하고 업신여기며, 돌보지 않습니다"},reassure:{nm:"나를 다독이는 마음",d:"실수한 나에게도 친절하게 말하고, 다시 일어서게 합니다"}};
+function selfScores(){ const sum={crit:0,attack:0,reassure:0}, c={crit:0,attack:0,reassure:0}; SELF3.forEach(x=>{ const v=F(2,"s3_"+x.id,null); if(v===null) return; sum[x.f]+=v; c[x.f]++; }); const m={}; for(const k in sum) m[k]=c[k]?sum[k]/c[k]:null; return {m, answered:SELF3.filter(x=>F(2,"s3_"+x.id,null)!==null).length}; }
+/* 새 말 보기 — 마음마다 */
+const NEWW={perfect:["괜찮아, 다시 해 보자.","여기까지 한 것도 잘했어."],driver:["좀 쉬어도 돼.","오늘은 여기까지 하자."],under:["한번 해 봐. 내가 도울게.","못 해도 괜찮아. 해 보는 게 중요해."],cond:["너도 사람이야. 그럴 수 있어.","잘하려고 애쓴 거 알아."],comp:["너는 너대로 잘하고 있어.","다른 사람 말고, 너를 보고 싶어."],guilt:["지난 일은 지난 일이야. 다시 시작하자.","말해 줘서 고마워. 이제 같이 바로잡자."],destroy:["네가 있어서 다행이야.","너는 소중한 사람이야."]};
+function typeOfText(s){ if(!s) return null; const p=PHRASES.find(x=>x.t===s); if(p) return p.type; const t=TYPES.find(x=>x.self===s||x.other===s); return t?t.id:null; }
+
 
 /* 말씀 창고 — NJHV. direct: 하나님·예수께서 한 사람에게 직접 하시는 말(이름을 부를 수 있음) */
 const VERSES = {
@@ -460,7 +506,7 @@ const TOOLS5 = [
 const DAYS = [
   null,
   {n:1, nm:"출발", title:"함께 걸을 사람", scr:"isa43", min:15},
-  {n:2, nm:"알아보기", title:"내 말에서 목소리로", scr:"isa43", min:15},
+  {n:2, nm:"알아보기", title:"말과 마음 점검", scr:"isa43", min:20},
   {n:3, nm:"알아보기", title:"그 목소리의 정체", scr:"mt3", min:15},
   {n:4, nm:"채우기", title:"아버지의 대답", scr:"mt3", min:15},
   {n:5, nm:"채우기", title:"다른 목소리로 듣기", scr:"ps139", min:30},
@@ -533,7 +579,7 @@ function fSeg(n,k,opts){
   return `<div class="seg" role="group">${opts.map((o,i)=>`<button type="button" aria-pressed="${cur===i}" data-seg="${n}|${k}" data-val="${i}">${o}</button>`).join("")}</div>`;
 }
 function layerDone(n,L){ return !!D(n).done[L]; }
-function doneBar(n,L){ const d=layerDone(n,L); return `<div class="donebar"><button type="button" class="btn ${d?"is-done":"primary"}" data-done="${n}|${L}">${d?"마쳤어요 ✓":"이 칸 마치기"}</button></div>`; }
+function doneBar(n,L){ return `<div class="donebar">${L>1?`<button type="button" class="btn" data-prev="${n}|${L}">‹ 이전</button>`:""}<button type="button" class="btn primary" data-done="${n}|${L}">${L<4?"다음 단계 ›":"오늘 마치기"}</button></div>`; }
 function stopLine(){ return `<p class="stop">여기서 멈춰도 됩니다. 혼자 감당하기 어려우면 목회자나 소그룹 리더와 이야기해 주세요. <a href="#/help/stop">멈추고 싶을 때</a></p>`; }
 
 /* ---------- 점수 ---------- */
@@ -555,7 +601,7 @@ function topTypes(){ return voiceScores().top; }
 /* 4일차에 대답을 들을 '짝' 목록 */
 function pairsForAnswer(){
   const out=[];
-  for(let i=0;i<3;i++){ const t=F(2,`s${i}_text`,""); if(t) out.push({key:`d2s${i}`, said:F(2,"pick_text","")||"", voice:t, type:F(2,`s${i}_type`,null), belief:F(2,`s${i}_belief`,null)}); }
+  for(let i=0;i<3;i++){ const t=F(2,`s${i}_text`,""); if(t) out.push({key:`d2s${i}`, said:F(2,"pick_text","")||"", voice:t, type:F(2,`s${i}_type`,null)||typeOfText(t), belief:F(2,`s${i}_belief`,null)}); }
   S.logs.forEach(l=>{ if(l.voice||l.said) out.push({key:"log_"+l.id, said:l.said||"", voice:l.voice||"", type:l.type||null, belief:l.belief??null}); });
   return out.sort((a,b)=>(b.belief??-1)-(a.belief??-1));
 }
@@ -681,32 +727,36 @@ function openCalm(dayN){
 }
 
 /* ---------- 말과 목소리 기록 ---------- */
+function qfChips(target, list){ return list.length?`<div class="chips" style="margin-top:8px">${list.map(s=>`<button type="button" class="chip" data-qf="${target}" data-val="${esc(s)}">${esc(s)}</button>`).join("")}</div>`:""; }
+function newSug(type){ if(!type||!TYPE[type]) return `<p class="small" style="margin-top:8px">위에서 마음을 고르면, 그 마음에 맞는 새 말의 보기가 나타납니다.</p>`; const v=VERSES[TYPE[type].answer]; return `<div class="small" style="margin-top:8px">보기 — 누르면 채워집니다</div>${qfChips("lg-new",[...NEWW[type], ...(v&&v.key?[v.key]:[])])}`; }
 function openLogSheet(editId){
-  const L = editId ? S.logs.find(l=>l.id===editId) : {said:"",voice:"",type:null,belief:null};
+  const L = editId ? S.logs.find(l=>l.id===editId) : {said:"",voice:"",type:null,belief:null,neww:""};
   const back=document.createElement("div"); back.className="sheet-back";
   back.innerHTML=`<div class="sheet" role="dialog" aria-label="말과 목소리 기록"><div class="grab"></div>
     <h2>말과 목소리</h2>
-    <p class="small">날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때.</p>
-    <div class="field"><label for="lg-said">내가 한 말</label><div class="hint">가까운 사람에게, 혹은 나에게 한 말 그대로</div><textarea id="lg-said">${esc(L.said)}</textarea></div>
-    <div class="field"><label for="lg-voice">그 밑의 목소리</label><div class="hint">그때 내 안에서 먼저 들린 말 — 떠오르지 않으면 비워 두세요</div><textarea id="lg-voice">${esc(L.voice)}</textarea></div>
-    <div class="field"><div class="lbl">어떤 목소리였나요?</div><div class="chips" id="lg-type">${TYPES.map(t=>`<button type="button" class="chip" aria-pressed="${L.type===t.id}" data-t="${t.id}">${t.nm}</button>`).join("")}<button type="button" class="chip" aria-pressed="${!L.type}" data-t="">모르겠어요</button></div></div>
+    <p class="small">날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때. 그 말을 적고, 그 밑에서 움직인 마음을 알아보고, 그 옆에 새 말을 적습니다.</p>
+    <div class="field"><label for="lg-said">내가 한 말</label><div class="hint">가까운 사람에게, 혹은 나에게 한 말 그대로 — 아래 보기에서 눌러 채울 수 있습니다</div><textarea id="lg-said">${esc(L.said)}</textarea>${qfChips("lg-said", PHRASES.filter(p=>p.dir==="out"&&(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t))}</div>
+    <div class="field"><label for="lg-voice">그 밑의 목소리</label><div class="hint">그때 내 안에서 먼저 들린 말 — 보기에서 누르거나, 떠오르지 않으면 비워 두세요</div><textarea id="lg-voice">${esc(L.voice)}</textarea>${qfChips("lg-voice", [...PHRASES.filter(p=>p.dir==="in"&&(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t), ...TYPES.map(x=>x.self)].filter((v,i,a)=>a.indexOf(v)===i).slice(0,10))}</div>
+    <div class="field"><div class="lbl">그 말 밑에서, 어떤 마음이 움직였나요?</div><div class="hint">이름보다 문장을 보고, 들린 말과 가장 가까운 것 하나를 고르세요.</div><div class="optlist" id="lg-type">${TYPES.map(t=>`<button type="button" class="opt" aria-pressed="${L.type===t.id}" data-t="${t.id}"><div class="tx">${t.nm}</div><div class="small">나에게 \u201c${t.self}\u201d · 남에게 \u201c${t.other}\u201d</div></button>`).join("")}<button type="button" class="opt" aria-pressed="${!L.type}" data-t=""><div class="tx">잘 모르겠어요</div></button></div></div>
     <div class="field"><label for="lg-bel">그 목소리를 얼마나 믿나요?</label><div class="range"><input type="range" id="lg-bel" min="0" max="100" step="5" value="${L.belief??50}"><output>${L.belief??"–"}</output></div><div class="range-ends"><span>전혀</span><span>완전히</span></div></div>
     <p class="note serif">\u201c내가 지금 이 말을 사실이라고 믿고 있구나.\u201d</p>
+    <div class="field"><label for="lg-new">새 말</label><div class="hint">이 말 대신, 주님이시라면 해 주셨을 말 — 나에게든, 그 사람에게든. 떠오르지 않으면 비워 두세요</div><textarea id="lg-new">${esc(L.neww||"")}</textarea><div id="lg-sug">${newSug(L.type)}</div></div>
     <div class="row" style="margin-top:14px">${editId?`<button type="button" class="btn warn" data-lg="del">지우기</button>`:""}<button type="button" class="btn" data-lg="cancel">닫기</button><button type="button" class="btn primary" data-lg="save">저장</button></div>
   </div>`;
   document.body.appendChild(back);
   let type=L.type, bel=L.belief;
-  back.querySelector("#lg-type").addEventListener("click",e=>{ const b=e.target.closest("[data-t]"); if(!b) return; type=b.dataset.t||null; $$("#lg-type .chip",back).forEach(c=>c.setAttribute("aria-pressed", String(c===b))); });
+  back.querySelector("#lg-type").addEventListener("click",e=>{ const b=e.target.closest("[data-t]"); if(!b) return; type=b.dataset.t||null; $$("#lg-type [data-t]",back).forEach(c=>c.setAttribute("aria-pressed", String(c===b))); back.querySelector("#lg-sug").innerHTML=newSug(type); });
   const r=back.querySelector("#lg-bel"); r.addEventListener("input",()=>{ bel=+r.value; r.nextElementSibling.textContent=r.value; });
   back.addEventListener("click",e=>{
+    const q=e.target.closest("[data-qf]"); if(q){ const ta=back.querySelector("#"+q.dataset.qf); if(ta){ ta.value=q.dataset.val; ta.focus(); } return; }
     if(e.target===back) back.remove();
     const a=e.target.closest("[data-lg]")?.dataset.lg; if(!a) return;
     if(a==="cancel") back.remove();
     if(a==="del"){ S.logs=S.logs.filter(l=>l.id!==editId); save(); back.remove(); render(); toast("지웠습니다"); }
     if(a==="save"){
-      const said=$("#lg-said",back).value.trim(), voice=$("#lg-voice",back).value.trim();
+      const said=$("#lg-said",back).value.trim(), voice=$("#lg-voice",back).value.trim(), neww=$("#lg-new",back).value.trim();
       if(!said && !voice){ toast("내가 한 말이나 그 밑의 목소리 가운데 하나는 적어 주세요"); return; }
-      if(editId){ Object.assign(L,{said,voice,type,belief:bel}); } else { S.logs.unshift({id:uid(), ts:Date.now(), said, voice, type, belief:bel}); }
+      if(editId){ Object.assign(L,{said,voice,type,belief:bel,neww}); } else { S.logs.unshift({id:uid(), ts:Date.now(), said, voice, type, belief:bel, neww}); }
       save(); back.remove(); render(); toast("기록했습니다");
     }
   });
@@ -766,7 +816,7 @@ async function makeCard(verseId){
   while(lines.length>11 && size>44){ size-=4; x.font=`700 ${size}px ${serif}`; lines=wrapLines(x, body, W-220); }
   x.fillStyle="#F3ECDB"; lines.forEach(l=>{ x.fillText(l,110,y); y+=size*1.62; });
   y+=30; x.fillStyle="#B7C4CE"; x.font=`500 32px ${sans}`; x.fillText(v.ref+" · NJHV",110,y);
-  x.fillStyle="rgba(243,236,219,.55)"; x.font=`500 28px ${sans}`; x.fillText("깊은 샘에서 흐르는 말",110,H-230);
+  x.fillStyle="rgba(243,236,219,.55)"; x.font=`500 28px ${sans}`; x.fillText("말의 구원 · 깊은 샘에서 흘러나오는 말",110,H-230);
   return c;
 }
 const IC = {
@@ -787,53 +837,37 @@ function wellsHTML(){
 /* ---------- 홈 ---------- */
 function vHome(){
   const n=currentDay(), d=DAYS[n], allDone=[1,2,3,4,5,6].every(k=>dayState(k)==="done");
-  const firstLine = SCR[d.scr].v.map(x=>x[1]).join(" ").match(/<b>(.*?)<\/b>/);
+  const st=dayState(n), cur=curStep(n);
+  const label = allDone ? "소그룹 열기" : st==="none" ? "오늘 시작하기" : `이어서 하기 · ${cur} / 4`;
   return `<section class="home-hero">
     <div class="week">${SERIES.title} — 1주</div>
     <p class="q">${SERIES.weeks[0].q}</p>
     <p class="small" style="margin:-.5em 0 .8em">${SERIES.weeks[0].sub}</p>
   </section>
   <section class="today" aria-label="오늘">
-    <div class="day">${allDone?"한 주를 모두 걸었습니다":`${n}일째 · ${d.nm}`}</div>
+    <div class="day">${allDone?"한 주를 모두 걸었습니다":`${n}일째 · ${d.nm} · 약 ${d.min}분`}</div>
     <div class="title">${allDone?"소그룹에서 함께 나눠요":d.title}</div>
-    ${firstLine?`<p class="line">${firstLine[1]}</p>`:""}
-    <div class="row">
-      <button type="button" class="btn primary" data-act="calm" data-day="${n}">${IC.drop}${d.ext?"고요 15분":"고요 10분"}</button>
-      <button type="button" class="btn" data-go="${allDone?"#/group/1":`#/day/1/${n}`}">${allDone?"소그룹 열기":"오늘의 순서"}</button>
-    </div>
+    <p class="small" style="margin:6px 0 14px">${allDone?"이번 주 기록을 들고 소그룹에서 나눕니다.":"누르면 고요부터 마무리까지, 한 단계씩 차례로 안내합니다."}</p>
+    <button type="button" class="btn primary block" data-go="${allDone?"#/group/1":`#/day/1/${n}`}">${label}</button>
   </section>
   <div class="strip" role="list" aria-label="이번 주">
     ${[1,2,3,4,5,6].map(k=>`<button type="button" role="listitem" class="${dayState(k)==="done"?"done":""} ${k===n&&!allDone?"now":""}" data-go="#/day/1/${k}" aria-label="${k}일째 ${DAYS[k].title}"><b>${k}</b>${["","월","화","수","목","금","토"][k]}</button>`).join("")}
     <button type="button" role="listitem" class="group" data-go="#/group/1" aria-label="소그룹"><b>함께</b>소그룹</button>
   </div>
-  <h2 class="h2">고요의 날들</h2>
-  <p class="small">아침 고요를 마친 날마다 샘이 채워집니다. 빠진 날은 세지 않습니다.</p>
-  ${wellsHTML()}
-  <h2 class="h2">이번 주 새기는 음성</h2>
-  ${verseHTML("isa43_1",{name:S.name})}
-  <p class="small">${S.logs.length?`말과 목소리 기록 ${S.logs.length}개`:"오른쪽 아래 [말과 목소리]로 오늘의 말을 기록해 보세요."}</p>`;
+  <p class="small">지난 날을 다시 보려면 날짜를 누르세요.</p>`;
 }
 
 /* ---------- 도입 ---------- */
 function vIntro(p){
-  p=+p||0; const last=4;
+  p=+p||0; const last=1;
   const nav=`<div class="row" style="margin-top:26px">${p>0?`<button type="button" class="btn" data-go="#/intro/${p-1}">이전</button>`:""}<button type="button" class="btn primary" data-go="${p<last?`#/intro/${p+1}`:"#/finish-intro"}">${p<last?"다음":"시작하기"}</button></div>`;
   const pages=[
-    `<div class="pg">1 / 5</div><h1 class="ttl">깊은 샘에서<br>흐르는 말</h1>
-     <p>우리의 말은 마음에서 흘러나옵니다. 그리고 그 마음은, 우리가 오래 들어 온 말로 채워져 있습니다.</p>
-     <p>첫 주에는 그 샘으로 내려가, 말이 어디서 시작되었고 왜 무너졌는지를 봅니다. 남은 세 주 동안은 깊은 샘에서 흘러나와야 할 말의 세 가지 모습을 하나씩 봅니다. 참된 말, 온유한 말, 그리고 서로를 세우는 말입니다.</p>
-     <ul class="dir">${SERIES.weeks.map(w=>`<li><span class="w">${w.n}주</span><span><span class="small">${w.tag}</span><br><span class="q">${w.q}</span><br><span class="small">${w.sub}</span></span></li>`).join("")}</ul>
-     <p class="small">4주가 지나면 손에 세 가지가 남습니다. 내 말의 지도, 스물네 번의 고요 기록, 그리고 우리 공동체의 언어 약속.</p>`,
-    `<div class="pg">2 / 5</div><h1 class="ttl">이렇게 씁니다</h1>
-     <p><b>한 주는 6일입니다.</b> 주일 설교 뒤 월요일부터 토요일까지 하루 15분쯤. 토요일은 한 주를 돌아보는 날이라 30분쯤 걸립니다. 그리고 소그룹에서 함께 나눕니다.</p>
-     <p><b>매일 네 칸입니다.</b> 고요 10분, 오늘의 질문, 오늘의 연습, 응답과 감사.</p>
-     <p><b>대화 파트너 한 사람.</b> 월요일에 이번 주 함께할 한 사람을 정하고, 금요일에 15분 대화합니다.</p>
-     <div class="privacy">여러분의 기록은 <b>이 기기에만</b> 저장됩니다. 목사님도, 다른 누구도 볼 수 없습니다. 기기를 바꾸거나 브라우저 기록을 지우면 사라지니, 가끔 [더보기 → 설정 → 내 기록 내보내기]로 저장해 두세요.</div>
-     <p class="small">성경 본문은 NJHV입니다. 나종현 목사가 이 시리즈를 위해 원문에서 직접 옮긴 번역입니다.</p>`,
-    `<div class="pg">3 / 5</div><h1 class="ttl">다섯 도구</h1><p class="lead">앞으로 4주 동안 쓸 것입니다.</p>
-     <div class="tools5">${TOOLS5.map(t=>`<div><div class="nm">${t.nm}</div><div class="d">${t.d}</div><div class="vs">${t.v}<span class="r">${t.r}</span></div></div>`).join("")}</div>`,
-    `<div class="pg">4 / 5</div>${guideHTML(true)}`,
-    `<div class="pg">5 / 5</div><h1 class="ttl">이름을 알려 주세요</h1>
+    `<div class="pg">1 / 2</div><h1 class="ttl">말의 구원</h1>
+     <p class="small" style="margin-top:-.4em">깊은 샘에서 흘러나오는 말 · 2026년 10월 설교 시리즈</p>
+     <p>10월 한 달, 매일 15분쯤 말씀 앞에 머물고 내 말을 돌아보는 길잡이입니다.</p>
+     <div class="panel soft"><p class="ph">쓰는 법은 하나입니다</p><p>매일 첫 화면의 <b>[오늘 시작하기]</b>를 누르세요. 고요 → 오늘의 질문 → 오늘의 연습 → 마무리, 한 단계씩 차례로 안내합니다.</p></div>
+     <p class="small">기록은 이 기기에만 저장되고, 목사님도 다른 누구도 볼 수 없습니다. 성경 본문은 NJHV(나종현 목사가 원문에서 옮긴 번역)입니다.</p>`,
+    `<div class="pg">2 / 2</div><h1 class="ttl">이름을 알려 주세요</h1>
      <p>말씀을 읽을 때 이름을 넣어 불러 드립니다. \u201c<span class="serif">${esc(vocative(S.name||"지은"))} 두려워하지 마라. 내가 네 이름을 불렀다.</span>\u201d</p>
      <div class="field"><label for="nm">부르는 이름</label><div class="hint">이 기기에만 저장됩니다. 비워 두셔도 됩니다.</div><input type="text" id="nm" data-name value="${esc(S.name)}" placeholder="예: 지은"></div>
      <div class="field"><div class="lbl">글자 크기</div><div class="seg" style="grid-template-columns:repeat(2,1fr)"><button type="button" aria-pressed="${S.settings.size!=="l"}" data-set="size|m">보통</button><button type="button" aria-pressed="${S.settings.size==="l"}" data-set="size|l">크게</button></div></div>`
@@ -842,6 +876,8 @@ function vIntro(p){
 }
 function guideHTML(inIntro){
   return `<${inIntro?"h1 class='ttl'":"h2 class='h2'"}>고요 훈련 안내</${inIntro?"h1":"h2"}>
+  <div class="quote">그리스도의 말씀이 여러분 안에 집을 삼아 풍성하게 머물게 하십시오.<span class="ref">골로새서 3:16 · NJHV</span></div>
+  <p>잠시 들르는 손님이 아니라, 집에 사는 식구처럼. 하루 10분의 고요는 말씀이 내 안에 머물 자리를 내는 시간입니다.</p>
   <p class="serif" style="font-size:1.05em;line-height:1.9">루스 헤일리 바턴은 말과 글로 모든 것을 풀어내며 살던 사람이었습니다. 어느 날 그녀의 영적 지도자가 말했습니다. \u201c당신은 마구 흔들린 강물 병 같아요. 침전물이 가라앉고 물이 맑아질 만큼, 오래 가만히 앉아 있어야 해요.\u201d</p>
   <p>하루 10분의 고요는 우리 안에서 소용돌이치던 것들이 가라앉는 시간입니다. 타이머를 켜면 물속의 부유물이 천천히 가라앉는 것을 보게 됩니다.</p>
   <h3 class="h3">성경 속 그 자리</h3>
@@ -854,7 +890,7 @@ function guideHTML(inIntro){
   <tr><td>말씀 듣기</td><td>5분</td><td>천천히 두 번. 머무는 한 단어에 머물기</td></tr>
   <tr><td>응답</td><td>2분</td><td>한 문장 기도, 오늘 건넬 말 하나</td></tr></table></div>
   <h3 class="h3">준비</h3>
-  <p>매일 같은 시간, 같은 자리. 할 수 있다면 <b>아침에 휴대전화를 열기 전에</b> — 화면의 목소리가 오늘의 첫 목소리가 되기 전에. 길이보다 꾸준함이 중요합니다. 딴생각이 올 때 돌아올 짧은 기도문 하나 — 1주의 기도문은 <span class="serif"><b>\u201c나는 주의 것입니다.\u201d</b></span>(사 43:1)</p>
+  <p>매일 같은 시간, 같은 자리. 할 수 있다면 <b>아침에 다른 앱을 열기 전에, 이 앱부터</b>. 알림과 피드의 목소리가 오늘의 첫 목소리가 되기 전에. 길이보다 꾸준함이 중요합니다. 딴생각이 올 때 돌아올 짧은 기도문 하나 — 1주의 기도문은 <span class="serif"><b>\u201c나는 주의 것입니다.\u201d</b></span>(사 43:1)</p>
   <h3 class="h3">흔한 어려움</h3>
   <p><b>딴생각이 계속 나요</b> — 정상입니다. 구름처럼 지나가게 두고 기도문으로 돌아오세요.</p>
   <p><b>졸려요</b> — 등을 조금 더 세우거나 창가로 옮겨 보세요. 피곤한 날에는 잠잠히 앉아 있는 것만으로 충분합니다.</p>
@@ -866,7 +902,7 @@ function guideHTML(inIntro){
 function vWeek(w){
   w=+w||1; const W=SERIES.weeks[w-1];
   if(!W.open) return `${topbar(`${w}주 · ${W.tag}`,"#/more")}<p class="h-hero" style="font-size:1.5em">${W.q}</p><p class="lead">${W.sub}</p><p class="lead">${w}주차 설교 뒤에 열립니다. 1주의 기록이 이 주에 다시 이어집니다.</p>`;
-  return `${topbar(`1주 · ${W.tag}`,"")}
+  return `${topbar(`1주 · ${W.tag}`,"#/more")}
   <p class="h-hero">${W.q}</p>
   <p class="lead">${W.sub}</p>
   ${verseHTML("jn10_27",{note:false})}
@@ -874,9 +910,8 @@ function vWeek(w){
   <p>태초에 하나님이 먼저 말씀하셨고, 사람은 그 음성을 듣고 응답하도록 지어졌습니다. 그런데 다른 소리를 더 크게 듣기 시작했을 때, 말이 무너졌습니다.</p>
   <p>내가 자주 하는 말 밑에는 오래 들어 온 목소리가 있습니다. 그 목소리는 나에게도, 남에게도 같은 말을 합니다. 그리고 그 목소리는 원래 내 것이 아닙니다.</p>
   <div class="quote">나무는 저마다 그 열매로 알려지는 법이다.<span class="ref">누가복음 6:44 · NJHV</span></div>
-  <details class="voice"><summary><span class="nm">주일에 함께 읽은 말씀</span></summary>
+  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀</span></summary>
     ${scriptureHTML("gen2")}${scriptureHTML("gen3")}
-    <div class="quote">선한 사람은 마음 곳간에 쌓아 둔 선한 것에서 선한 것을 꺼내 놓고, 악한 사람은 악한 것에서 악한 것을 꺼내 놓는다. <b>입은 결국 마음에 가득 차 넘치는 것을 말하는 법이다.</b><span class="ref">누가복음 6:45 · NJHV</span></div>
   </details>
   <h2 class="h2">이번 주의 여섯 날</h2>
   ${[1,2,3,4,5,6].map(k=>`<a class="list-link" href="#/day/1/${k}"><span><span class="s">${k}일째 · ${DAYS[k].nm} · 약 ${DAYS[k].min}분</span><br><span class="t">${DAYS[k].title}</span></span><span class="s">${dayState(k)==="done"?"마침":dayState(k)==="part"?"진행 중":""}</span></a>`).join("")}
@@ -887,13 +922,13 @@ function vWeek(w){
 
 /* ---------- 기록 ---------- */
 function vLog(){
-  return `${topbar("말과 목소리","")}
-  <p class="lead">내가 한 말, 그리고 그 밑의 목소리. 나무는 그 열매로 알려집니다.</p>
+  return `${topbar("말과 목소리","#/more")}
+  <p class="lead">내가 한 말, 그리고 그 밑의 목소리. 옛 말을 알아보고, 그 옆에 새 말을 적어 봅니다.</p>
   <button type="button" class="btn primary block" data-act="log">${IC.pen}새로 기록하기</button>
   <div class="pairlist" style="margin-top:14px">
   ${S.logs.length? S.logs.map(l=>`<button type="button" class="pair" data-act="logEdit" data-id="${l.id}" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);cursor:pointer;color:inherit">
       <span class="said">${esc(l.said)||"<span class='small'>(적지 않음)</span>"}</span><span class="voice-t">${esc(l.voice)||"<span class='small'>(적지 않음)</span>"}</span>
-      <span class="meta">${fmtDate(l.ts)}${l.type?` · ${TYPE[l.type].nm}`:""}${l.belief!=null?` · 믿음 ${l.belief}`:""}</span></button>`).join("") : `<p class="empty">아직 기록이 없습니다. 날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때 기록해 보세요.</p>`}
+      ${l.neww?`<span class="new-t">새 말 · ${esc(l.neww)}</span>`:""}<span class="meta">${fmtDate(l.ts)}${l.type?` · ${TYPE[l.type].nm}`:""}${l.belief!=null?` · 믿음 ${l.belief}`:""}</span></button>`).join("") : `<p class="empty">아직 기록이 없습니다. 날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때 기록해 보세요.</p>`}
   </div>
   ${S.logs.length?`<div class="legend"><span>왼쪽 — 내가 한 말</span><span>오른쪽 — 그 밑의 목소리</span></div>`:""}`;
 }
@@ -902,6 +937,8 @@ function vLog(){
 function vMore(){
   const L=(h,t,s)=>`<a class="list-link" href="${h}"><span><span class="t">${t}</span><br><span class="s">${s}</span></span><span aria-hidden="true">›</span></a>`;
   return `${topbar("더보기","")}
+  ${L("#/week/1","이번 주 안내","이번 주에 발견할 것, 설교에서 함께 본 말씀, 여섯 날")}
+  ${L("#/log","말과 목소리 기록","내가 한 말, 그 밑의 마음, 그리고 새 말")}
   ${L("#/library","말씀 창고","내 안의 거짓에 맞는 아버지의 대답")}
   ${L("#/map","내 말의 지도","4주 동안 쌓이는 나의 발견")}
   ${L("#/guide","고요 훈련 안내","흔들린 강물 병, 네 단계, 흔한 어려움")}
@@ -916,7 +953,7 @@ function vLibrary(){
   return `${topbar("말씀 창고","#/more")}
   <p class="lead">내 안의 목소리가 하는 말의 종류에 따라, 아버지께서 이미 하신 대답입니다. 말씀마다 누가 누구에게 하신 말씀인지 먼저 적었습니다.</p>
   ${CATS.map(c=>`<details class="voice"><summary><span class="nm">${c.nm}</span><span class="mine">${c.v.length}구절</span></summary><p class="small">${c.lie}</p>${c.v.map(id=>verseHTML(id,{name:S.name})).join("")}</details>`).join("")}
-  <details class="voice"><summary><span class="nm">일곱 목소리의 대답</span></summary>${TYPES.map(t=>`<p class="small" style="margin-top:14px">${t.nm}에게</p>${verseHTML(t.answer,{name:S.name})}`).join("")}</details>`;
+  <details class="voice"><summary><span class="nm">일곱 가지 마음에 주시는 대답</span></summary>${TYPES.map(t=>`<p class="small" style="margin-top:14px">${t.nm}이 들릴 때</p>${verseHTML(t.answer,{name:S.name})}`).join("")}</details>`;
 }
 function vTools5(){ return `${topbar("다섯 도구","#/more")}<div class="tools5">${TOOLS5.map(t=>`<div><div class="nm">${t.nm}</div><div class="d">${t.d}</div><div class="vs">${t.v}<span class="r">${t.r}</span></div></div>`).join("")}</div>`; }
 function vGuide(){ return `${topbar("고요 훈련 안내","#/more")}${guideHTML(false)}<button type="button" class="btn primary block" data-act="calm" data-day="${currentDay()}" style="margin-top:20px">${IC.drop}지금 고요 시작하기</button>`; }
@@ -947,8 +984,9 @@ function vMap(){
   return `${topbar("내 말의 지도","#/more")}
   <p class="lead">4주 동안 발견한 것이 한 장에 모입니다.</p>
   <h2 class="h2">1주 · 내 안의 목소리</h2>
-  ${top.length?`<p>내 말에서 가장 자주 들린 목소리 — <b>${top.map(id=>TYPE[id].nm).join(", ")}</b></p>`:`<p class="empty">2일째의 입버릇 찾기를 하면 채워집니다.</p>`}
-  ${top.map(id=>{const ph=myPhrases(id); return ph.length?`<p class="small">${TYPE[id].nm}의 입버릇: ${ph.map(esc).join(" / ")}</p>`:"";}).join("")}
+  ${top.length?`<p>내 말에서 가장 자주 들린 목소리 — <b>${top.map(id=>TYPE[id].nm).join(", ")}</b></p>`:`<p class="empty">2일째의 말과 마음 점검을 하면 채워집니다.</p>`}
+  ${selfScores().answered===SELF3.length?`<p class="small">실수 앞에서 나를 대하는 방식 — ${["crit","attack","reassure"].map(k=>`${FACTORS[k].nm} ${selfScores().m[k].toFixed(1)}`).join(" · ")} (0–4)</p>`:""}
+  ${top.map(id=>{const ph=myPhrases(id); return ph.length?`<p class="small">${TYPE[id].nm}이 하는 말: ${ph.map(esc).join(" / ")}</p>`:"";}).join("")}
   ${F(3,"critic_name","")?`<p>내 비판자에게 붙인 이름 — <b>${esc(F(3,"critic_name",""))}</b></p>`:""}
   ${pv?`<p>내가 새긴 아버지의 대답</p>${verseHTML(pv,{name:S.name})}`:""}
   ${SERIES.weeks.slice(1).map(w=>`<h2 class="h2">${w.n}주 · ${w.tag}</h2><p class="empty">${w.n}주에 채워집니다.</p>`).join("")}
@@ -970,7 +1008,7 @@ function vSources(){
   ${B("헨리 나우웬, Life of the Beloved","62–63쪽 — 기도의 진짜 일은 잠잠해져서 나에 대해 좋은 것을 말하는 음성을 듣는 것")}
   ${B("피터·제리 스캐지로, Emotionally Healthy Relationships 워크북","131쪽 “예수님은 마음에 계셔도, 할아버지는 뼛속에 산다”, 135쪽 가족을 돌아보는 목적, 140–143쪽 가족 계명 활동 — 3일째의 ‘우리 집의 보이지 않는 규칙’은 이 활동을 한국 가정에 맞게 새로 쓴 것입니다")}
   ${B("박재연, 『말이 통해야 일이 통한다』","94–95쪽 — “내가 지금 판단을 사실이라고 믿고 있구나”. [말과 목소리] 기록의 한 줄은 이 문장을 내면의 목소리에 옮긴 것입니다")}
-  ${B("Jay Earley · Bonnie Weiss, Self-Therapy for Your Inner Critic / Freedom from Your Inner Critic","일곱 가지 내면 비판자 분류 — 이 워크북의 ‘일곱 목소리’는 이 분류를 바탕으로 시리즈에 맞게 다듬은 것입니다(검증된 심리 척도가 아닌 관찰 도구)")}
+  ${B("Jay Earley · Bonnie Weiss, Self-Therapy for Your Inner Critic / Freedom from Your Inner Critic","일곱 가지 내면 비판자 분류 — 이 워크북의 ‘일곱 목소리’는 이 분류를 바탕으로 시리즈에 맞게 다듬은 것입니다(검증된 심리 척도가 아닌 관찰 도구)")}${B("Paul Gilbert · Mary Clarke · Sarah Hempel · Jeremy Miles · Chris Irons (2004), Criticizing and reassuring oneself, British Journal of Clinical Psychology 43(1), 31–50","FSCRS(자기비판/자기공격과 자기위안 형태 척도) — 실수했을 때 나를 대하는 방식을 자기비판 · 자기공격 · 자기위안으로 나누고 0–4점으로 답하는 구조. 2일째 점검 3부는 이 구분과 응답 방식을 따르되, 문항은 이 워크북을 위해 새로 썼습니다(원척도의 자해 문항은 넣지 않고 따로 묻습니다)")}${B("조현주 · 이승훈 · 신철 · 조용원 (2011), 「한국판 자기비판/자기공격과 자기위안 형태척도의 신뢰도와 타당도 연구」, 『인지행동치료』 11(2), 137–154","대학생 401명 · 18문항 3요인 · 내적 일치도 .66–.87 · 한 달 간격 재검사 신뢰도 .64–.87")}
   <h2 class="h2">연구</h2>
   ${B("Gilbert, Clarke, Hempel, Miles, Irons (2004)","British Journal of Clinical Psychology 43, 31–50 — 자기 비판의 두 얼굴")}
   ${B("Breines & Chen (2012)","Personality and Social Psychology Bulletin 38, 1133–1143 — 실패 뒤의 친절과 변화 동기")}
@@ -981,7 +1019,7 @@ function vSources(){
   ${B("Roediger & Karpicke (2006)","Psychological Science 17, 249–255 — 떠올려 보기(인출 연습)")}
   <h2 class="h2">서체</h2>
   ${B("고운바탕","© The Gowun Batang Project Authors, SIL Open Font License 1.1")}${B("Deepspring Sans","IBM Plex Sans KR(© IBM Corp., SIL Open Font License 1.1)에서 이 앱에 필요한 글자만 남겨 줄이고, 라이선스에 따라 이름을 바꾼 서체입니다.")}
-  <p class="small" style="margin-top:18px">이 워크북은 진실한숲교회의 설교 시리즈 『깊은 샘에서 흐르는 말』과 함께 쓰도록 만들었습니다.</p>`;
+  <p class="small" style="margin-top:18px">이 워크북은 진실한숲교회의 설교 시리즈 「말의 구원 — 깊은 샘에서 흘러나오는 말」과 함께 쓰도록 만들었습니다.</p>`;
 }
 const LAYERS=[null,"고요","오늘의 질문","오늘의 연습","응답과 감사"];
 function layerHead(n,L,title,min){ return `<div class="lh"><span class="n">${["","①","②","③","④"][L]}</span><h2>${title}</h2>${min?`<span class="min">${min}</span>`:""}</div>`; }
@@ -1003,12 +1041,15 @@ function calmLayer(n){
     ${doneBar(n,1)}</section>`;
 }
 function closeLayer(n, prayer, giveLabel="오늘 한 사람에게 건넬 말 하나", extra=""){
-  return `<section class="layer" id="L4">${layerHead(n,4,"응답과 감사","")}${prayer}${fText(n,"give",giveLabel)}${fText(n,"thanks","오늘 감사한 것 한 줄")}${extra}${doneBar(n,4)}</section>`;
+  return `<section class="layer" id="L4">${layerHead(n,4,"응답과 감사","")}${prayer}${fText(n,"give",giveLabel)}${fText(n,"thanks","오늘 감사한 것 한 줄")}${extra}<div class="panel soft" style="margin-top:16px"><p class="ph">선택 · 오늘의 말</p><p class="small">오늘 날 선 말이 나갔거나 실수한 뒤 나에게 가혹한 말을 했다면, 그 말과 그 밑의 마음, 그리고 새 말을 적어 둡니다.</p><button type="button" class="btn" data-act="log">${IC.pen}말과 목소리 적기</button></div>${doneBar(n,4)}</section>`;
 }
+function curStep(n){ const c=F(n,"cur",null); if(c>=1&&c<=4) return c; for(let L=1;L<=4;L++){ if(!layerDone(n,L)) return L; } return 1; }
+const FLOW=["","고요","질문","연습","마무리"];
 function dayShell(n, inner){
-  const d=DAYS[n];
-  return `${topbar(`${n}일째 · ${d.title}`,"#/week/1", `약 ${d.min}분`)}${stepper(n)}${inner}
-  <div class="row" style="margin-top:20px">${n>1?`<button type="button" class="btn" data-go="#/day/1/${n-1}">‹ ${n-1}일째</button>`:""}${n<6?`<button type="button" class="btn" data-go="#/day/1/${n+1}">${n+1}일째 ›</button>`:`<button type="button" class="btn" data-go="#/group/1">소그룹 ›</button>`}</div>`;
+  const d=DAYS[n], cur=curStep(n);
+  return `${topbar(`${n}일째 · ${d.title}`,"#/", `약 ${d.min}분`)}
+  <div class="flowbar" aria-label="오늘의 순서"><div class="fb-n">${cur} / 4 단계</div><div class="fb-steps">${[1,2,3,4].map(L=>`<span class="fs ${L===cur?"now":""} ${layerDone(n,L)?"done":""}">${FLOW[L]}</span>`).join("")}</div></div>
+  <div class="dayflow" data-cur="${cur}">${inner}</div>`;
 }
 
 /* ---------- 1일째 ---------- */
@@ -1016,11 +1057,11 @@ function vDay1(){
   const n=1;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"말의 무게","")}
-    <p>사람이 처음 들은 말은 복이었습니다(창 1:28). 말은 하나님께 대답하고, 곁에 있는 사람을 돌보고 기뻐하도록 주어졌습니다.</p>
+    <p>사람이 처음 들은 말은 복이었습니다(창 1:28). 말은 하나님과 대화하고, 온 세상을 대신해 하나님을 찬양하고, 세상을 돌보고, 곁에 있는 사람을 기뻐하도록 주어졌습니다.</p>
     <p>그런데 말은 한 사람을 일으키기도 하고, 무너뜨리기도 합니다.</p>
     ${fText(n,"good_recv","최근 누군가에게 들은 좋은 말 하나",{hint:"누가, 어떤 말을?"})}
     ${fText(n,"good_give","최근 내가 누군가에게 건넨 좋은 말 하나")}
-    ${fChips(n,"purpose","지난 한 주, 내 말이 한 일",[{v:"god",t:"하나님께 드린 말 — 기도, 감사"},{v:"care",t:"누군가를 돌본 말"},{v:"joy",t:"누군가를 기뻐한 말"},{v:"none",t:"잘 떠오르지 않는다"}],{multi:true,hint:"여럿 골라도 됩니다. 떠오르지 않아도 괜찮습니다."})}
+    ${fChips(n,"purpose","지난 한 주, 내 말이 한 일",[{v:"god",t:"하나님과 나눈 말 — 기도"},{v:"praise",t:"하나님을 찬양한 말 — 감사, 찬송"},{v:"care",t:"누군가를 돌본 말"},{v:"joy",t:"누군가를 기뻐한 말"},{v:"none",t:"잘 떠오르지 않는다"}],{multi:true,hint:"여럿 골라도 됩니다. 떠오르지 않아도 괜찮습니다."})}
     <h3 class="h3">지금 내 온도</h3><p class="small">오늘의 모습 그대로 고르세요. 토요일에 한 번 더 잽니다.</p>
     ${fRange(n,"t_self","실수한 날, 내가 나에게 하는 첫 문장은 얼마나 가혹한가요?",{lo:"전혀",hi:"매우"})}
     ${fRange(n,"t_out","이번 주, 그 말투가 가까운 사람에게 나간 적이 있나요?",{lo:"전혀",hi:"자주"})}
@@ -1035,7 +1076,7 @@ function vDay1(){
     <h3 class="h3">말과 목소리 기록</h3>
     <p>예수께서는 나무를 그 열매로 안다고 하셨습니다(눅 6:44). 이번 주 우리는 <b>내 말이라는 열매</b>에서 시작해, 그 밑에 흐르는 <b>목소리</b>를 찾아갑니다.</p>
     <p>바울은 옛 말을 벗고 새 말을 입으라고 합니다(골 3:8–10). 벗으려면 먼저, 내가 무엇을 입고 있는지 알아야 합니다.</p>
-    <p>화면 오른쪽 아래의 <b>[말과 목소리]</b>는 그 순간을 붙잡는 버튼입니다. 날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때 눌러 주세요.</p>
+    <p><b>[말과 목소리]</b>는 그 순간을 붙잡아 적어 두는 곳입니다. 날 선 말이 나갔을 때, 혹은 실수한 뒤 나에게 가혹한 말을 했을 때 적습니다. 매일 순서의 마지막 단계에서 열 수 있고, [더보기]에서도 찾을 수 있습니다.</p>
     <button type="button" class="btn block" data-act="log">${IC.pen}지금 한 번 연습해 보기</button>
     <div class="panel soft" style="margin-top:16px"><p class="ph">내일 아침 알람</p><p>이 앱은 알림을 보낼 수 없습니다. 지금 휴대전화 알람을 <b>내일 아침 고요 시간</b>에 맞춰 두세요.</p></div>
     ${doneBar(n,3)}</section>`+
@@ -1044,49 +1085,84 @@ function vDay1(){
 
 /* ---------- 2일째 ---------- */
 function vDay2(){
-  const n=2; const sc=voiceScores(); const safety=F(2,"safety",null);
-  const phr=(dir)=>PHRASES.filter(p=>p.dir===dir).map(p=>`<div class="phrase"><div class="t">\u201c${p.t}\u201d</div>${fSeg(n,"ph_"+p.id,["거의 안 한다","가끔","자주"])}</div>`).join("");
-  const shapeMsg={out:"이 목소리는 주로 밖을 향해 말합니다. 안에서는 잘 들리지 않아도, 같은 샘에서 나온 말일 수 있습니다.", in:"이 목소리는 주로 당신을 향해 말합니다.", both:"같은 샘에서 두 방향으로 흐르고 있습니다.", low:"지금은 날 선 말이 크지 않은 때일 수 있습니다. 이번 주 [말과 목소리] 기록으로 한 번 더 귀 기울여 보세요."}[sc.shape];
-  const ready = sc.answered>=14;
+  const n=2; const sc=voiceScores(); const s3=selfScores(); const safety=F(2,"safety",null);
+  const dx=Math.min(4,Math.max(1,F(2,"dx",1)));
+  const seg3=["거의 안 한다","가끔","자주"], seg5=["전혀","조금","보통","꽤","매우"];
+  const phr=(dir)=>PHRASES.filter(p=>p.dir===dir).map(p=>`<div class="phrase"><div class="t">“${p.t}”</div>${fSeg(n,"ph_"+p.id,seg3)}</div>`).join("");
+  const cnt=(dir)=>PHRASES.filter(p=>p.dir===dir&&F(2,"ph_"+p.id,null)!==null).length, tot=(dir)=>PHRASES.filter(p=>p.dir===dir).length;
+  const steps=["","내가 하는 말","내 안에서 들리는 말","나를 대하는 방식","결과"];
+  const dxbar=`<div class="fb-steps" style="margin:4px 0 14px">${[1,2,3,4].map(k=>`<span class="fs ${k===dx?"now":""} ${k<dx?"done":""}">${steps[k]}</span>`).join("")}</div>`;
+  const nav=(label)=>`<div class="row" style="margin-top:18px">${dx>1?`<button type="button" class="btn" data-dx="prev">‹ 앞으로</button>`:""}<button type="button" class="btn primary" data-dx="next" style="flex:1">${label}</button></div>`;
+  const shapeMsg={out:"이 마음은 주로 밖을 향해 말합니다. 안에서는 잘 들리지 않아도, 같은 샘에서 나온 말일 수 있습니다.", in:"이 마음은 주로 나를 향해 말합니다.", both:"같은 샘에서 두 방향으로 흐르고 있습니다. 나에게 하는 말과 남에게 하는 말이 닮았습니다.", low:"지금은 날 선 말이 크지 않은 때일 수 있습니다. 이번 주 [말과 목소리] 기록으로 한 번 더 귀 기울여 보세요."}[sc.shape];
+  const m=s3.m, lv=v=>v==null?"–":v<1.5?"낮음":v<2.5?"중간":"높음";
+  let pattern="";
+  if(s3.answered===SELF3.length){
+    if(m.attack>=2.5) pattern="실수 앞에서 나를 미워하는 마음이 크게 나타났습니다. 이것은 특히 아픈 마음입니다. 아래의 안내를 꼭 읽어 주세요.";
+    else if(m.crit>=2.5 && m.reassure<1.5) pattern="실수 앞에서 나를 다그치는 말은 크고, 나를 다독이는 말은 작습니다. 이번 주의 \u2018새 말\u2019 연습이 특히 필요한 자리입니다.";
+    else if(m.crit>=2.5) pattern="나를 다그치는 말이 크지만, 나를 다독이는 말도 함께 있습니다. 그 다독이는 말이 하나님의 말씀과 이어지게 해 보세요.";
+    else if(m.reassure<1.5) pattern="다그치는 말은 크지 않지만, 나를 다독이는 말도 아직 작습니다. 실수한 나에게 건넬 말을 하나님의 말씀에서 빌려 와 보세요.";
+    else pattern="실수 앞에서 나를 비교적 너그럽게 대하고 있습니다. 그 너그러움이 하나님께 받은 은혜에서 흘러나오게 해 보세요.";
+  }
   const cardsHTML = TYPES.map(t=>{ const mine=myPhrases(t.id); const open=sc.top.includes(t.id);
-    return `<details class="voice" ${open?"open":""}><summary><span class="nm">${t.nm}</span>${open?`<span class="mine">내 말에서 자주 들림</span>`:""}</summary>
-    ${mine.length?`<p class="small">내가 고른 입버릇: ${mine.map(m=>`\u201c${esc(m)}\u201d`).join(" ")}</p>`:""}
-    <dl><dt>나에게</dt><dd>\u201c${t.self}\u201d</dd><dt>남에게</dt><dd>\u201c${t.other}\u201d</dd><dt>지키려는 것</dt><dd>${t.guard}</dd><dt>흔히 어디서</dt><dd>${t.from}</dd><dt>성경 속</dt><dd>${t.bible}</dd></dl>
+    return `<details class="voice"><summary><span class="nm">${t.nm}</span>${open?`<span class="mine">내 말에서 자주 들림</span>`:""}</summary>
+    ${mine.length?`<p class="small">내가 고른 문장: ${mine.map(x=>`“${esc(x)}”`).join(" ")}</p>`:""}
+    <dl><dt>나에게</dt><dd>“${t.self}”</dd><dt>남에게</dt><dd>“${t.other}”</dd><dt>지키려는 것</dt><dd>${t.guard}</dd><dt>흔히 어디서</dt><dd>${t.from}</dd><dt>성경 속</dt><dd>${t.bible}</dd></dl>
     <div class="answer"><div class="small">아버지의 대답</div>${verseHTML(t.answer,{name:S.name,note:false})}${t.id==="destroy"?verseHTML("isa43_1",{name:S.name}):""}</div>
-    ${t.care?`<p class="small">이 목소리가 크게 들린다면, 오늘 믿을 수 있는 한 사람에게 이야기해 주세요.</p>`:""}</details>`; }).join("");
-  const picks=[...PHRASES.filter(p=>(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t), ...String(F(2,"own","")).split("\n").map(s=>s.trim()).filter(Boolean)];
-  const typeChips=(i)=>`<div class="chips" role="group">${TYPES.map(t=>`<button type="button" class="chip" aria-pressed="${F(2,`s${i}_type`,null)===t.id}" data-chip="2|s${i}_type|0" data-val="${t.id}">${t.nm}</button>`).join("")}</div>`;
-  return dayShell(n, calmLayer(n)+`
-  <section class="layer" id="L2">${layerHead(n,2,"내 말에서 목소리로","")}
-    <div class="privacy">이 기록은 이 기기에만 저장됩니다. 누구도 볼 수 없습니다. 좋아 보이는 답이 아니라, 정직한 답을 고르세요.</div>
-    ${scriptureHTML("lk6")}
-    <p>오늘은 내 마음을 곧장 들여다보지 않습니다. 먼저 <b>내가 자주 하는 말</b>을 봅니다. 열매를 보면 나무를 알 수 있기 때문입니다.</p>
-    <h3 class="h3">가까운 사람에게 하는 말</h3><p class="small">생각하지 말고 떠오르는 대로 누르세요.</p>${phr("out")}
-    <h3 class="h3">실수했을 때, 나에게 하는 말</h3>${phr("in")}
-    ${fText(n,"own","목록에 없지만 내가 자주 하는 말",{area:true,hint:"한 줄에 하나씩. 말 대신 한숨이나 침묵으로 대답하는 버릇도 적어 보세요."})}
+    ${t.care?`<p class="small">이 마음이 크게 들린다면, 오늘 믿을 수 있는 한 사람에게 이야기해 주세요.</p>`:""}</details>`; }).join("");
+  let body="";
+  if(dx===1) body=`${dxbar}<div class="privacy">이 점검은 이 기기에만 저장됩니다. 누구도 볼 수 없습니다. 좋아 보이는 답이 아니라, 정직한 답을 고르세요.</div>
+    <p>오늘은 내 마음을 곧장 들여다보지 않습니다. 먼저 <b>내가 자주 하는 말</b>을 봅니다. "나무는 저마다 그 열매로 알려지는 법이다"(눅 6:44).</p>
+    <h3 class="h3">1 / 3 · 가까운 사람에게 내가 하는 말</h3><p class="small">가족이나 가까운 사람에게. 생각하지 말고, 떠오르는 대로 누르세요.</p>${phr("out")}
+    <p class="small">${cnt("out")} / ${tot("out")}</p>${nav("다음 ›")}`;
+  if(dx===2) body=`${dxbar}<h3 class="h3">2 / 3 · 실수했을 때, 내 안에서 들리는 말</h3><p class="small">소리 내어 하지 않아도, 속으로 들리는 말이면 됩니다.</p>${phr("in")}
+    ${fText(n,"own","목록에 없지만 내가 자주 하는 말 (선택)",{area:true,hint:"한 줄에 하나씩. 말 대신 한숨이나 침묵으로 대답하는 버릇도 적어 보세요."})}
+    <p class="small">${cnt("in")} / ${tot("in")}</p>${nav("다음 ›")}`;
+  if(dx===3) body=`${dxbar}<h3 class="h3">3 / 3 · 일이 잘못되었을 때, 나를 대하는 방식</h3><p class="small">일이 잘못되거나 실수했을 때, 나는 어떤가요? 각 문장이 나와 얼마나 같은지 고르세요.</p>
+    ${SELF3.map(x=>`<div class="phrase"><div class="t">${x.t}</div>${fSeg(n,"s3_"+x.id,seg5)}</div>`).join("")}
+    <p class="small">${s3.answered} / ${SELF3.length}</p>
     <h3 class="h3">한 가지만 더</h3>
     ${fChips(n,"safety","요즘, 나 자신이 너무 싫어서 스스로를 벌주거나 해치고 싶은 마음이 든 적이 있나요?",[{v:"yes",t:"예"},{v:"no",t:"아니오"}])}
-    ${safety==="yes"?`<div class="panel warn"><p class="ph">말해 주셔서 고맙습니다.</p><p>이 목소리는 특히 아픈 목소리입니다. 오늘은 여기까지만 하셔도 됩니다.</p><p>이 마음을 혼자 견디지 마세요. 믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 오늘 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
-    <h3 class="h3">내 말에서 들리는 목소리</h3>
-    ${ready?`<div class="bars">${sc.list.map(x=>`<div class="bar ${sc.top.includes(x.id)?"top":""}"><span class="nm">${TYPE[x.id].nm}</span><span class="tr"><span class="tk out" title="남에게"><i style="width:${x.out/2*100}%"></i></span><span class="tk in" title="나에게"><i style="width:${x.in/2*100}%"></i></span></span></div>`).join("")}</div>
-      <div class="legend"><span><i style="background:var(--ochre)"></i>남에게 하는 말</span><span><i style="background:var(--teal)"></i>나에게 하는 말</span></div>
-      <p class="serif" style="font-size:1.08em;margin-top:14px">${shapeMsg}</p>
-      <p class="small">누구나 여러 목소리를 가지고 있습니다. 이것은 진단이 아니라, 이번 주에 귀 기울여 볼 방향입니다.</p>
-      <h3 class="h3">이 말들은 어디서 올까요?</h3>
-      <p>내 입에서 나오는 말 밑에는, 실수한 날 내 안에서 가장 먼저 들리는 가혹한 목소리가 있습니다. 이것을 <b>내면 비판자</b>라고 부릅니다. 이 목소리는 내 목소리처럼 들립니다. 그러나 노은혜가 인용한 한 심리치료사의 말처럼, 그것은 \u201c우리의 진짜 목소리가 아니다. 우리 안에 살고 있는 다른 누군가의 목소리다.\u201d</p>
-      <p>그리고 그 목소리는 안에서 끝나지 않습니다. 나에게 \u201c이것도 못 해?\u201d 하던 목소리가, 남에게 \u201c이것밖에 못 해?\u201d가 됩니다.</p>
-      <div class="quote">샘이 한 구멍으로 어찌 단 물과 쓴 물을 내겠느냐<span class="ref">야고보서 3:11 · 개역개정</span></div>
-      <h3 class="h3">일곱 목소리</h3>${cardsHTML}`
-    : `<p class="empty">위의 말들을 모두 고르면 결과가 여기에 나타납니다. (${sc.answered} / 21)</p>`}
-    ${doneBar(n,2)}</section>
+    ${safety==="yes"?`<div class="panel warn"><p class="ph">말해 주셔서 고맙습니다.</p><p>이 마음은 특히 아픈 마음입니다. 오늘은 여기까지만 하셔도 됩니다.</p><p>이 마음을 혼자 견디지 마세요. 믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 오늘 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
+    ${nav("결과 보기 ›")}`;
+  if(dx===4){
+    const left=(tot("out")-cnt("out"))+(tot("in")-cnt("in"))+(SELF3.length-s3.answered);
+    const t0=sc.top[0]?TYPE[sc.top[0]]:null;
+    body=`${dxbar}${left?`<p class="small">아직 답하지 않은 문장이 ${left}개 있습니다. 앞으로 돌아가 마저 답하면 결과가 더 정확해집니다.</p>`:""}
+    <div class="panel soft"><p class="ph">나의 말과 마음 — 한눈에</p>
+      <p><b>가장 자주 움직이는 마음</b><br>${sc.top.length?sc.top.map(id=>`${TYPE[id].nm} — “${TYPE[id].self}”`).join("<br>"):"아직 뚜렷하지 않습니다."}</p>
+      <p><b>말의 방향</b><br>${shapeMsg}</p>
+      ${pattern?`<p><b>실수 앞에서 나를 대하는 방식</b><br>${pattern}</p>`:""}
+    </div>
+    ${(m.attack!=null&&m.attack>=2.5)||safety==="yes"?`<div class="panel warn"><p class="ph">혼자 견디지 마세요</p><p>나를 미워하는 마음이 클 때는, 이 점검보다 사람이 먼저입니다. 오늘 믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
+    <h3 class="h3">내 말에서 들리는 일곱 가지 마음</h3>
+    <p class="small">여기서 \u2018목소리\u2019는 누군가의 실제 목소리라기보다, 내 마음이 늘 같은 쪽으로 움직이는 경향입니다. 그 경향은 늘 비슷한 문장으로 말하기 때문에, 문장으로 알아볼 수 있습니다.</p>
+    <div class="bars">${sc.list.map(x=>`<div class="bar ${sc.top.includes(x.id)?"top":""}"><span class="nm">${TYPE[x.id].nm}</span><span class="tr"><span class="tk out" title="남에게"><i style="width:${x.out/2*100}%"></i></span><span class="tk in" title="나에게"><i style="width:${x.in/2*100}%"></i></span></span></div>`).join("")}</div>
+    <div class="legend"><span><i style="background:var(--ochre)"></i>남에게 하는 말</span><span><i style="background:var(--teal)"></i>나에게 하는 말</span></div>
+    <h3 class="h3">실수 앞에서 나를 대하는 세 가지 방식</h3>
+    <div class="bars">${["crit","attack","reassure"].map(k=>`<div class="bar"><span class="nm">${FACTORS[k].nm}</span><span class="tr"><span class="tk ${k==="reassure"?"in":"out"}"><i style="width:${m[k]==null?0:m[k]/4*100}%"></i></span><span class="small">${lv(m[k])} · ${FACTORS[k].d}</span></span></div>`).join("")}</div>
+    ${t0?`<h3 class="h3">이번 주 붙들 말씀</h3><p class="small">${t0.nm}에게 주시는 대답</p>${verseHTML(t0.answer,{name:S.name})}`:""}
+    <h3 class="h3">이 말들은 어디서 올까요?</h3>
+    <p>내 입에서 나오는 말 밑에는, 실수한 날 내 안에서 가장 먼저 들리는 마음이 있습니다. 그리고 그 마음은 안에서 끝나지 않습니다. 나에게 "이것도 못 해?" 하던 마음이, 남에게 "이것밖에 못 해?"가 됩니다.</p>
+    <div class="quote">샘이 한 구멍으로 어찌 단 물과 쓴 물을 내겠느냐<span class="ref">야고보서 3:11 · 개역개정</span></div>
+    <h3 class="h3">일곱 가지 마음, 자세히</h3>${cardsHTML}
+    <p class="small" style="margin-top:16px">이 점검은 공인된 진단 검사가 아닙니다. 1 · 2부의 일곱 가지 마음은 Earley · Weiss의 내면 비판자 분류를, 3부는 자기비판 연구의 표준 척도인 FSCRS(Gilbert 외, 2004; 한국판 조현주 외, 2011)의 세 구분 — 자기비판 · 자기공격 · 자기위안 — 을 바탕으로 이 워크북을 위해 새로 쓴 문항입니다. 결과는 나를 알아보기 위한 거울로만 쓰세요.</p>
+    <div class="row" style="margin-top:12px"><button type="button" class="btn" data-dx="prev">‹ 답 고치기</button></div>`;
+  }
+  const inner=[...PHRASES.filter(p=>p.dir==="in"&&(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t), ...String(F(2,"own","")).split("\n").map(s=>s.trim()).filter(Boolean)];
+  const picks=[...PHRASES.filter(p=>p.dir==="out"&&(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t), ...PHRASES.filter(p=>p.dir==="in"&&(F(2,"ph_"+p.id,0)||0)>0).map(p=>p.t)];
+  const typeChips=(i)=>{ const sel=F(2,`s${i}_type`,null)||typeOfText(F(2,`s${i}_text`,"")); return `<div class="chips" role="group">${TYPES.map(t=>`<button type="button" class="chip" aria-pressed="${sel===t.id}" data-chip="2|s${i}_type|0" data-val="${t.id}">${t.nm}</button>`).join("")}</div>`; };
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"말과 마음 점검","")}${body}${dx===4?doneBar(n,2):""}</section>
   <section class="layer" id="L3">${layerHead(n,3,"그 말 밑의 문장","")}
-    <p>오늘 찾은 입버릇 가운데 하나를 고르세요.</p>
-    ${picks.length?`<div class="chips" role="group">${picks.map(p=>`<button type="button" class="chip" aria-pressed="${F(2,"pick_text","")===p}" data-chip="2|pick_text|0" data-val="${esc(p)}">\u201c${esc(p)}\u201d</button>`).join("")}</div>`:`<p class="empty">위에서 \u2018가끔\u2019이나 \u2018자주\u2019를 고른 말이 여기에 나타납니다.</p>`}
-    <p style="margin-top:14px">그 말을 할 때, 혹은 하기 직전에 — 내 안에서 먼저 들린 말은 무엇이었나요? 그리고 실수한 날, 나 자신에게는 뭐라고 하나요?</p>
-    ${[0,1,2].map(i=>`<div class="panel soft"><p class="ph">문장 ${i+1}${i>0?" (선택)":""}</p>${fText(n,`s${i}_text`,"그 밑의 문장")}<div class="field"><div class="lbl">어떤 목소리인가요?</div>${typeChips(i)}</div>${fRange(n,`s${i}_belief`,"이 말을 얼마나 믿나요?",{min:0,max:100,step:5,lo:"전혀",hi:"완전히"})}
-      <details><summary class="small" style="cursor:pointer;min-height:40px;display:flex;align-items:center">문장의 모양 (선택)</summary>${fChips(n,`s${i}_shape`,"",[ "조건문 — \u201c~라면\u201d","딱지 — \u201c항상\u201d, \u201c원래\u201d","전체 판결","예언 — \u201c~할 거야\u201d","비교"],{multi:true})}</details></div>`).join("")}
+    <p>오늘 고른 말 가운데, 가장 마음에 걸리는 것 하나를 누르세요.</p>
+    ${picks.length?`<div class="chips" role="group">${picks.map(p=>`<button type="button" class="chip" aria-pressed="${F(2,"pick_text","")===p}" data-chip="2|pick_text|0" data-val="${esc(p)}">“${esc(p)}”</button>`).join("")}</div>`:`<p class="empty">점검에서 \u2018가끔\u2019이나 \u2018자주\u2019를 고른 말이 여기에 나타납니다.</p>`}
+    <p style="margin-top:14px">그 말을 할 때, 혹은 하기 직전에 — 내 안에서 먼저 들린 말은 무엇이었나요? 아래 보기에서 고르세요. 보기에 없으면 직접 써도 됩니다.</p>
+    ${[0,1,2].map(i=>`<div class="panel soft"><p class="ph">문장 ${i+1}${i>0?" (선택)":""}</p>
+      ${inner.length?`<div class="chips" role="group">${inner.map(x=>`<button type="button" class="chip" aria-pressed="${F(2,`s${i}_text`,"")===x}" data-fill="2|s${i}_text" data-val="${esc(x)}">“${esc(x)}”</button>`).join("")}</div>`:""}
+      ${fText(n,`s${i}_text`,"그 밑의 문장")}<div class="field"><div class="lbl">어떤 마음인가요?</div><div class="hint">보기에서 고른 문장은 저절로 정해집니다. 다르면 바꾸세요.</div>${typeChips(i)}</div>${fRange(n,`s${i}_belief`,"이 말을 얼마나 믿나요?",{min:0,max:100,step:5,lo:"전혀",hi:"완전히"})}
+      <details><summary class="small" style="cursor:pointer;min-height:40px;display:flex;align-items:center">문장의 모양 (선택)</summary>${fChips(n,`s${i}_shape`,"",[ "조건문 — “~라면”","딱지 — “항상”, “원래”","전체 판결","예언 — “~할 거야”","비교"],{multi:true})}</details></div>`).join("")}
     ${stopLine()}${doneBar(n,3)}</section>`+
-  closeLayer(n, `<p>오늘 적은 문장 가운데 하나를 골라, 하나님께 그대로 보여 드리세요.</p><div class="quote">하나님, 제 입에서 이 말이 나옵니다. 그 밑에서 이 목소리가 들립니다. 이 목소리가 어디서 왔는지 알게 해 주십시오.</div>`, "오늘 그 입버릇 대신 건넬 말 하나"));
+  closeLayer(n, `<p>오늘 고른 문장 가운데 하나를, 하나님께 그대로 보여 드리세요.</p><div class="quote">하나님, 제 입에서 이 말이 나옵니다. 그 밑에서 이 마음이 움직입니다. 이 마음이 어디서 왔는지 알게 해 주십시오.</div>`, "오늘 그 말 대신 건넬 말 하나"));
 }
 
 /* ---------- 3일째 ---------- */
@@ -1098,7 +1174,8 @@ function vDay3(){
   const qs=[["하나님께 돌아가고 싶어진다","숨고 싶어진다"],["내가 한 일을 말한다","나라는 사람을 말한다"],["구체적이다","\u201c늘, 항상, 원래\u201d라고 한다"],["돌아갈 길을 보여 준다","출구가 없다"]];
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"그 목소리의 정체","")}
-    ${top.length?`<div class="panel soft"><p class="ph">어제 내 말에서 가장 자주 들린 목소리</p>${top.map(id=>`<p><b>${TYPE[id].nm}</b>${myPhrases(id).length?` — ${myPhrases(id).map(p=>`\u201c${esc(p)}\u201d`).join(" ")}`:""}</p>`).join("")}${F(2,"s0_text","")?`<p class="small">그 밑의 문장: \u201c${esc(F(2,"s0_text",""))}\u201d</p>`:""}</div>`:`<p class="empty">2일째의 입버릇 찾기를 먼저 하면 여기에 내 목소리가 나타납니다.</p>`}
+    ${top.length?`<div class="panel soft"><p class="ph">어제 내 말에서 가장 자주 들린 목소리</p>${top.map(id=>`<p><b>${TYPE[id].nm}</b>${myPhrases(id).length?` — ${myPhrases(id).map(p=>`\u201c${esc(p)}\u201d`).join(" ")}`:""}</p>`).join("")}${F(2,"s0_text","")?`<p class="small">그 밑의 문장: \u201c${esc(F(2,"s0_text",""))}\u201d</p>`:""}</div>`:`<p class="empty">2일째의 말과 마음 점검을 먼저 하면 여기에 내 마음이 나타납니다.</p>`}
+    <p class="small">2일째에 본 일곱 가지 마음이 한데 모여 나를 다그칠 때, 노은혜는 그것을 \u2018가혹한 비판자\u2019라고 부릅니다. 아래에서 \u2018비판자\u2019라고 할 때는 그 마음들 모두를 가리킵니다.</p>
     <h3 class="h3">이 목소리는 왜 생겼을까요?</h3>
     <p>대부분의 비판자는 처음에 나를 <b>지키려고</b> 생겼습니다. 혼나지 않게, 버림받지 않게, 창피당하지 않게. 그래서 이 목소리는 지금도 자기가 나를 돕고 있다고 믿습니다. 그러나 기독교 정신과 의사 커트 톰프슨은 이것을 <b>양의 옷을 입은 늑대</b>라고 부릅니다. 늘 곁에서 조언하는 척하지만, 그 목적은 나를 무너뜨리는 것이라고.</p>
     <h3 class="h3">이 목소리가 약속하는 것</h3>
@@ -1131,7 +1208,7 @@ function vDay3(){
       <p>창세기 3장에서 여자는 몇 마디 대화 만에 뱀의 말투로 하나님을 말하게 됩니다. \u201c모든 나무에서 마음껏\u201d이 빠지고, 하나님이 하지 않으신 \u201c만지지도 마라\u201d가 더해집니다(창 3:2–3). 우리는 들은 대로 닮습니다.</p>
       <div class="quote">제자는 스승보다 높지 않다. 그러나 <b>누구든지 다 배우고 나면 자기 스승처럼 되는 법이다.</b><span class="ref">누가복음 6:40 · NJHV</span></div>
       ${fChips(n,"who","1. 내가 자주 하는 그 말 — 그 말투는 누구에게서 들었나요?",WHO,{multi:true,hint:"여럿 골라도 됩니다. 아이는 부모를 옳다고 믿어야 세상이 안전하기 때문에 \u201c엄마가 잘못했다\u201d보다 \u201c내가 잘못했다\u201d를 택하곤 합니다(노은혜). 목소리의 출처가 늘 누군가의 말은 아닙니다."})}
-      <p>우리 집의 보이지 않는 규칙은 대개 \u201c~해야만\u201d의 문법으로 말합니다. 동산에서 뱀이 이미 하나님의 형상으로 지음받은 사람에게 \u201c하나님처럼 되어서\u201d라고 한, 그 문법입니다.</p>
+      <p>우리 집의 보이지 않는 규칙은 대개 \u201c~해야만\u201d의 문법으로 말합니다. 동산에서 뱀이 이미 하나님의 형상으로 지음받은 사람에게 \u201c하나님처럼 되어서\u201d라고 한(창 3:5), 그 문법입니다.</p>
       ${fChips(n,"rules","2. 우리 집의 보이지 않는 규칙 가운데, 내 비판자와 닮은 것을 두세 개 고르세요.",RULES.map(r=>({v:r.id,t:r.t})),{multi:true})}
       ${fText(n,"rule_own","직접 쓰는 규칙")}
       ${rulesSel.length?`<h3 class="h3">새 가족의 규칙</h3>
@@ -1220,7 +1297,7 @@ function vDay5(){
   const msg = `${recvName?vocative(recvName)+" ":""}하나님이 너에게 하시는 말씀이 떠올라서 보내. \u2018${VERSES[recvVerse].t}\u2019(${VERSES[recvVerse].ref})`;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"한 주의 말과 목소리","")}
-    ${logs.length?`<div class="pairlist">${logs.map(l=>`<div class="pair"><span class="said">${esc(l.said)}</span><span class="voice-t">${esc(l.voice)}</span></div>`).join("")}</div><div class="legend"><span>왼쪽 — 내가 한 말</span><span>오른쪽 — 그 밑의 목소리</span></div>`
+    ${logs.length?`<div class="pairlist">${logs.map(l=>`<div class="pair"><span class="said">${esc(l.said)}</span><span class="voice-t">${esc(l.voice)}</span>${l.neww?`<span class="new-t">새 말 · ${esc(l.neww)}</span>`:""}</div>`).join("")}</div><div class="legend"><span>왼쪽 — 내가 한 말</span><span>오른쪽 — 그 밑의 목소리</span></div>`
     :`<p class="empty">기록이 없어도 괜찮습니다. 지금 떠오르는 이번 주의 말 하나로 짝을 만들어 보세요.</p><button type="button" class="btn" data-act="log">${IC.pen}말과 목소리 기록하기</button>`}
     ${fRange(n,"sim","내 말과 그 밑의 목소리는 얼마나 닮았나요?",{lo:"전혀",hi:"거의 같다"})}
     ${fText(n,"learn","한 줄로 — 이번 주 내 말을 보며 알게 된 것")}
@@ -1299,7 +1376,7 @@ function vDay6(){
     <p class="serif" style="font-size:1.35em;font-weight:700;line-height:1.55;margin:18px 0">태초에 말이 있었습니다. 그 말씀이, 오늘 우리의 말을 다시 시작하게 하십니다.</p>
     <h3 class="h3">다섯 도구 — 이번 주 내가 쓴 것</h3>
     <div class="tablewrap"><table class="simple">
-      <tr><td><b>자각</b></td><td>말과 목소리 기록 ${S.logs.length}개${voiceScores().answered>=14?", 입버릇 찾기":""}</td></tr>
+      <tr><td><b>자각</b></td><td>말과 목소리 기록 ${S.logs.length}개${voiceScores().answered>=14?", 말과 마음 점검":""}</td></tr>
       <tr><td><b>지연</b></td><td>${fSeg(n,"delay",["아직","한 번쯤","여러 번"])}<span class="small">\u201c지금 당장\u201d을 요구하는 목소리 앞에서 한 박자 멈춘 적</span></td></tr>
       <tr><td><b>대체</b></td><td>${vid?`아버지의 대답 — ${VERSES[vid].ref}`:"아직"}</td></tr>
       <tr><td><b>샘 관리</b></td><td>아침 고요 ${[1,2,3,4,5,6].filter(d=>S.calm["1-"+d]).length} / 6</td></tr>
@@ -1309,7 +1386,7 @@ function vDay6(){
     <p class="small">나눌 것만 고르세요. 고르지 않은 것은 나만 봅니다. 아무것도 나누지 않아도 괜찮습니다.</p>
     ${shareItems.length?fChips(n,"share","",shareItems.map(x=>({v:x.k,t:x.t})),{multi:true}):`<p class="empty">이번 주 기록이 쌓이면 여기에 나타납니다.</p>`}
     ${shareText?`<button type="button" class="btn" data-act="copy" data-text="${esc(shareText)}">고른 것 복사하기</button>`:""}
-    <div class="panel soft" style="margin-top:18px"><p class="ph">다음 주 · 참된 말</p><p class="serif">빛 가운데 말하다</p><p class="small">가리지 않아도 되는 말. 이번 주 찾은 입버릇 가운데 사람에게 딱지를 붙이는 말이 다음 주에 다시 열립니다. 우리가 왜 가리고, 부풀리고, 비틀어 듣는지 함께 봅니다.</p></div>
+    <div class="panel soft" style="margin-top:18px"><p class="ph">다음 주 · 참된 말</p><p class="serif">빛 가운데 말하다</p><p class="small">가리는 말을 넘어 참된 말로. 이번 주 찾은 입버릇 가운데 사람에게 딱지를 붙이는 말이 다음 주에 다시 열립니다. 우리가 왜 가리고, 부풀리고, 비틀어 듣는지 함께 봅니다.</p></div>
     ${doneBar(n,3)}</section>
   <section class="layer" id="L4">${layerHead(n,4,"훈련 기도문","")}
     <p class="small">천천히 소리 내어 읽으세요. 마음에 걸리는 줄에서는 잠시 멈추어도 좋습니다.</p>
@@ -1348,7 +1425,7 @@ function vGroup(){
     <p><b>시간</b> — 60분을 넘기지 않습니다.</p></details>`;
 }
 function route(){ return (location.hash||"#/").replace(/^#/,"").split("/").filter(Boolean); }
-function currentTab(r){ if(!r.length) return "home"; if(r[0]==="week"||r[0]==="day"||r[0]==="group") return "week"; if(r[0]==="log") return "log"; return "more"; }
+function currentTab(r){ if(!r.length) return "home"; return "more"; }
 function view(){
   const r=route();
   if(!S.onboarded && r[0]!=="intro" && r[0]!=="finish-intro") return vIntro(0);
@@ -1373,10 +1450,10 @@ function view(){
 function chrome(){
   const r=route(); const tab=currentTab(r); const intro=!S.onboarded||r[0]==="intro";
   let tb=$(".tabbar"), fab=$(".fab");
-  if(intro){ tb&&tb.remove(); fab&&fab.remove(); return; }
+  fab&&fab.remove();
+  if(intro || r[0]==="day"){ tb&&tb.remove(); return; }
   if(!tb){ tb=document.createElement("nav"); tb.className="tabbar"; tb.setAttribute("aria-label","주요 메뉴"); document.body.appendChild(tb); }
-  tb.innerHTML=`<div class="in">${[["home","오늘","#/"],["week","한 주","#/week/1"],["log","기록","#/log"],["more","더보기","#/more"]].map(([k,t,h])=>`<button type="button" data-go="${h}" ${tab===k?'aria-current="page"':""}>${IC[k]}${t}</button>`).join("")}</div>`;
-  if(!fab){ fab=document.createElement("button"); fab.type="button"; fab.className="fab"; fab.dataset.act="log"; fab.innerHTML=`${IC.pen}말과 목소리`; document.body.appendChild(fab); }
+  tb.innerHTML=`<div class="in">${[["home","오늘","#/"],["more","더보기","#/more"]].map(([k,t,h])=>`<button type="button" data-go="${h}" ${tab===k?'aria-current="page"':""}>${IC[k]}${t}</button>`).join("")}</div>`;
 }
 let lastRoute="";
 function render(keepScroll){
@@ -1415,7 +1492,7 @@ document.addEventListener("change", e=>{
   }
 });
 document.addEventListener("click", async e=>{
-  const el=e.target.closest("[data-go],[data-act],[data-chip],[data-seg],[data-done],[data-set],[data-jump],[data-wiz],[data-wiz-set],[data-read],[data-fill]");
+  const el=e.target.closest("[data-go],[data-act],[data-chip],[data-seg],[data-done],[data-prev],[data-dx],[data-set],[data-jump],[data-wiz],[data-wiz-set],[data-read],[data-fill]");
   if(!el) return;
   const ds=el.dataset;
   if(ds.go){ if(ds.go==="#/finish-intro"){ S.onboarded=true; save(); location.hash="#/"; return; } if(location.hash===ds.go) render(); else location.hash=ds.go; return; }
@@ -1426,9 +1503,12 @@ document.addEventListener("click", async e=>{
     render(true); return; }
   if(ds.fill){ const [n,k]=ds.fill.split("|"); setF(+n,k,ds.val); render(true); return; }
   if(ds.seg){ const [n,k]=ds.seg.split("|"); let v=+ds.val; if(k==="skipOrigins") v=!!v; setF(+n,k,v); render(true); return; }
-  if(ds.done){ const [n,L]=ds.done.split("|"); const d=D(+n); d.done[L]=!d.done[L]; save(); render(true);
-    if(d.done[L]){ const next=document.getElementById("L"+(+L+1)); if(next) setTimeout(()=>next.scrollIntoView({behavior:"smooth",block:"start"}),60); }
+  if(ds.done){ const [n,L]=ds.done.split("|").map(Number); const d=D(n); d.done[L]=true; save();
+    if(L<4){ setF(n,"cur",L+1); render(); }
+    else { setF(n,"cur",1); toast(`${n}일째 순서를 모두 마쳤습니다`); location.hash="#/"; }
     return; }
+  if(ds.dx){ const v=Math.max(1,Math.min(4,F(2,"dx",1)+(ds.dx==="next"?1:-1))); setF(2,"dx",v); render(); return; }
+  if(ds.prev){ const [n,L]=ds.prev.split("|").map(Number); setF(n,"cur",Math.max(1,L-1)); render(); return; }
   if(ds.set){ const [k,v]=ds.set.split("|"); if(k==="chime") S.settings.chime = v==="1"; else S.settings[k]=v; save(); applySettings(); render(true); return; }
   if(ds.wiz){ const s=F(4,"step",1); setF(4,"step", Math.max(1,Math.min(7, s+(ds.wiz==="next"?1:-1)))); render(true); const L3=document.getElementById("L3"); L3&&L3.scrollIntoView({block:"start"}); return; }
   if(ds.wizSet){ setF(4, ds.wizSet, ds.val); if(ds.wizSet==="pair"){ setF(4,"ifthen",null); setF(4,"cat",null); } if(ds.wizSet==="verse") setF(4,"ifthen",null); render(true); return; }
