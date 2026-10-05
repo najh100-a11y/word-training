@@ -1157,11 +1157,7 @@ function vDay2(){
     const left=(tot("out")-cnt("out"))+(tot("in")-cnt("in"))+(SELF3.length-s3.answered);
     const t0=sc.top[0]?TYPE[sc.top[0]]:null;
     body=`${dxbar}${left?`<p class="small">아직 답하지 않은 문장이 ${left}개 있습니다. 앞으로 돌아가 마저 답하면 결과가 더 정확해집니다.</p>`:""}
-    <div class="panel soft"><p class="ph">나의 말과 마음 — 한눈에</p>
-      <p><b>가장 자주 움직이는 마음</b><br>${sc.top.length?sc.top.map(id=>`${TYPE[id].nm} — “${TYPE[id].self}”`).join("<br>"):"아직 뚜렷하지 않습니다."}</p>
-      <p><b>말의 방향</b><br>${shapeMsg}</p>
-      ${pattern?`<p><b>실수 앞에서 나를 대하는 방식</b><br>${pattern}</p>`:""}
-    </div>
+    ${w1Brief()}
     ${(m.attack!=null&&m.attack>=2.5)||safety==="yes"?`<div class="panel warn"><p class="ph">혼자 견디지 마세요</p><p>나를 미워하는 마음이 클 때는, 이 점검보다 사람이 먼저입니다. 오늘 믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
     <h3 class="h3">내 말에서 들리는 일곱 가지 마음</h3>
     <p class="small">여기서 \u2018목소리\u2019는 누군가의 실제 목소리라기보다, 내 마음이 늘 같은 쪽으로 움직이는 경향입니다. 그 경향은 늘 비슷한 문장으로 말하기 때문에, 문장으로 알아볼 수 있습니다.</p>
@@ -1228,7 +1224,7 @@ function vDay3(){
     <div class="quote">하나님의 뜻을 따르는 근심은 후회할 것 없는 구원에 이르는 회개를 이루지만, 세상의 근심은 죽음을 이룹니다.<span class="ref">고린도후서 7:10 · NJHV</span></div>
     <p class="small">어제 적은 문장 하나를 떠올리며 고르세요.</p>
     ${qs.map((q,i)=>`<div class="field"><div class="lbl">${["이 목소리를 듣고 나면","이 목소리는","이 목소리는","이 목소리는"][i]}</div><div class="seg" style="grid-template-columns:1fr 1fr">${q.map((o,j)=>`<button type="button" aria-pressed="${F(3,"tf"+(i+1),null)===j}" data-seg="3|tf${i+1}" data-val="${j}">${o}</button>`).join("")}</div></div>`).join("")}
-    ${answered===4?`<p class="serif" style="font-size:1.05em">${right>=2?"이것은 양심의 목소리라기보다 비판자의 목소리에 가깝습니다. 하나님이 주시는 근심은 사람을 무너뜨리지 않고 돌아오게 합니다.":"이 목소리에는 하나님이 주시는 근심의 모습이 있습니다. 그 일을 하나님께 가져가고, 필요하면 바로잡으세요(요일 1:9)."}</p>`:""}
+    ${answered===4?`<p class="small">네 질문 가운데 ${right}곳에서 벌주려는 얼굴, ${4-right}곳에서 고치려는 얼굴을 고르셨습니다.</p><p class="serif" style="font-size:1.05em">${right>=2?"이것은 양심의 목소리라기보다 비판자의 목소리에 가깝습니다. 하나님이 주시는 근심은 사람을 무너뜨리지 않고 돌아오게 합니다.":"이 목소리에는 하나님이 주시는 근심의 모습이 있습니다. 그 일을 하나님께 가져가고, 필요하면 바로잡으세요(요일 1:9)."}</p>`:pendHTML(answered,4)}
     <h3 class="h3">이 목소리는 어디서 왔을까 — 두 질문만</h3>
     <div class="quote" style="font-size:.98em">가족을 돌아보는 것은 잘못을 찾기 위해서가 아니라, 무엇이 건강했고 무엇이 아팠는지 정직하게 보고 그리스도 안에서 자라기 위해서입니다.<span class="ref">피터 스캐지로</span></div>
     ${safety?`<div class="panel warn"><p>이 질문은 오늘 건너뛰어도 됩니다. 3주에 천천히 다시 열 수 있습니다.</p><div class="seg" style="grid-template-columns:1fr 1fr"><button type="button" aria-pressed="${skip}" data-seg="3|skipOrigins" data-val="1">건너뛰기</button><button type="button" aria-pressed="${!skip}" data-seg="3|skipOrigins" data-val="0">지금 해 보기</button></div></div>`:""}
@@ -1394,6 +1390,7 @@ function vDay6(){
     <h3 class="h3">같은 샘</h3>
     <p>이번 주 말과 목소리 기록 <b>${S.logs.length}개</b>${logTop.length?` · 기록에서 가장 자주 나온 목소리: <b>${logTop.join(", ")}</b>`:""}</p>
     ${t2.length?`<p class="small">화요일 입버릇 찾기에서 나온 목소리: ${t2.join(", ")}. 내가 생각한 내 모습과 실제로 기록된 내 말이 다를 수 있습니다. 그 차이도 발견입니다.</p>`:""}
+    <details class="voice"><summary><span class="nm">화요일 진단 브리핑 다시 보기</span></summary>${w1Brief()||`<p class="empty">2일째 점검을 하면 나타납니다.</p>`}</details>
     <h3 class="h3">이번 주의 세 걸음</h3>
     ${tsWeekHTML(1)}
     <h3 class="h3">믿음의 변화</h3>
@@ -1533,7 +1530,7 @@ const W2_SHAPES = {
     re:["“지금 막 나왔어. 20분쯤 걸릴 것 같아.”","“사실은 좀 힘들어.”","“지난 2주 동안 다섯 번 늦었어.”"]},
   excuse:{nm:"둘러대는 말", d:"내 몫을 다른 이유 뒤에 둡니다", sig:[], ex:"늦잠을 자 놓고 “차가 막혀서요.” 내가 깜빡하고 “그거 전달 못 받았는데요.” “내 잘못이 40, 저 사람이 60이니 용서를 구할 사람은 저쪽이지” 하는 계산도.",
     re:["“제가 깜빡했어요. 죄송합니다.”","“늦잠을 잤어요. 미안해요.”","“제 잘못이에요.” — “하지만” 없이"]},
-  select:{nm:"반쪽만 말하는 말", d:"사실만 골라, 실제와 다른 그림을 그립니다", sig:["옮기려다 멈춤"], ex:"나머지 과목은 망쳤는데 “엄마, 나 수학 90점 받았어!” 사실만 말했는데, 그림은 거짓입니다. 앞뒤를 잘라 낸 영상, 한쪽 말만 옮긴 글을 확인하지 않은 채 단톡방에 옮기는 것도 그렇습니다.",
+  select:{nm:"반쪽만 말하는 말", d:"사실만 골라, 실제와 다른 그림을 그립니다", sig:["옮기려다 멈춤"], ex:"나머지 과목은 망쳤는데 “엄마, 나 수학 90점 받았어!” 사실만 말했는데, 그림은 거짓입니다. 확인하지 않은 영상이나 글을 SNS에 올리거나, 들은 말을 앞뒤 없이 다른 사람에게 옮기는 것도 그렇습니다.",
     re:["“수학은 잘 봤는데, 나머지는 망쳤어.”","“좋은 점도 있지만, 걸리는 점도 하나 있어요.”","“아까 오해하신 것 같아서요. 사실은…”"]},
   holy:{nm:"하나님 이름 뒤에 숨는 말", d:"내 계산이나 실수를 하나님의 이름 뒤에 숨깁니다", sig:["기도할게요"], ex:"야곱의 “아버지의 하나님 여호와께서 제 앞에 그것을 만나게 해 주셨습니다.” 오늘의 “기도해 보니까…”, “하나님이 인도하셔서…”",
     re:["“솔직히 이번엔 부담돼서 못 하겠어요.”","“제가 그렇게 하고 싶어서요.”","기도로 — “하나님, 사실 저는 지금 괜찮지 않습니다.”"]}
@@ -1550,7 +1547,7 @@ const W2_PH = [
   {id:"s1", s:"select", t:"좋은 것만 골라 말해서, 실제보다 좋게 보이게 둔다."},
   {id:"s2", s:"select", t:"틀린 말은 아니지만, 중요한 사실 하나를 일부러 빼고 말한다."},
   {id:"s3", s:"select", t:"상대가 오해한 걸 알면서도 바로잡지 않고 그냥 둔다."},
-  {id:"s4", s:"select", t:"앞뒤가 잘린 영상이나 한쪽 말만 옮긴 글을, 확인하지 않고 단톡방에 옮긴다."},
+  {id:"s4", s:"select", t:"들은 말이나 본 글을 확인하지 않고, 앞뒤를 뺀 채 SNS에 올리거나 다른 사람에게 옮긴다."},
   {id:"h1", s:"holy", t:"내 생각이나 계산을 “기도해 보니까…”로 꺼낸다."},
   {id:"h2", s:"holy", t:"내 결정을 “하나님이 인도하셔서…”라는 말 뒤에 둔다."},
   {id:"h3", s:"holy", t:"교회에서는 실제보다 믿음 있어 보이는 말을 한다."},
@@ -1593,7 +1590,7 @@ function w2Scores(){
 /* 신호어 — 설교의 둘째 연습 */
 const SIGS = [{id:"ok",t:"괜찮아요"},{id:"minor",t:"별일 아니에요"},{id:"always",t:"항상"},{id:"seen",t:"네, 다 봤습니다"},{id:"pray",t:"기도할게요"},{id:"fwd",t:"옮기려다 멈춤",act:true}];
 const SIG_SHAPE={ok:"exag",minor:"exag",always:"exag",seen:"exag",pray:"holy",fwd:"select"};
-function sigToast(id){ const s=SIGS.find(x=>x.id===id); if(!s) return ""; return s.act?"옮기기 전에 — 원래 자료와 다른 쪽 설명을 확인했나요?":`“${s.t}” — 실제와 같은 그림인가요? 무엇을 지키거나 높이려는 말인가요?`; }
+function sigToast(id){ const s=SIGS.find(x=>x.id===id); if(!s) return ""; return s.act?"올리거나 옮기기 전에 — 원래 자료나 당사자의 말을 확인했나요?":`“${s.t}” — 실제와 같은 그림인가요? 무엇을 지키거나 높이려는 말인가요?`; }
 function todayKey(){ const d=window.__NOW__?new Date(window.__NOW__):new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
 function sigRow(){
   const day=((S.w2.sig||{})[todayKey()])||{};
@@ -1653,11 +1650,11 @@ const W2_SIT=[
     {v:"b",c:"exag",t:"“네, 다 봤습니다.”"},
     {v:"c",c:"select",t:"“대충 훑어봤어요” — 사실은 거의 못 봤는데"},
     {v:"d",c:"avoid",t:"대답 대신 말을 돌린다"}]},
-  {id:"s8", q:"마음이 가는 기사나 영상을 단톡방에 옮길 때, 나는 대개", o:[
-    {v:"a",c:"true",t:"원래 자료와 다른 쪽 설명을 확인하고 옮긴다"},
-    {v:"b",c:"select",t:"제목과 짧은 영상만 보고 옮긴다"},
-    {v:"c",c:"select",t:"내 생각과 맞으면 확인 없이 옮긴다"},
-    {v:"d",c:"true",t:"확인할 수 없으면 옮기지 않는다"}]}
+  {id:"s8", q:"들은 이야기나 마음이 가는 글을 SNS에 올리거나 다른 사람에게 전할 때, 나는 대개", o:[
+    {v:"a",c:"true",t:"원래 자료나 당사자의 말을 확인하고 전한다"},
+    {v:"b",c:"select",t:"제목이나 들은 대로만 보고 전한다"},
+    {v:"c",c:"select",t:"내 생각과 맞으면 확인 없이 전한다"},
+    {v:"d",c:"true",t:"확인할 수 없으면 전하지 않는다"}]}
 ];
 const W2_AVOID={nm:"말하지 않고 피하는 말", d:"참된 말 대신 침묵이나 거리 두기로 덮습니다"};
 function shapeNm(c){ return c==="avoid"?W2_AVOID.nm:(W2_SHAPES[c]||{}).nm||""; }
@@ -1743,6 +1740,7 @@ function w2Scene(){
   const shape = ph?ph.s : st&&st.c!=="true" ? st.c : null;
   return {said, shape, fact:F(2,"fact","",2), pic:F(2,"pic_own","",2)||F(2,"pic",null,2), guard:F(2,"guard",[],2)||[], afraid:F(2,"afraid",[],2)||[], belief:F(2,"belief",null,2), pct:F(2,"belief_pct",null,2)};
 }
+function pendHTML(done,total){ return `<p class="small" style="margin-top:10px;color:var(--teal)">${done} / ${total} · 모두 고르면 바로 아래에 결과가 나옵니다.</p>`; }
 function quoteOf(t){ const m=String(t||"").match(/“([^”]+)”/); return m?m[1]:String(t||""); }
 function sceneCard(sn, title="해부한 장면"){
   if(!sn.said) return `<p class="empty">2일째에 해부한 장면이 여기에 나타납니다.</p>`;
@@ -1769,11 +1767,8 @@ function vW2Day1(){
     <div class="panel soft"><p class="ph">참된 말과 속이는 말</p><p>말은 듣는 사람 머릿속에 그림을 그립니다. <b>참된 말</b>은 실제와 같은 그림을, <b>속이는 말</b>은 실제와 다른 그림을 그립니다. 큰 거짓말만이 아니라, 어떤 이유에서든 듣는 사람에게 실제와 다른 인상을 남기는 모든 말입니다. 그리고 그 그림은 대개 나를 지키거나 높입니다.</p></div>
     <p>상황마다, 내가 <b>가장 자주 하는 쪽</b>을 고르세요. 바람직한 대답이 아니라, 실제로 하는 대답을 고를 때 내 말이 보입니다.</p>
     ${W2_SIT.map(s=>fOpts(n,"sit_"+s.id,s.q,s.o)).join("")}
-    ${all?`<div class="panel soft"><p class="ph">내 대답에서 보이는 것</p>
-      <p>${W2_SIT.length}가지 상황 가운데 <b>${si.hideN}곳</b>에서 속이는 쪽을 골랐습니다.${si.top.length?` 가장 자주 나온 모양은 <b>${si.top.map(shapeNm).join(", ")}</b>입니다.`:""}</p>
-      ${si.hideN?`<p class="small">${Object.entries(si.cnt).map(([k,v])=>`${shapeNm(k)} ${v}`).join(" · ")}</p>`:`<p class="small">이번 주 신호어로, 내가 미처 모르는 순간을 한 번 더 살펴보세요.</p>`}
-      <p class="small">이것은 점수가 아니라 내 말의 지도입니다. 내일 점검에서 더 자세히 봅니다.</p></div>
-      ${si.hideN?fChips(n,"sit_why","속이는 쪽을 고를 때, 마음속에서 가장 먼저 드는 생각은",["들키면 곤란하다","실망시키고 싶지 않다","갈등이 싫다","약해 보이기 싫다","좋아 보이고 싶다","이기고 싶다","굳이 말할 필요 없다","잘 모르겠다"],{multi:true,hint:"앞의 넷은 지키려는 얼굴, 뒤의 둘은 높이려는 얼굴에 가깝습니다."}):""}`:`<p class="small">${si.answered} / ${W2_SIT.length}</p>`}
+    ${all?`${w2SitBrief()}
+      ${si.hideN?fChips(n,"sit_why","속이는 쪽을 고를 때, 마음속에서 가장 먼저 드는 생각은",["들키면 곤란하다","실망시키고 싶지 않다","갈등이 싫다","약해 보이기 싫다","좋아 보이고 싶다","이기고 싶다","굳이 말할 필요 없다","잘 모르겠다"],{multi:true,hint:"앞의 넷은 지키려는 얼굴, 뒤의 둘은 높이려는 얼굴에 가깝습니다."}):""}`:pendHTML(si.answered,W2_SIT.length)}
     ${doneBar(n,2)}</section>
   <section class="layer" id="L3">${layerHead(n,3,"함께 걸을 사람, 그리고 신호어","")}
     <h3 class="h3">이번 주 대화 파트너</h3>
@@ -1782,7 +1777,7 @@ function vW2Day1(){
     ${F(n,"partner_keep",null)==="new"||!p1?fText(n,"partner","파트너 이름"):""}
     ${fText(n,"signal","우리의 멈춤 신호어 — 대화 중 한 사람이 이 말을 하면 곧바로 멈춥니다",{ph:F1(1,"signal","")||"예: 잠깐만"})}
     <h3 class="h3">신호어, 그리고 옮기기 전의 멈춤</h3>
-    <p>지난주에 말한 사투리처럼, 날마다 쓰는 말투는 내 귀에 잘 들리지 않습니다. 그래서 이번 주 첫걸음은 <b>멈추기</b>입니다. “괜찮아요”, “별일 아니에요”, “항상”, “네, 다 봤습니다”, “기도할게요” 같은 말이 입에서 나오려 할 때, 그리고 무언가를 단톡방이나 SNS에 옮기려 할 때, 한 번 멈추고 두 질문을 던집니다.</p>
+    <p>지난주에 말한 사투리처럼, 날마다 쓰는 말투는 내 귀에 잘 들리지 않습니다. 그래서 이번 주 첫걸음은 <b>멈추기</b>입니다. “괜찮아요”, “별일 아니에요”, “항상”, “네, 다 봤습니다”, “기도할게요” 같은 말이 입에서 나오려 할 때, 그리고 SNS에 무언가를 올리거나 들은 말을 다른 사람에게 옮기려 할 때, 한 번 멈추고 두 질문을 던집니다.</p>
     ${sigRow()}
     <p class="small">이 한 줄은 이번 주 내내 첫 화면에도 있습니다. 토요일에 엿새의 기록을 함께 봅니다.</p>
     ${doneBar(n,3)}</section>`+
@@ -1817,11 +1812,7 @@ function vW2Day2(){
     }
     const vid=(sc.mAns===W2_MD.length&&m[topM]>=1.5)?W2_MINDS[topM].v:"ijn1_7";
     body=`${bar}${left?`<p class="small">아직 답하지 않은 문장이 ${left}개 있습니다. 앞으로 돌아가 마저 답하면 결과가 더 정확해집니다.</p>`:""}
-    <div class="panel soft"><p class="ph">나의 말 — 한눈에</p>
-      <p><b>내가 가장 자주 쓰는 속이는 말</b><br>${sc.top.length?sc.top.map(k=>`${W2_SHAPES[k].nm} — ${W2_SHAPES[k].d}`).join("<br>"):"뚜렷하게 자주 쓰는 모양은 없습니다."}</p>
-      ${sc.top.some(k=>W2_SHAPES[k].sig.length)?`<p><b>이번 주 특히 눈여겨볼 신호어</b><br>${[...new Set(sc.top.flatMap(k=>W2_SHAPES[k].sig))].map(s=>"“"+s+"”").join(" · ")}</p>`:""}
-      ${pattern?`<p><b>그 밑의 마음</b><br>${pattern}</p>`:""}
-    </div>
+    ${w2Brief()}
     <h3 class="h3">속이는 말의 네 모양</h3>
     <div class="bars">${sc.shapes.map(x=>`<div class="bar ${sc.top.includes(x.id)?"top":""}"><span class="nm">${W2_SHAPES[x.id].nm}</span><span class="tr"><span class="tk out"><i style="width:${x.v/2*100}%"></i></span></span></div>`).join("")}</div>
     <h3 class="h3">속이는 말 밑의 마음 — 두 얼굴, 그리고 그 무게</h3>
@@ -1968,16 +1959,16 @@ function vW2Day3(){
     <h3 class="h3">지혜로운 침묵인가, 속이는 쪽인가</h3>
     <p>모든 침묵이 속임은 아닙니다. “잠잠할 때가 있고, 말할 때가 있다”(전 3:7). 침묵할 자유는 있지만, 속일 자유는 없습니다. 화요일에 해부한 장면을 네 질문으로 가려 봅니다.</p>
     ${W2_DISCERN.map(q=>`<div class="phrase"><div class="t">${q.q}</div>${fSeg(n,"d_"+q.id,q.o)}</div>`).join("")}
-    ${dDone?`<div class="panel soft"><p class="ph">이 장면은</p><p>${hideN>=2?`<b>속이는 쪽</b>에 가깝습니다. 나를 지키거나 높이려는 말이었고, 상대나 다른 사람에게 필요한 진실이 가려졌습니다. 내일, 이 장면을 들고 빛 가운데로 갑니다.`:`<b>지혜로운 침묵</b>에 가깝습니다. 모든 것을 모든 사람에게 말할 필요는 없습니다. 다만 말한다면, 참되게.`}</p></div>
+    ${dDone?`<div class="panel soft"><p class="ph">이 장면은</p><p>${hideN?`네 질문 가운데 ${hideN}곳에서 — ${W2_DISCERN.filter((q,i)=>dAns[i]===1).map(q=>`‘${q.o[1]}’`).join(", ")} — 를 고르셨습니다. `:"네 질문 모두에서 지혜로운 침묵 쪽을 고르셨습니다. "}${hideN>=2?`<b>속이는 쪽</b>에 가깝습니다. 나를 지키거나 높이려는 말이었고, 상대나 다른 사람에게 필요한 진실이 가려졌습니다. 내일, 이 장면을 들고 빛 가운데로 갑니다.`:`<b>지혜로운 침묵</b>에 가깝습니다. 모든 것을 모든 사람에게 말할 필요는 없습니다. 다만 말한다면, 참되게.`}</p></div>
       <div class="quote">뱀처럼 지혜롭고 비둘기처럼 순결하거라.<span class="ref">마태복음 10:16 · NJHV</span></div>
-      <p class="small">순결하다는 것은 속이지 않는 것이고, 지혜롭다는 것은 누구에게, 언제, 어떻게 말할지 분별하는 것입니다. 누군가에게 해를 입은 일이라면 이 질문의 대상이 아닙니다. 그 일은 안전한 사람에게 먼저 이야기해 주세요.</p>`:""}
+      <p class="small">순결하다는 것은 속이지 않는 것이고, 지혜롭다는 것은 누구에게, 언제, 어떻게 말할지 분별하는 것입니다. 누군가에게 해를 입은 일이라면 이 질문의 대상이 아닙니다. 그 일은 안전한 사람에게 먼저 이야기해 주세요.</p>`:pendHTML(dAns.filter(v=>v!==null).length,W2_DISCERN.length)}
     ${doneBar(n,3)}</section>`+
   w2Close(n));
 }
 
 /* ---------- 2주 5일째 — 참된 말을 연습하는 길 ---------- */
 const W2_STUDY=[
-  {id:"st1", t:"단톡방이나 SNS에 무언가를 옮기기 전에, 원래의 자료를 찾아본다."},
+  {id:"st1", t:"SNS에 무언가를 올리거나 들은 말을 옮기기 전에, 원래의 자료나 당사자의 말을 확인한다."},
   {id:"st2", t:"내 생각과 다른 쪽의 설명도 끝까지 들어 본다."},
   {id:"st3", t:"내 편에 불리한 사실도 사실로 받아들인다."},
   {id:"st4", t:"잘 모르는 일에는 쉽게 말하지 않고, 진실이 보일 때까지 판단을 미룬다."}
@@ -1997,12 +1988,12 @@ function vW2Day5(){
     <h3 class="h3">1. 참된 말에서 나는 어느 쪽으로</h3><p class="small">지난 몇 주를 떠올리며, 떠오르는 대로 누르세요.</p>
     ${W2_SIDE.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sd_"+p.id,["거의 안 한다","가끔","자주"])}</div>`).join("")}
     ${sd.answered===W2_SIDE.length?`<div class="bars" style="margin-top:14px">${["hide","knife","silent"].map(k=>`<div class="bar ${k===sd.top?"top":""}"><span class="nm">${W2_SIDES[k].nm}</span><span class="tr"><span class="tk ${k==="hide"?"in":"out"}"><i style="width:${m[k]==null?0:m[k]/2*100}%"></i></span><span class="small">${lv(m[k])} · ${W2_SIDES[k].d}</span></span></div>`).join("")}</div>
-      <div class="panel soft"><p class="ph">내가 자주 벗어나는 쪽</p><p>${msg}</p>${m.hide==null?`<p class="small">속이는 쪽은 2일째 점검을 하면 함께 나옵니다.</p>`:""}</div>`:`<p class="small">${sd.answered} / ${W2_SIDE.length}</p>`}
+      <p class="small" style="color:var(--teal)">아래 ‘말하기 전에 보기’까지 마치면, 두 진단을 엮은 금요일 브리핑이 나옵니다.${m.hide==null?" 속이는 쪽은 2일째 점검을 하면 함께 나옵니다.":""}</p>`:pendHTML(sd.answered,W2_SIDE.length)}
     <div class="panel soft"><p class="ph">말하기 전 두 질문</p><p>이 말은 <b>실제와 같은 그림</b>인가? 이 말은 <b>누구를 위한 말</b>인가 — 무엇을 지키거나 높이려는 말인가?</p><p class="small">참된 말은, 실제와 같은 그림을, 사랑 안에서, 서로를 살리려고 하는 말입니다. “함부로 내뱉는 말은 칼로 찌르는 것 같지만, 지혜로운 사람의 혀는 사람을 낫게 한다”(잠 12:18). 칼 같은 진실은 사람을 숨게 만들지만, 은혜와 함께 오는 진실은 사마리아 여인처럼 사람을 일으켜 세웁니다(요 4:29).</p></div>
     <h3 class="h3">2. 말하기 전에 보기</h3>
     <p>실제와 같은 그림을 그리려면, 먼저 실제를 보아야 합니다. 참된 말을 연습하는 첫걸음은 말하기 전에 보는 것, 곧 공부입니다. 나는 어떤가요?</p>
     ${W2_STUDY.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sy_"+p.id,["거의 안 한다","가끔","대개 그렇다"])}</div>`).join("")}
-    ${stDone?`<div class="panel soft"><p class="ph">말하기 전에 보는 습관</p><p>${stAvg<1?"아직 약합니다. 이번 주, 무언가를 옮기려 할 때 첫 화면의 [옮기려다 멈춤]을 누르고, 원래 자료와 다른 쪽 설명을 한 번 찾아보세요. 확인할 수 없는 것이라면 옮기지 않는 것도 참된 말입니다.":stAvg<1.6?"자리 잡아 가는 중입니다. 특히 ‘가끔’이라고 답한 문장 하나를 이번 주의 연습으로 삼아 보세요.":"잘 자리 잡혀 있습니다. 이 습관이 공동체 안에서 다른 사람에게도 안전한 자리가 되게 해 보세요."}</p><p class="small">이런 공부를 가능하게 하는 것도 복음입니다. 내 안전이 내 편의 승리에 있지 않은 사람만이, 내 편에 불리한 사실 앞에서도 정직할 수 있습니다.</p></div>`:""}
+    ${stDone?(sd.answered===W2_SIDE.length?w2SideBrief():`<p class="small" style="color:var(--teal)">위의 아홉 문장을 마저 고르면 금요일 브리핑이 나옵니다.</p>`)+`<p class="small">이런 공부를 가능하게 하는 것도 복음입니다. 내 안전이 내 편의 승리에 있지 않은 사람만이, 내 편에 불리한 사실 앞에서도 정직할 수 있습니다.</p>`:pendHTML(stA.filter(v=>v!==null).length,W2_STUDY.length)}
     <div class="quote">너는 헛소문을 퍼뜨리지 마라. 악한 사람과 손잡고 거짓 증인이 되지 마라. 다수를 따라 악을 행하지 말고, 송사에서 다수를 따라 증언하여 정의를 굽게 하지 마라.<span class="ref">출애굽기 23:1–2 · NJHV</span></div>
     <div class="quote">먼저 자기 사정을 말하는 사람이 옳아 보이지만, 상대가 와서 따져 물으면 드러난다.<span class="ref">잠언 18:17 · NJHV</span></div>
     <p class="small">바울의 말을 듣고도 그것이 정말 그러한지 날마다 성경을 찾아본 베뢰아 사람들처럼(행 17:11).</p>
@@ -2065,7 +2056,7 @@ function vWeek2(){
   <p>그 뿌리에는 하나님에 대한 거짓 그림이 있습니다. ‘하나님은 좋은 것을 감추시는 분’이라는 그림을 믿으면, 남는 길은 내가 나를 지키고 높이는 것뿐입니다. 그래서 속이는 말에는 두 얼굴이 있습니다. 잃을까 봐 지키려는 얼굴과, 더 가지려고 높이려는 얼굴입니다.</p>
   <p>그런데 다 드러나도 버림받지 않는 자리가 있습니다. 에서인 척하던 사람이 “야곱입니다”라고 고백한 자리에서, 하나님은 그에게 복을 빌어 주셨습니다. 빛 가운데서 기다리는 것은 형벌이 아니라, 우리를 계속 씻는 예수의 피입니다(요일 1:7).</p>
   <h2 class="h2">이번 주 세 걸음 — 멈추고, 시인하고, 고쳐 말하기</h2>
-  <ol style="padding-left:1.2em"><li><b>멈추기</b> — “괜찮아요” · “별일 아니에요” · “항상” · “네, 다 봤습니다” · “기도할게요”가 나오려 할 때, 그리고 무언가를 단톡방이나 SNS에 옮기려 할 때. 첫 화면에서 누르고, 두 질문을 던집니다</li><li><b>시인하기</b> — 고요의 마지막 2분, 오늘 속인 말 하나를 하나님께 그대로. “주님, 오늘 속이지 않을 담대함을 주십시오.”</li><li><b>고쳐 말하기</b> — 하루 안에 “아까 그 말은 사실과 달랐어요.” 그리고 용기의 한 문장</li></ol>
+  <ol style="padding-left:1.2em"><li><b>멈추기</b> — “괜찮아요” · “별일 아니에요” · “항상” · “네, 다 봤습니다” · “기도할게요”가 나오려 할 때, 그리고 SNS에 무언가를 올리거나 들은 말을 옮기려 할 때. 첫 화면에서 누르고, 두 질문을 던집니다</li><li><b>시인하기</b> — 고요의 마지막 2분, 오늘 속인 말 하나를 하나님께 그대로. “주님, 오늘 속이지 않을 담대함을 주십시오.”</li><li><b>고쳐 말하기</b> — 하루 안에 “아까 그 말은 사실과 달랐어요.” 그리고 용기의 한 문장</li></ol>
   <p class="small">그리고 누군가 자기를 드러낼 때, 우리의 첫 문장은 “말해 줘서 고마워요.”</p>
   ${methodPanel(2)}
   <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 야곱의 두 밤</span></summary>${scriptureHTML("gen27")}${scriptureHTML("gen32")}</details>
@@ -2139,6 +2130,7 @@ function vW2Day6(){
     <h3 class="h3">떠올려 말하기</h3>
     ${vid?(rev?verseHTML(vid,{name:S.name}):`<div class="panel soft"><p>목요일에 고른 말씀이 가려져 있습니다. 보지 않고 먼저 소리 내어 말해 보세요. 한 단어만 떠올라도 괜찮습니다.</p><button type="button" class="btn primary" data-act="reveal">말해 봤어요 — 보여 주세요</button></div>`):`<p class="empty">목요일에 고른 말씀이 여기에 나타납니다.</p>`}
     <p class="small">다시 읽는 것보다 먼저 떠올려 보는 것이 더 오래 남습니다.</p>
+    <details class="voice"><summary><span class="nm">이번 주 진단 브리핑 다시 보기</span></summary>${[w2SitBrief(),w2Brief(),w2SideBrief()].filter(Boolean).join("")||`<p class="empty">월 · 화 · 금요일의 진단을 하면 나타납니다.</p>`}</details>
     <h3 class="h3">이번 주의 세 걸음</h3>
     ${tsWeekHTML(2)}
     ${fText(n,"discover","이번 주, 내가 속이는 까닭에 대해 새로 알게 된 것 하나")}
@@ -2179,7 +2171,8 @@ function w2MapHTML(){
   ${sn.belief?`<p>속이는 말 밑의 믿음 — “${esc(sn.belief)}” <span class="small">${[sn.pct,F(4,"belief4",null,2),F(6,"belief6",null,2)].map(v=>v==null?"–":v).join(" → ")}</span></p>`:""}
   <p class="small">이번 주 신호어 — ${SIGS.map(s=>`“${s.t}” ${tot[s.id]}`).join(" · ")}</p>
   ${coats.length&&nm?`<p>이름 고백 — <span class="serif">저는 ${coats.map(esc).join(", ")}이 아닙니다. 저는 ${esc(nm)}입니다.</span></p>`:""}
-  ${vid?`<p>빛 가운데의 말씀</p>${verseHTML(vid,{name:S.name})}`:""}`;
+  ${vid?`<p>빛 가운데의 말씀</p>${verseHTML(vid,{name:S.name})}`:""}
+  ${w2Brief()?`<details class="voice"><summary><span class="nm">2주 진단 브리핑</span></summary>${w2Brief()}</details>`:""}`;
 }
 
 /* ====================== 홈 화면 설치 — 배포판(매니페스트가 있는 곳)에서만 켜짐 ====================== */
@@ -2261,6 +2254,137 @@ function tsWeekHTML(w){
     return `<tr><td>${d}일째</td><td>${esc(said)}</td><td>${VERSES[I.verse]?VERSES[I.verse].ref:""}${F(d,"ts_heard",null,w)?" · 들려줌":""}</td><td>${esc(nw||"")}${["말했어요","고쳐 말했어요"].includes(F(d,"ts_done",null,w))?" · 말함":""}</td></tr>`; }).join("");
   return rows?`<div class="tablewrap"><table class="simple"><tr><th>날</th><th>${w===2?"① 멈춘 말":"① 알아챈 말"}</th><th>${w===2?"② 시인과 말씀":"② 들려준 말씀"}</th><th>${w===2?"③ 고쳐 말한 말":"③ 새 말"}</th></tr>${rows}</table></div>`:`<p class="empty">날마다 마무리의 ‘오늘의 세 걸음’이 여기에 모입니다.</p>`;
 }
+/* ====================== 진단 브리핑 — 답의 조합을 정해진 원칙으로 읽어 문장으로 (기기 안에서만) ====================== */
+function nmOf(){ return S.name?`${esc(S.name)} 님`:"나"; }
+function lvW(v,hi=2.5,lo=1.5){ return v==null?"–":v>=hi?"높음":v>=lo?"중간":"낮음"; }
+function joinKo(arr){ return arr.length<=1?arr.join(""):arr.slice(0,-1).join(", ")+"과 "+arr[arr.length-1]; }
+function stripEnd(t){ return String(t).replace(/[.。]\s*$/,""); }
+function qt(t){ return `“${stripEnd(t)}”`; }   /* 말·말씀 인용 — 끝 마침표 없이 */
+function qb(t){ return `「${stripEnd(t)}」`; }   /* 내가 고른 문장 인용 — 따옴표가 겹치지 않게 */
+const DEG=["전혀","조금","보통","꽤","매우"];
+function briefBox(title, secs){ return `<div class="panel soft brief"><p class="ph">${title}</p>${secs.filter(s=>s&&s.p).map(s=>`<p>${s.h?`<b>${s.h}</b> · `:""}${s.p}</p>`).join("")}<p class="small">이 브리핑은 답의 조합을 정해진 원칙으로 읽은 것입니다. 상담가의 판단이 아니라, 나를 알아보기 위한 거울로 쓰세요.</p></div>`; }
+
+/* 1주 2일째 — 말과 마음 점검 */
+function w1Brief(){
+  const sc=voiceScores(); const ss=selfScores(); if(sc.answered<14) return "";
+  const m=ss.m; const allS=ss.answered===SELF3.length; const top=sc.top.map(id=>TYPE[id]);
+  const dirTxt={out:"주로 가까운 사람을 향한 말로 나옵니다",in:"주로 나 자신을 향한 말로 나옵니다",both:"나에게도 남에게도 같은 말투로 나옵니다. 같은 샘에서 두 방향으로 흐르고 있습니다",low:""}[sc.shape];
+  let s1 = top.length? `${nmOf()}의 말에서 가장 자주 움직이는 마음은 ${joinKo(top.map(t=>`‘${t.nm}’`))}입니다. ${dirTxt?` ${top.length>1?"이 마음들은":"이 마음은"} ${dirTxt}.`:""}` : `이번 점검에서는 자주 움직이는 마음이 뚜렷하게 드러나지 않았습니다.`;
+  if(allS){ if(m.attack>=2.5) s1+=" 그리고 실수 앞에서 나를 미워하는 마음이 큽니다. 이것은 특히 아픈 마음이라, 아래의 안내를 꼭 읽어 주세요."; else if(m.crit>=2.5&&m.reassure<1.5) s1+=" 실수 앞에서는 나를 다그치는 말이 크고, 다독이는 말은 작습니다."; else if(m.crit>=2.5) s1+=" 실수 앞에서 나를 다그치는 말이 크지만, 다독이는 말도 함께 있습니다."; else if(m.reassure>=2.5) s1+=" 실수 앞에서 나를 다독이는 힘이 있습니다."; }
+  let s2="";
+  if(top.length){
+    s2=top.map(t=>{
+      const outs=PHRASES.filter(p=>p.type===t.id&&p.dir==="out"&&F1(2,"ph_"+p.id,0)===2).map(p=>qt(p.t));
+      const ins=PHRASES.filter(p=>p.type===t.id&&p.dir==="in"&&F1(2,"ph_"+p.id,0)===2).map(p=>qt(p.t));
+      const a=sc.list.find(x=>x.id===t.id); const mirror=a&&a.out>=1&&a.in>=1;
+      const said=[outs.length?`가까운 사람에게 ${outs.join(", ")}`:"", ins.length?`실수한 날 내 안에서 ${ins.join(", ")}`:""].filter(Boolean).join(", ");
+      return `‘${t.nm}’ — ${said?`${said}를 ‘자주’로 고르셨습니다. `:""}이 마음은 처음에 나를 지키려고 생겼을 수 있습니다. ${t.guard}.${mirror?` 그리고 나에게 ${qt(t.self)} 하던 마음이, 남에게는 ${qt(t.other)}가 됩니다.`:""}`;
+    }).join(" ");
+    const strong=sc.list.filter(x=>x.out<=0.25&&x.in<=0.25).map(x=>`‘${TYPE[x.id].nm}’`);
+    if(strong.length) s2+=` 반대로 ${joinKo(strong.slice(0,2))}은 거의 들리지 않습니다. 이미 지키고 있는 자리입니다.`;
+  }
+  let s3="";
+  if(allS){
+    s3=["crit","attack","reassure"].map(k=>`${FACTORS[k].nm} ${m[k].toFixed(1)}(${lvW(m[k])})`).join(", ")+".";
+    const hard=SELF3.filter(x=>x.f!=="reassure"&&(F1(2,"s3_"+x.id,0)||0)>=3).sort((a,b)=>F1(2,"s3_"+b.id,0)-F1(2,"s3_"+a.id,0))[0];
+    if(hard) s3+=` 특히 ${qb(hard.t)}에 ‘${DEG[F1(2,"s3_"+hard.id,0)]}’라고 답하셨습니다.`;
+    if(m.crit>=2.5&&m.reassure<1.5) s3+=" 넘어진 뒤 다시 일어서게 하는 말이 부족한 상태입니다. 이번 주 ‘새 말’ 연습이 특히 필요한 자리입니다.";
+    else if(m.crit>=2.5) s3+=" 다그치는 말과 함께, 다시 일어서게 하는 말도 있습니다. 그 다독이는 말이 이번 주에 하나님의 말씀과 이어지면 됩니다.";
+    else if(m.crit<1.5&&m.attack<1.5) s3+=" 실수 앞에서 나를 비교적 너그럽게 대하고 있습니다. 그 너그러움이 받은 은혜에서 흘러나오게 해 보세요.";
+  }
+  const s4 = top.length&&allS&&m.crit>=1.5 ? `‘${top[0].nm}’이 실수 앞에서 다그침으로 이어질 때, 속에서 ${qt(top[0].self)}가 들립니다. 그리고 그 목소리는 이렇게 약속합니다. ${qt(top[0].promise)}. 수요일에는 이 목소리가 어디서 왔는지 봅니다.` : "";
+  const tips=[];
+  if(top.length){ const v=VERSES[top[0].answer]; if(v) tips.push(`목요일에는 ‘${top[0].nm}’에게 주시는 대답, ${qt(v.key)}(${v.ref})로 새 길을 냅니다.`); if(NEWW[top[0].id]) tips.push(`남에게 ${qt(top[0].other)}가 나오려 할 때는 ${qt(NEWW[top[0].id][0])} 하고 말해 보세요.`); }
+  if(sc.shape==="out") tips.push("가까운 사람에게 한 말을 [말과 목소리]에 적어 보세요. 그 밑의 목소리가 보입니다.");
+  if(sc.shape==="in") tips.push("실수한 날 내 안에서 가장 먼저 들린 문장을 [말과 목소리]에 적어 보세요.");
+  if(sc.shape==="both") tips.push("나에게 하는 말과 남에게 하는 말이 같은 샘에서 나옵니다. 하나를 고치면 다른 하나도 함께 바뀝니다.");
+  return briefBox(`진단 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내 말에서 보이는 것",p:s2},{h:"실수 앞에서 나를 대하는 방식",p:s3},{h:"말과 마음의 연결",p:s4},{h:"이번 주에",p:tips.join(" ")}]);
+}
+
+/* 2주 2일째 — 속이는 말 점검 */
+const SHAPE_MECH={exag:"실제보다 크게, 혹은 작게 그려 내 몫을 흐립니다. 상대를 크게 그리면 그 그림 뒤에서 내 몫이 가려집니다.",excuse:"내 몫을 다른 이유 뒤에 둡니다. 상대 머릿속에는 ‘내 책임이 아닌 일’이라는 그림이 남습니다.",select:"사실만 골라 다른 그림을 그립니다. 틀린 말은 하나도 없지만, 그림은 거짓입니다.",holy:"하나님의 이름을 붙여 아무도 더 묻지 못하게 합니다. 그래서 가장 두꺼운 가림막이 됩니다."};
+const SHAPE_LINK={exag:{keep:"부풀리거나 줄이는 말이 지키려는 마음과 만나면, “괜찮아요”, “별일 아니에요”처럼 내 상태를 작게 그려 걱정이나 실망을 피하는 말이 됩니다.",raise:"부풀리거나 줄이는 말이 높이려는 마음과 만나면, “네, 다 봤습니다”처럼 내 몫을 크게 그려 좋아 보이려는 말이 됩니다."},excuse:{keep:"둘러대는 말은 대개 꾸중이나 실망한 얼굴을 피하려는 말입니다. 수학 90점만 말한 아이처럼, 무서운 것은 사실이 아니라 그 뒤에 올 얼굴입니다.",raise:"둘러대는 말이 높이려는 마음과 만나면, “내 잘못이 40, 저 사람이 60”처럼 이기려는 계산이 됩니다."},select:{keep:"반쪽만 말하는 말은 나머지 반쪽이 드러날까 두려운 마음에서 나옵니다.",raise:"반쪽만 말하는 말이 높이려는 마음과 만나면, 좋은 것만 골라 실제보다 나은 나, 내 편이 이기는 그림을 그립니다."},holy:{keep:"하나님 이름 뒤에 숨는 말은, 사람에게 내 마음을 그대로 말하기 두려울 때 하나님의 이름을 방패로 씁니다.",raise:"하나님 이름 뒤에 숨는 말이 높이려는 마음과 만나면, 실제보다 믿음 있어 보이는 말이 됩니다."}};
+function w2Brief(){
+  const sc=w2Scores(); if(sc.answered<8) return "";
+  const m=sc.m; const allM=sc.mAns===W2_MD.length; const top=sc.top; const shp=sc.shapes.reduce((o,x)=>(o[x.id]=x.v,o),{});
+  const minds=Object.keys(W2_MINDS).filter(k=>m[k]!=null).sort((a,b)=>m[b]-m[a]); const topM=minds[0];
+  const face = !allM?null : (m.look>=2.5&&m.fear>=2.5)?"both" : (m.fear>=m.look ? (m.fear>=1.5?"keep":null) : (m.look>=1.5?"raise":null));
+  let s1 = top.length? `${nmOf()}의 말은 주로 ${joinKo(top.map(k=>`‘${W2_SHAPES[k].nm}’`))}로, ${face==="raise"?"나를 높이는 쪽에":face==="both"?"나를 지키기도 하고 높이기도 하는 쪽에":"나를 지키는 쪽에"} 기울어 있습니다.` : "이번 점검에서는 자주 쓰는 속이는 말이 뚜렷하게 드러나지 않았습니다.";
+  if(allM&&topM&&m[topM]>=1.5) s1+=` 그 밑에서 가장 크게 움직이는 것은 ${({fear:"드러나면 사랑을 잃을 것 같은 두려움",look:"잘 보이려는 마음",alone:"말하지 못한 것을 혼자 지고 있는 무게"})[topM]}입니다.`+(topM!=="alone"&&m.alone>=2.5?" 말하지 못한 것을 혼자 지고 있는 무게도 큽니다.":"");
+  else if(allM&&!top.length) s1+=" 그 밑의 마음도 크게 움직이지 않는 편입니다. 이번 주 신호어로, 내가 미처 모르는 순간을 한 번 더 살펴보세요.";
+  let s2="";
+  if(top.length){
+    const q=W2_PH.filter(p=>top.includes(p.s)&&F(2,"w2p_"+p.id,null,2)===2).slice(0,2).map(p=>qb(p.t));
+    s2=(q.length?`‘자주’라고 고르신 것은 ${q.join(", 그리고 ")}입니다. `:"")+top.map(k=>`‘${W2_SHAPES[k].nm}’은 ${SHAPE_MECH[k]}`).join(" ");
+    const strong=Object.keys(W2_SHAPES).filter(k=>shp[k]<=0.25);
+    if(strong.length) s2+=` 반대로 ${joinKo(strong.map(k=>`‘${W2_SHAPES[k].nm}’`))}은 거의 없다고 답하셨습니다. 이미 지키고 있는 자리입니다.`;
+  }
+  let s3="";
+  if(allM){
+    s3=minds.map(k=>`${W2_MINDS[k].nm} ${m[k].toFixed(1)}(${lvW(m[k])})`).join(", ")+".";
+    const hard=W2_MD.filter(p=>(F(2,"w2m_"+p.id,0,2)||0)>=3).sort((a,b)=>F(2,"w2m_"+b.id,0,2)-F(2,"w2m_"+a.id,0,2))[0];
+    if(hard) s3+=` 특히 ${qb(hard.t)}에 ‘${DEG[F(2,"w2m_"+hard.id,0,2)]}’라고 답하셨습니다.`;
+    const H=k=>m[k]>=2.5, Lo=k=>m[k]<1.5;
+    if(H("fear")&&H("alone")) s3+=" 지키려고 숨긴 것이 혼자의 짐이 되어 있습니다. 설교가 말한 ‘쉼을 빼앗는 속임’이 가장 크게 일어나는 조합입니다.";
+    else if(H("look")&&H("fear")) s3+=" 좋아 보이려는 마음과 잃을까 두려운 마음이 함께 큽니다. 야곱처럼, 복을 움켜쥐려는 손과 저주를 두려워하는 떨림이 한 사람 안에 함께 있습니다.";
+    else if(H("look")&&Lo("fear")) s3+=" 드러나는 것 자체를 크게 두려워하기보다, 더 좋아 보이려는 마음이 말을 움직입니다. 설교가 말한 높이려는 얼굴, ‘삶의 자랑’입니다(요일 2:16).";
+    else if(H("fear")&&Lo("alone")) s3+=" 드러날까 두렵지만, 혼자 짊어지고 있지는 않습니다. 털어놓을 자리가 있다는 것은 큰 자원입니다.";
+    else if(H("alone")) s3+=" 두려움보다 말하지 못한 것의 무게가 큽니다. “내가 입을 다물었을 때, 온종일 신음하느라 내 뼈가 삭아 갔습니다”(시 32:3)라는 고백과 닿아 있습니다.";
+    else if(minds.every(Lo)) s3+=" 속이는 말 밑의 마음은 크게 움직이지 않는 편입니다.";
+  }
+  const s4 = top.length&&face ? SHAPE_LINK[top[0]][face==="both"?"keep":face] : "";
+  const tips=[];
+  const sigs=[...new Set(top.flatMap(k=>W2_SHAPES[k].sig))]; if(sigs.length) tips.push(`신호어 가운데 ${sigs.map(s=>s==="옮기려다 멈춤"?"[옮기려다 멈춤]":`“${s}”`).join(", ")}를 특히 눈여겨보세요.`);
+  if(top.length) tips.push(`오늘 3단계에서는 ‘${W2_SHAPES[top[0]].nm}’ 장면 하나를 해부해 보세요.`);
+  if(allM&&topM&&m[topM]>=1.5){ const v=VERSES[W2_MINDS[topM].v]; if(v) tips.push(`목요일에는 ${qt(v.key)}(${v.ref})를 들고 빛 앞에 서 보세요.`); }
+  if(allM&&m.alone>=2.5) tips.push("금요일 파트너 15분은 꼭 해 보시기를 권합니다. 숨겨 온 것을 처음으로 한 사람 앞에 내려놓는 시간입니다.");
+  if(allM&&m.look>=2.5) tips.push("금요일의 ‘용기의 한 문장’ 가운데 “그거 제 실수예요”나 “잘 모르겠습니다”를 골라 보세요. 좋아 보이려는 마음을 내려놓는 말입니다.");
+  if(top.includes("holy")) tips.push("기도할 때도 괜찮은 척 대신, 고요의 마지막 2분에 진짜 하나를 말씀드려 보세요.");
+  return briefBox(`진단 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내 말에서 보이는 것",p:s2},{h:"그 밑의 마음",p:s3},{h:"말과 마음의 연결",p:s4},{h:"이번 주에",p:tips.join(" ")}]);
+}
+
+/* 2주 1일째 — 여덟 상황 */
+function w2SitBrief(){
+  const si=w2Sit(); if(si.answered<W2_SIT.length) return "";
+  const ans=W2_SIT.map(s=>({s,o:s.o.find(x=>x.v===F(1,"sit_"+s.id,null,2))}));
+  const hide=ans.filter(x=>x.o&&x.o.c!=="true"), truth=ans.filter(x=>x.o&&x.o.c==="true");
+  const qs=q=>q.replace(/, 나는 대개$/,"");
+  const s1 = si.hideN? `${W2_SIT.length}가지 상황 가운데 ${si.hideN}곳에서 속이는 쪽을 고르셨습니다.${si.top.length?` 가장 자주 나온 모양은 ${joinKo(si.top.map(k=>`‘${shapeNm(k)}’`))}입니다.`:""}` : `${W2_SIT.length}가지 상황 모두에서 있는 그대로 말하는 쪽을 고르셨습니다.`;
+  const s2 = hide.length? hide.slice(0,4).map(x=>`${qs(x.s.q)} ${qb(x.o.t)}`).join(", ")+(hide.length>4?` 외 ${hide.length-4}곳`:"")+".":"";
+  const s3 = truth.length&&hide.length? `반대로 ${truth.slice(0,2).map(x=>`‘${qs(x.s.q)}’`).join(", ")}에서는 있는 그대로 말한다고 답하셨습니다. 이미 참된 말이 자리 잡은 곳입니다.`:"";
+  const why=F(1,"sit_why",[],2)||[]; const keep=["들키면 곤란하다","실망시키고 싶지 않다","갈등이 싫다","약해 보이기 싫다"], raise=["좋아 보이고 싶다","이기고 싶다"];
+  let s4="";
+  if(why.length){ const k=why.filter(x=>keep.includes(x)).length, r=why.filter(x=>raise.includes(x)).length;
+    s4 = k&&r? "그때의 마음에는 지키려는 얼굴과 높이려는 얼굴이 함께 있습니다." : k? "그때의 마음은 주로 지키려는 얼굴입니다. 잃을까 봐, 들킬까 봐 실제와 다른 그림을 그립니다." : r? "그때의 마음은 주로 높이려는 얼굴입니다. 좋아 보이려고, 이기려고 그림을 고칩니다." : "";
+    if(why.includes("굳이 말할 필요 없다")) s4+=" ‘굳이 말할 필요 없다’는 지혜로운 침묵일 수도 있습니다. 수요일에 그 둘을 가려 봅니다."; }
+  else if(si.hideN) s4="아래에서 그때 마음속에 먼저 드는 생각을 고르시면, 이 브리핑에 그 마음이 더해집니다.";
+  return briefBox(`월요일 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"속이는 쪽을 고른 상황",p:s2},{h:"이미 자리 잡은 곳",p:s3},{h:"그때의 마음",p:s4},{h:"내일",p:"화요일 점검에서 이 모양들을 더 자세히 보고, 한 장면을 해부합니다."}]);
+}
+
+/* 2주 5일째 — 세 쪽과 말하기 전에 보기 */
+function w2SideBrief(){
+  const sd=w2Side(); if(sd.answered<W2_SIDE.length) return "";
+  const m=sd.m; const H=k=>m[k]!=null&&m[k]>=1.25, Lo=k=>m[k]!=null&&m[k]<0.75;
+  const stA=W2_STUDY.map(p=>F(5,"sy_"+p.id,null,2)); const st=stA.every(v=>v!==null)?stA.reduce((a,b)=>a+b,0)/stA.length:null;
+  const often=W2_SIDE.filter(p=>F(5,"sd_"+p.id,null,2)===2).map(p=>qb(p.t));
+  let s1;
+  if(Lo("hide")&&H("knife")) s1="속이는 쪽은 낮지만 찌르는 쪽이 높습니다. 거짓말은 잘 하지 않지만, 솔직함이 칼이 되는 쪽입니다. 서론의 제이콥스가 그랬습니다.";
+  else if(H("knife")&&H("silent")) s1="때로는 찌르고, 때로는 입을 닫습니다. 화가 날 때는 말하고 정작 말해야 할 때는 침묵하는, 말할 때와 잠잠할 때가 뒤바뀌어 있을 수 있습니다.";
+  else if(H("hide")&&H("silent")) s1="속이기도 하고 입을 닫기도 합니다. 두 길 모두 나를 지키는 길입니다.";
+  else if(H("silent")) s1="말해야 할 때 입을 닫는 쪽이 큽니다. 참된 말에서 지금 가장 필요한 것은 용기입니다.";
+  else if(H("knife")) s1="사실을 칼처럼 쓰는 쪽이 큽니다. 칼 같은 말도 결국 나를 지키고 높이는 말이라, 속이는 말과 뿌리가 같습니다.";
+  else if(H("hide")) s1="나를 지키거나 높이려고 속이는 쪽이 큽니다.";
+  else s1="세 쪽 모두 크지 않습니다. 참된 말의 자리가 꽤 단단합니다.";
+  if(st!=null&&H("silent")&&st>=1.6) s1+=" 그리고 말하기 전에 보는 습관은 잘 자리 잡혀 있습니다. 알면서도 말하지 못하는 자리, 지식보다 용기가 필요한 자리입니다.";
+  const s2 = often.length? `‘자주’라고 고르신 것은 ${often.slice(0,2).join(", 그리고 ")}입니다.`:"";
+  const s3 = st==null?"" : st<1? "말하기 전에 보는 습관은 아직 약합니다. 들은 말을 다른 사람에게 옮기거나 SNS에 무언가를 올리기 전에, 원래 자료와 다른 쪽 설명을 한 번 찾아보는 것부터 시작해 보세요. 확인할 수 없는 것이라면 옮기지 않는 것도 참된 말입니다." : st<1.6? "말하기 전에 보는 습관은 자리 잡아 가는 중입니다. ‘가끔’이라고 답한 문장 하나를 이번 주의 연습으로 삼아 보세요." : "말하기 전에 보는 습관이 잘 자리 잡혀 있습니다. 이 습관이 공동체 안에서 다른 사람에게도 안전한 자리가 되게 해 보세요.";
+  const tips=[]; if(H("knife")) tips.push("오늘은 ‘더 어려운 대화를 위해’에서 관찰과 느낌을 나누어 보세요. 사실과 판단이 갈라집니다.");
+  if(H("silent")) tips.push("오늘의 ‘용기의 한 문장’은 ‘세상을 위해’나 “도와줄 수 있어?”에서 골라 보세요.");
+  if(H("hide")) tips.push("오늘은 ‘고쳐 말하기’ 한 문장을 꼭 해 보세요.");
+  if(!tips.length) tips.push("이번 주에는 누군가 자기를 드러낼 때 “말해 줘서 고마워요”로 받아 주는, 안전한 사람이 되어 보세요.");
+  return briefBox(`금요일 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내가 고른 것",p:s2},{h:"말하기 전에 보기",p:s3},{h:"오늘",p:tips.join(" ")}]);
+}
+
 function methodPanel(w){
   return `<div class="panel soft"><p class="ph">말이 회복되는 세 걸음 — 1주 설교에서</p>
    <p>① <b>알아채기</b> — 옛 말을 벗으려면, 먼저 내가 무엇을 입고 있는지 알아야 합니다(골 3:8).${w===2?" 이번 주에는 <b>멈추기</b>로 — 신호어가 나오려 할 때, 옮기려 할 때.":""}<br>
