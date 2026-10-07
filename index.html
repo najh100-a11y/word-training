@@ -520,9 +520,9 @@ const TOOLS5 = [
 const DAYS = [
   null,
   {n:1, nm:"출발", title:"함께 걸을 사람", scr:"isa43", min:15},
-  {n:2, nm:"알아보기", title:"말과 마음 점검", scr:"isa43", min:20},
+  {n:2, nm:"알아보기", title:"말과 마음 점검", scr:"isa49", min:20},
   {n:3, nm:"알아보기", title:"그 목소리의 정체", scr:"mt3", min:15},
-  {n:4, nm:"채우기", title:"아버지의 대답", scr:"mt3", min:15},
+  {n:4, nm:"채우기", title:"아버지의 대답", scr:"lk15_20", min:15},
   {n:5, nm:"채우기", title:"다른 목소리로 듣기", scr:"ps139", min:30},
   {n:6, nm:"거두기", title:"한 주를 거두어들이기", scr:"isa50", min:35, ext:true}
 ];
@@ -658,7 +658,7 @@ const STAGES = {
 };
 let TM=null;
 function openCalm(dayN){
-  const d=(DAYS_W[CW]||DAYS)[dayN]; const stages=STAGES[d.ext?"ext":"daily"].map(s=> CW===2&&s.nm==="알아채기" ? {...s, ins:"최근에 멈추지 못했던 순간 하나 —\n실제와 다르게 말한 순간을 떠올려 보세요.\n판단하지 말고, 그대로 바라봅니다."} : CW===2&&s.nm==="응답" ? {...s, ins:"오늘 속인 말 하나를, 하나님께 그대로 말씀드리세요.\n말하기 편한 것 말고, 진짜 하나.\n그리고 한 줄 — “주님, 오늘 속이지 않을 담대함을 주십시오.”"} : s); const scr=SCR[d.scr];
+  const d=(DAYS_W[CW]||DAYS)[dayN]; const stages=STAGES[d.ext?"ext":"daily"].map(s=> CW===2&&s.nm==="알아채기" ? {...s, ins:"오늘 내 안에서 움직이는 두려움, 교만, 욕심이 있는지\n판단하지 말고 바라보세요."} : CW===2&&s.nm==="응답" ? {...s, ins:"이 말씀이 그려 주는 하나님의 그림 하나를 붙드세요.\n그리고 한 줄 —\n“주님, 오늘도 당신의 진실한 새 그림을 주십시오.”"} : s); const scr=SCR[d.scr];
   const total=stages.reduce((a,s)=>a+s.s,0);
   const ov=document.createElement("div"); ov.className="overlay calm"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-label","고요 "+Math.round(total/60)+"분");
   ov.innerHTML=`<canvas aria-hidden="true"></canvas><div class="cv">
@@ -1035,7 +1035,7 @@ function vSources(){
   ${B("루스 헤일리 바턴, Invitation to Solitude and Silence","24쪽 — 흔들린 강물 병")}
   ${B("헨리 나우웬, Life of the Beloved","62–63쪽 — 기도의 진짜 일은 잠잠해져서 나에 대해 좋은 것을 말하는 음성을 듣는 것")}
   ${B("피터·제리 스캐지로, Emotionally Healthy Relationships 워크북","131쪽 “예수님은 마음에 계셔도, 할아버지는 뼛속에 산다”, 135쪽 가족을 돌아보는 목적, 140–143쪽 가족 계명 활동 — 3일째의 ‘우리 집의 보이지 않는 규칙’은 이 활동을 한국 가정에 맞게 새로 쓴 것입니다")}
-  ${B("박재연, 『말이 통해야 일이 통한다』","94–95쪽 — “내가 지금 판단을 사실이라고 믿고 있구나”. [말과 목소리] 기록의 한 줄은 이 문장을 내면의 목소리에 옮긴 것입니다. 2주 — 92쪽(로젠버그의 관찰 · 감정 · 욕구 · 요청에 기반), 96쪽(관찰은 ‘카메라로 찍은 듯’, 들은 말은 ‘녹음기로 듣는 것’처럼), 125쪽(지킬 수 없는 부탁 대신 지금 할 수 있는 구체적인 부탁), 238쪽(끝까지 침묵으로 듣고 말해 주어 고맙다고 말하기)")}${B("Marshall B. Rosenberg, Nonviolent Communication: A Language of Life","27쪽 — 네 요소: 판단이나 평가를 섞지 않은 관찰, 느낌, 필요, 부탁. 2주 5일째 ‘말할 문장 만들기’의 뼈대")}
+  ${B("박재연, 『말이 통해야 일이 통한다』","94–95쪽 — “내가 지금 판단을 사실이라고 믿고 있구나”. [말과 목소리] 기록의 한 줄은 이 문장을 내면의 목소리에 옮긴 것입니다. 2주 — 92쪽(로젠버그의 관찰 · 감정 · 욕구 · 요청에 기반), 96쪽(관찰은 ‘카메라로 찍은 듯’, 들은 말은 ‘녹음기로 듣는 것’처럼), 125쪽(지킬 수 없는 부탁 대신 지금 할 수 있는 구체적인 부탁), 238쪽(끝까지 침묵으로 듣고 말해 주어 고맙다고 말하기)")}${B("Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered: A psychometric analysis, Cognitive Therapy and Research 27(3), 247–259","1주 5일째 — 반추 척도의 두 요인, 되새김(brooding)과 성찰(reflection). 시간이 지나 더 큰 우울과 이어진 것은 되새김")}${B("김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19","대학생 360명. 자책 · 숙고 · 우울반추의 3요인, 숙고는 우울과 유의한 상관이 없었음. 5일째 문항은 이 구분을 바탕으로 새로 씀")}${B("Baumeister, Bratslavsky, Finkenauer, Vohs (2001), Bad is stronger than good, Review of General Psychology 5(4), 323–370","1주 1일째 — 나쁜 감정 · 부모 · 피드백이 같은 크기의 좋은 것보다 큰 영향을 미친다는 광범위한 문헌 검토")}${B("Kross 외 (2014), Self-talk as a regulatory mechanism: How you do it matters, Journal of Personality and Social Psychology 106(2), 304–324","1주 4일째 — 자기를 돌아볼 때 ‘나’ 대신 이름이나 ‘너’로 부르면 거리를 두고 보게 되고, 스트레스 상황에서 더 잘 해내며 다가올 일을 도전으로 받아들임(7개 연구, 585명)")}${B("Gable, Reis, Impett, Asher (2004), What do you do when things go right?, Journal of Personality and Social Psychology 87(2), 228–245","1주 5일째 — 좋은 일을 나누면 기쁨과 안녕감이 커지고, 듣는 사람이 적극적 · 건설적으로 반응할 때 더 커짐. 그런 배우자와의 관계는 친밀감과 만족이 높음")}${B("DePaulo, Kashy, Kirkendol, Wyer, Epstein (1996), Lying in everyday life, Journal of Personality and Social Psychology 70(5), 979–995","2주 1일째 — 일주일 거짓말 일기. 대학생 77명 하루 평균 두 번(만남 세 번에 한 번), 지역 주민 70명 하루 한 번꼴(다섯 번에 한 번)")}${B("Garrett, Lazzaro, Ariely, Sharot (2016), The brain adapts to dishonesty, Nature Neuroscience 19(12), 1727–1732","2주 2일째 — 자기에게 이득이 되는 거짓말은 되풀이할수록 커지고, 편도체 반응은 줄어듦. 남을 위한 거짓말은 커지지 않음")}${B("von Hippel & Trivers (2011), The evolution and psychology of self-deception, Behavioral and Brain Sciences 34(1)","2주 3일째 — 자기기만이 남을 속이는 일을 돕는다는 이론적 주장. 같은 학술지의 논평에서 실험적 검증이 필요하다는 반론도 있음")}${B("Slepian, Chun, Mason (2017), The experience of secrecy, Journal of Personality and Social Psychology 113(1), 1–33","2주 4일째 — 평균 13가지 비밀, 그중 다섯은 아무에게도 말하지 않음. 감추는 순간보다 혼자 떠올리는 일이 잦고, 그럴수록 안녕감이 낮음")}${B("Vosoughi, Roy, Aral (2018), The spread of true and false news online, Science 359(6380), 1146–1151","2주 5일째 — 2006–2017년 트위터 약 12만 6천 건. 거짓 소식이 더 멀리 · 빨리 · 깊게 퍼짐, 다시 공유될 가능성 70% 높음, 참된 소식이 1,500명에 닿는 데 약 여섯 배의 시간")}${B("Marshall B. Rosenberg, Nonviolent Communication: A Language of Life","27쪽 — 네 요소: 판단이나 평가를 섞지 않은 관찰, 느낌, 필요, 부탁. 2주 5일째 ‘말할 문장 만들기’의 뼈대")}
   ${B("Jay Earley · Bonnie Weiss, Self-Therapy for Your Inner Critic / Freedom from Your Inner Critic","일곱 가지 내면 비판자 분류 — 이 워크북의 ‘일곱 목소리’는 이 분류를 바탕으로 시리즈에 맞게 다듬은 것입니다(검증된 심리 척도가 아닌 관찰 도구)")}${B("Paul Gilbert · Mary Clarke · Sarah Hempel · Jeremy Miles · Chris Irons (2004), Criticizing and reassuring oneself, British Journal of Clinical Psychology 43(1), 31–50","FSCRS(자기비판/자기공격과 자기위안 형태 척도) — 실수했을 때 나를 대하는 방식을 자기비판 · 자기공격 · 자기위안으로 나누고 0–4점으로 답하는 구조. 2일째 점검 3부는 이 구분과 응답 방식을 따르되, 문항은 이 워크북을 위해 새로 썼습니다(원척도의 자해 문항은 넣지 않고 따로 묻습니다)")}${B("조현주 · 이승훈 · 신철 · 조용원 (2011), 「한국판 자기비판/자기공격과 자기위안 형태척도의 신뢰도와 타당도 연구」, 『인지행동치료』 11(2), 137–154","대학생 401명 · 18문항 3요인 · 내적 일치도 .66–.87 · 한 달 간격 재검사 신뢰도 .64–.87")}${B("Dale G. Larson · Robert L. Chastain (1990), Self-concealment: Conceptualization, measurement, and health implications, Journal of Social and Clinical Psychology 9(4), 439–455","자기은폐 척도 — 고통스럽거나 부정적인 개인 정보를 다른 사람에게 적극적으로 숨기는 성향. 2주 2일째 점검 2부의 ‘드러날까 두려운 마음’ · ‘혼자 지고 있는 마음’의 구분")}${B("박미란 · 이지연 (2008), 「자기은폐 척도개발 및 타당화」, 『상담학연구』 9(4), 1547–1565","라슨과 채스테인의 개념에 기초한 한국판 15문항 3요인(은폐경향성 · 비밀의 소유 · 비밀누설의 두려움), 내적 일치도 .87")}${B("Paul L. Hewitt 외 (2003), The interpersonal expression of perfection: Perfectionistic self-presentation and psychological distress, Journal of Personality and Social Psychology 84(6), 1303–1325","완벽주의적 자기제시 척도 — 2주 2일째 점검 2부 ‘잘 보이려는 마음’의 구분")}${B("하정희 (2011), 「한국판 완벽주의적 자기제시 척도(PSPS-K)의 개발과 타당화」, 『상담학연구』 12(4), 1211–1230","3요인 — 완벽주의적 자기노력 · 불완전함 은폐노력(행동적) · 불완전함 은폐노력(언어적). 2주 점검의 문항은 이 척도들의 구분을 따라 새로 썼습니다")}
   <h2 class="h2">연구</h2>
   ${B("Gilbert, Clarke, Hempel, Miles, Irons (2004)","British Journal of Clinical Psychology 43, 31–50 — 자기 비판의 두 얼굴")}
@@ -1053,20 +1053,21 @@ const LAYERS=[null,"고요","오늘의 질문","오늘의 연습","응답과 감
 function layerHead(n,L,title,min){ return `<div class="lh"><span class="n">${["","①","②","③","④"][L]}</span><h2>${title}</h2>${min?`<span class="min">${min}</span>`:""}</div>`; }
 function stepper(n){ return `<nav class="stepper" aria-label="오늘의 순서">${[1,2,3,4].map(L=>`<a href="javascript:void(0)" role="button" data-jump="L${L}" class="${layerDone(n,L)?"done":""}"><span class="n">${["","①","②","③","④"][L]}</span>${LAYERS[L]}</a>`).join("")}</nav>`; }
 
+const W2_CALM_PIC={1:"욕심과 교만 앞에 — 좋은 것을 감추시는 분이 아니라, 아들까지 내주시고 모든 것을 은혜로 주시는 분",2:"두려움 앞에 — 내가 덮기를 멈출 때, 덮어 주시는 분",3:"두려움 앞에 — 아무것도 내놓지 못한 나에게 먼저 찾아와 함께하시고 지키시는 분",4:"교만 앞에 — 움켜쥔 손을 꺾으시고, 진짜 이름을 고백한 자리에서 새 이름을 주시는 분",5:"서로 앞에서 — 우리를 서로의 지체로 묶으시고, 사랑 안에서 참된 것을 말하게 하시는 분",6:"두려움 없이 — 나 때문에 기뻐하시며 노래하시는 분"};
 function calmLayer(n){
   const d=(DAYS_W[CW]||DAYS)[n];
   return `<section class="layer" id="L1">${layerHead(n,1,d.ext?"고요 — 확장판":"고요 10분", d.ext?"약 15분":"10분")}
     ${scriptureHTML(d.scr)}
     ${n===1?`<p class="small">처음이라면 <a href="#/guide">고요 훈련 안내</a>를 한 번 읽고 시작하세요.</p>`:""}
-    ${CW===2&&n===1?`<p class="small">이번 주 고요의 ‘알아채기’에서는 멈추지 못했던 순간 하나를 떠올리고, 마지막 2분에는 오늘 속인 말 하나를 하나님께 그대로 말씀드립니다. 말하기 편한 것 말고, 진짜 하나.</p>`:""}
-    ${CW===1&&(n===2||n===4)?`<p class="small">같은 말씀을 이틀 듣습니다. 어제 머문 단어가 오늘도 머무는지, 다른 단어가 다가오는지 보세요.</p>`:""}
+    ${CW===2&&n===1?`<p class="small">이번 주 고요는 설교의 첫째 연습입니다. 두려움과 교만과 욕심을 지우는 말씀 앞에 머물러, 그 말씀이 그려 주는 하나님의 그림을 붙듭니다. 하루를 돌아보는 일은 저녁, 마무리의 ‘오늘의 세 걸음’에서 합니다.</p>`:""}
+    ${CW===2&&W2_CALM_PIC[n]?`<p class="small"><b>오늘 붙들 그림</b> — ${W2_CALM_PIC[n]}</p>`:""}
     ${CW===1&&n===5?`<p class="small">오늘 파트너를 만나기 전에, 내 말을 이미 다 아시는 분 앞에 먼저 앉습니다.</p>`:""}
     ${CW===1&&n===6?`<p class="small">오늘은 말씀 듣기 뒤에 <b>잠잠히 머물기 5분</b>이 더해집니다. 헨리 나우웬은 기도의 진짜 일이 잠잠해져서, 나에 대해 좋은 것을 말하는 음성을 듣는 것이라고 말했습니다. 그 음성은 요단강에서 예수께서 들으신 음성입니다.</p>`:""}
     <button type="button" class="btn primary block" data-act="calm" data-day="${n}">${IC.drop}${F(n,"calmDone",false)?"다시 하기":"타이머 시작"}</button>
-    ${fText(n,"calm_notice",CW===2?"알아채기 — 멈추지 못했던 순간 하나":"알아채기 — 오늘 내 안에서 가장 크게 들린 목소리")}
+    ${fText(n,"calm_notice",CW===2?"알아채기 — 오늘 움직이는 두려움, 교만, 욕심":"알아채기 — 오늘 내 안에서 가장 크게 들린 목소리")}
     ${fText(n,"calm_word","머문 단어나 구절")}
     ${n===6?fText(n,"calm_stay","머무는 동안 떠오른 것(선택)"):""}
-    ${fText(n,"calm_resp",CW===2?"응답 — 오늘 속인 말 하나, 하나님께 그대로 (나만 봅니다)":"응답 — 한 문장 기도",CW===2?{area:true}:{})}
+    ${fText(n,"calm_resp",CW===2?"응답 — 이 말씀이 그려 준 하나님의 그림 한 줄":"응답 — 한 문장 기도",CW===2?{area:true}:{})}
     ${doneBar(n,1)}</section>`;
 }
 function closeLayer(n, prayer, giveLabel="오늘 한 사람에게 건넬 말 하나", extra=""){
@@ -1086,6 +1087,7 @@ function vDay1(){
   const n=1;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"말의 무게","")}
+    ${newFig(n)}${newIns(n)}
     <p>사람이 처음 들은 말은 복이었습니다(창 1:28). 말은 하나님과 대화하고, 온 세상을 대신해 하나님을 찬양하고, 세상을 돌보고, 곁에 있는 사람을 기뻐하도록 주어졌습니다.</p>
     <p>그런데 말은 한 사람을 일으키기도 하고, 무너뜨리기도 합니다.</p>
     ${fText(n,"good_recv","최근 누군가에게 들은 좋은 말 하나",{hint:"누가, 어떤 말을?"})}
@@ -1179,6 +1181,7 @@ function vDay2(){
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"말과 마음 점검","")}${body}${dx===4?doneBar(n,2):""}</section>
   <section class="layer" id="L3">${layerHead(n,3,"그 말 밑의 문장","")}
+    ${newFig(n)}${newIns(n)}
     <p>오늘 고른 말 가운데, 가장 마음에 걸리는 것 하나를 누르세요.</p>
     ${picks.length?`<div class="chips" role="group">${picks.map(p=>`<button type="button" class="chip" aria-pressed="${F(2,"pick_text","")===p}" data-chip="2|pick_text|0" data-val="${esc(p)}">“${esc(p)}”</button>`).join("")}</div>`:`<p class="empty">점검에서 \u2018가끔\u2019이나 \u2018자주\u2019를 고른 말이 여기에 나타납니다.</p>`}
     <p style="margin-top:14px">그 말을 할 때, 혹은 하기 직전에 — 내 안에서 먼저 들린 말은 무엇이었나요? 아래 보기에서 고르세요. 보기에 없으면 직접 써도 됩니다.</p>
@@ -1199,6 +1202,7 @@ function vDay3(){
   const qs=[["하나님께 돌아가고 싶어진다","숨고 싶어진다"],["내가 한 일을 말한다","나라는 사람을 말한다"],["구체적이다","\u201c늘, 항상, 원래\u201d라고 한다"],["돌아갈 길을 보여 준다","출구가 없다"]];
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"그 목소리의 정체","")}
+    ${newFig(n)}${newIns(n)}
     ${top.length?`<div class="panel soft"><p class="ph">어제 내 말에서 가장 자주 들린 목소리</p>${top.map(id=>`<p><b>${TYPE[id].nm}</b>${myPhrases(id).length?` — ${myPhrases(id).map(p=>`\u201c${esc(p)}\u201d`).join(" ")}`:""}</p>`).join("")}${F(2,"s0_text","")?`<p class="small">그 밑의 문장: \u201c${esc(F(2,"s0_text",""))}\u201d</p>`:""}</div>`:`<p class="empty">2일째의 말과 마음 점검을 먼저 하면 여기에 내 마음이 나타납니다.</p>`}
     <p class="small">2일째에 본 일곱 가지 마음이 한데 모여 나를 다그칠 때, 노은혜는 그것을 \u2018가혹한 비판자\u2019라고 부릅니다. 아래에서 \u2018비판자\u2019라고 할 때는 그 마음들 모두를 가리킵니다.</p>
     <h3 class="h3">이 목소리는 왜 생겼을까요?</h3>
@@ -1306,6 +1310,7 @@ function vDay4(){
     <div class="row" style="margin-top:16px">${step>1?`<button type="button" class="btn" data-wiz="prev">이전</button>`:""}${step<7?`<button type="button" class="btn primary" data-wiz="next" ${canNext?"":"disabled"}>다음</button>`:""}</div>`;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"주어가 다릅니다","")}
+    ${newFig(n)}<p class="small">모든 것을 그만두고 싶을 만큼 지친 마음이 오래 이어진다면, 혼자 견디지 마세요. <a href="#/help/stop">멈추고 싶을 때</a></p>${newIns(n)}
     <p>좋은 말을 스스로 되뇌면 가혹한 목소리가 사라질까요? 캐나다 워털루 대학의 조앤 우드와 동료들은 참가자들에게 \u201c나는 사랑받을 만한 사람이다\u201d를 되뇌게 했습니다. 자존감이 높은 사람은 조금 나아졌지만, <b>자존감이 낮은 사람은 되뇌지 않은 사람보다 오히려 기분이 더 가라앉았습니다.</b></p>
     <p>복음은 내가 만든 좋은 말을 되뇌라고 하지 않습니다. <b>아버지가 이미 하신 말을 듣고, 그 말을 내 영혼에게 전하라고</b> 합니다. 시인이 그렇게 했습니다.</p>
     ${verseHTML("ps42_5")}
@@ -1321,13 +1326,9 @@ function vDay5(){
   const recvVerse=F(5,"send_verse","heb13_5"); const recvName=F(5,"send_name","");
   const msg = `${recvName?vocative(recvName)+" ":""}하나님이 너에게 하시는 말씀이 떠올라서 보내. \u2018${VERSES[recvVerse].t}\u2019(${VERSES[recvVerse].ref})`;
   return dayShell(n, calmLayer(n)+`
-  <section class="layer" id="L2">${layerHead(n,2,"한 주의 말과 목소리","")}
-    ${logs.length?`<div class="pairlist">${logs.map(l=>`<div class="pair"><span class="said">${esc(l.said)}</span><span class="voice-t">${esc(l.voice)}</span>${l.neww?`<span class="new-t">새 말 · ${esc(l.neww)}</span>`:""}</div>`).join("")}</div><div class="legend"><span>왼쪽 — 내가 한 말</span><span>오른쪽 — 그 밑의 목소리</span></div>`
-    :`<p class="empty">기록이 없어도 괜찮습니다. 지금 떠오르는 이번 주의 말 하나로 짝을 만들어 보세요.</p><button type="button" class="btn" data-act="log">${IC.pen}말과 목소리 기록하기</button>`}
-    ${fRange(n,"sim","내 말과 그 밑의 목소리는 얼마나 닮았나요?",{lo:"전혀",hi:"거의 같다"})}
-    ${fText(n,"learn","한 줄로 — 이번 주 내 말을 보며 알게 된 것")}
-    ${doneBar(n,2)}</section>
+  ${w1RumLayer(n)}
   <section class="layer" id="L3">${layerHead(n,3,"다른 목소리로 듣기","파트너와 15분")}
+    ${newFig(n)}${newIns(n)}
     <p>설교의 마지막에서 이렇게 들었습니다. \u201c우리는 서로에게 그 한 사람이 되어, 예수께서 들으신 그 음성을 서로에게 다시 들려줄 수 있습니다.\u201d 오늘이 그날입니다.</p>
     <div class="panel"><p class="ph">시작하기 전에 — 함께 읽어 주세요</p>
       <p><b>듣기 규칙</b> — 판단하지 않습니다. 해결해 주려 하지 않습니다. 해명하지 않습니다. 듣는 사람은 요약(\u201c~라는 거구나\u201d)과 공감(\u201c그랬구나\u201d)만 합니다.</p>
@@ -1382,6 +1383,7 @@ function vDay6(){
   const prayer=`아버지,\n예수께서 아직 아무것도 하시기 전에\n아버지는 \u201c이는 내 아들, 내가 사랑하는 아들이다\u201d 하셨습니다.\n\n제 입에서는 오래 들어 온 말들이 흘러나왔습니다.\n저에게 가혹했던 그 목소리로, 가까운 사람에게도 말했습니다.\n그 목소리를 제 것인 줄 알고 살았습니다.\n\n그러나 광야에서 흔드는 목소리를 들으신 예수께서\n증명하지 않으시고, 기록된 말씀으로 답하셨습니다.\n그리고 그분 안에서, 같은 음성이 저에게도 왔습니다.\n\u201c내가 네 이름을 불렀다. 너는 내 것이다.\u201d\n\n아침마다 제 귀를 깨워 주십시오.\n배우는 이처럼 듣게 하시고,\n지친 사람을 말 한마디로 붙드는 혀를 주십시오.\n\n여호와여, 내 입에 파수꾼을 세워 주십시오.\n내 입술의 문을 지켜 주십시오.\n\n예수 그리스도의 이름으로 기도합니다. 아멘.`;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"한 주 돌아보기","")}
+    ${newFig(n)}${newIns(n)}
     <h3 class="h3">지금 내 온도</h3>
     ${fRange(n,"t_self","실수한 날, 내가 나에게 하는 첫 문장은 얼마나 가혹한가요?",{lo:"전혀",hi:"매우"})}
     ${fRange(n,"t_out","이번 주, 그 말투가 가까운 사람에게 나간 적이 있나요?",{lo:"전혀",hi:"자주"})}
@@ -1390,7 +1392,7 @@ function vDay6(){
     <h3 class="h3">같은 샘</h3>
     <p>이번 주 말과 목소리 기록 <b>${S.logs.length}개</b>${logTop.length?` · 기록에서 가장 자주 나온 목소리: <b>${logTop.join(", ")}</b>`:""}</p>
     ${t2.length?`<p class="small">화요일 입버릇 찾기에서 나온 목소리: ${t2.join(", ")}. 내가 생각한 내 모습과 실제로 기록된 내 말이 다를 수 있습니다. 그 차이도 발견입니다.</p>`:""}
-    <details class="voice"><summary><span class="nm">화요일 진단 브리핑 다시 보기</span></summary>${w1Brief()||`<p class="empty">2일째 점검을 하면 나타납니다.</p>`}</details>
+    <details class="voice"><summary><span class="nm">이번 주 진단 브리핑 다시 보기</span></summary>${w1Brief()||`<p class="empty">2일째 점검을 하면 나타납니다.</p>`}${w1RumBrief()}</details>
     <h3 class="h3">이번 주의 세 걸음</h3>
     ${tsWeekHTML(1)}
     <h3 class="h3">믿음의 변화</h3>
@@ -1520,20 +1522,20 @@ Object.assign(VERSES, {
   ps32_5:{ref:"시편 32:5", who:"입을 다물고 뼈가 삭아 가던 다윗이", t:"내가 내 죄를 주께 아뢰고, 내 잘못을 덮지 않았습니다. 그러자 주께서 내 죄의 잘못을 용서하셨습니다.", key:"내 잘못을 덮지 않았습니다.", direct:false},
   ijn1_7:{ref:"요한일서 1:7", who:"어둠 속에서 혼자 지고 있던 사람에게 요한이", t:"그분이 빛 가운데 계신 것처럼 우리도 빛 가운데서 걸으면, 우리는 서로 사귐을 나누고, 그분의 아들 예수의 피가 우리를 모든 죄에서 계속 깨끗하게 하십니다.", key:"우리도 빛 가운데서 걸으면", direct:false}
 });
-CATS.push({nm:"속이고 싶을 때", lie:"“드러나면 사랑을 잃을 거야.” — 이 두려움에 주시는 대답", v:["gen28_15","ijn4_19","ijn4_18","ijn1_9","ps32_5","ijn1_7"]});
+CATS.push({nm:"속이고 싶을 때", lie:"“드러나면 사랑을 잃을 거야.” — 이 두려움에 주시는 대답", v:["rom8_32","gen28_15","gen32_28","eph4_15","ijn4_19","ijn1_9","ps32_5"]});
 
 
 
 /* 속이는 말의 네 모양 — 설교의 구분 */
 const W2_SHAPES = {
-  exag:{nm:"부풀리거나 줄이는 말", d:"실제보다 크게, 혹은 작게 그립니다", sig:["괜찮아요","별일 아니에요","항상","네, 다 봤습니다"], ex:"이제 막 나왔는데 “거의 다 왔어.” 큰일인데 “별일 아니야.” 한 번의 실수를 “당신은 항상 그래.”",
-    re:["“지금 막 나왔어. 20분쯤 걸릴 것 같아.”","“사실은 좀 힘들어.”","“지난 2주 동안 다섯 번 늦었어.”"]},
-  excuse:{nm:"둘러대는 말", d:"내 몫을 다른 이유 뒤에 둡니다", sig:[], ex:"늦잠을 자 놓고 “차가 막혀서요.” 내가 깜빡하고 “그거 전달 못 받았는데요.” “내 잘못이 40, 저 사람이 60이니 용서를 구할 사람은 저쪽이지” 하는 계산도.",
-    re:["“제가 깜빡했어요. 죄송합니다.”","“늦잠을 잤어요. 미안해요.”","“제 잘못이에요.” — “하지만” 없이"]},
-  select:{nm:"반쪽만 말하는 말", d:"사실만 골라, 실제와 다른 그림을 그립니다", sig:["옮기려다 멈춤"], ex:"나머지 과목은 망쳤는데 “엄마, 나 수학 90점 받았어!” 사실만 말했는데, 그림은 거짓입니다. 확인하지 않은 영상이나 글을 SNS에 올리거나, 들은 말을 앞뒤 없이 다른 사람에게 옮기는 것도 그렇습니다.",
-    re:["“수학은 잘 봤는데, 나머지는 망쳤어.”","“좋은 점도 있지만, 걸리는 점도 하나 있어요.”","“아까 오해하신 것 같아서요. 사실은…”"]},
-  holy:{nm:"하나님 이름 뒤에 숨는 말", d:"내 계산이나 실수를 하나님의 이름 뒤에 숨깁니다", sig:["기도할게요"], ex:"야곱의 “아버지의 하나님 여호와께서 제 앞에 그것을 만나게 해 주셨습니다.” 오늘의 “기도해 보니까…”, “하나님이 인도하셔서…”",
-    re:["“솔직히 이번엔 부담돼서 못 하겠어요.”","“제가 그렇게 하고 싶어서요.”","기도로 — “하나님, 사실 저는 지금 괜찮지 않습니다.”"]}
+  exag:{nm:"과장하거나 축소하는 말", d:"실제보다 크게, 혹은 작게 그립니다", sig:["괜찮아요","별일 아니에요","항상"], ex:"이제 막 집을 나서면서 “거의 다 왔어!” 큰일이 났는데도 “별일 아니야.” 최근 두 번 있었던 일을 “당신은 항상 그래.” 차라리 “당신, 지금 두 번이나 그랬어”가 참된 말입니다.",
+    re:["“사실 좀 힘들어요.”","“지금 막 나왔어. 20분쯤 걸릴 것 같아.”","“당신, 최근에 두 번 그랬어.”","“사실은 동료가 많이 도와줬어요.”"]},
+  excuse:{nm:"둘러대는 말", d:"내 몫을 다른 이유 뒤에 둡니다", sig:[], ex:"늦잠을 자서 늦었는데 “오늘 이상하게 차가 막히네요.” 분명 내 실수 때문인데 “그런 말 전달 못 받았는데요?”",
+    re:["“제가 늦잠을 잤어요. 죄송합니다.”","“제가 깜빡했어요. 제 실수예요.”","“제 잘못이에요.”"]},
+  select:{nm:"반쪽짜리 사실만 말하는 말", d:"사실만 골라, 실제와 다른 그림을 그립니다", sig:["옮기려다 멈춤"], ex:"세 과목은 20점인데 “엄마, 나 수학 90점 맞았어!” — 틀린 말은 하나도 없지만 그림은 거짓입니다. 앞뒤를 잘라 낸 짧은 영상과 자극적인 제목, 상대를 최악으로 그리는 장면을 확인하지 않은 채 공유하거나 말로 옮기는 것도 그렇습니다. 뱀의 말이 그랬습니다(창 3:4–5).",
+    re:["“수학은 90점인데, 나머지는 잘 못 봤어.”","“이건 앞뒤를 더 알아봐야 할 것 같아요.”","“아까 오해하신 것 같아서요. 사실은…”"]},
+  holy:{nm:"지어내는 말", d:"없는 것을 있다고, 아닌 것을 그렇다고 말합니다", sig:["다 했어요","기도해 보니…"], ex:"하지도 않았으면서 “다 했어요.” 분명히 말해 놓고도 “저는 그런 말 한 적 없는데요.” 신앙 안에서는 더 교묘해집니다. 순전히 내 계산과 결정이었으면서 “기도해 보니 하나님이 이렇게 인도하셨어요.”",
+    re:["“사실은 아직 다 못 했어요.”","“제가 그렇게 말했어요. 잘못 말했습니다.”","“제가 그렇게 결정했어요.”"]}
 };
 const W2_PH = [
   {id:"e1", s:"exag", t:"이제 막 나섰는데 “거의 다 왔어”라고 한다."},
@@ -1547,16 +1549,16 @@ const W2_PH = [
   {id:"s1", s:"select", t:"좋은 것만 골라 말해서, 실제보다 좋게 보이게 둔다."},
   {id:"s2", s:"select", t:"틀린 말은 아니지만, 중요한 사실 하나를 일부러 빼고 말한다."},
   {id:"s3", s:"select", t:"상대가 오해한 걸 알면서도 바로잡지 않고 그냥 둔다."},
-  {id:"s4", s:"select", t:"들은 말이나 본 글을 확인하지 않고, 앞뒤를 뺀 채 SNS에 올리거나 다른 사람에게 옮긴다."},
-  {id:"h1", s:"holy", t:"내 생각이나 계산을 “기도해 보니까…”로 꺼낸다."},
-  {id:"h2", s:"holy", t:"내 결정을 “하나님이 인도하셔서…”라는 말 뒤에 둔다."},
-  {id:"h3", s:"holy", t:"교회에서는 실제보다 믿음 있어 보이는 말을 한다."},
-  {id:"h4", s:"holy", t:"기도할 때도 하나님께 괜찮은 척, 좋은 말만 골라 드린다."}
+  {id:"s4", s:"select", t:"짧은 영상이나 기사 제목만 보고, 확인하지 않은 채 공유하거나 말로 옮긴다."},
+  {id:"h1", s:"holy", t:"하지 않은 일을 “다 했어요”, “벌써 해 놨어요”라고 한다."},
+  {id:"h2", s:"holy", t:"분명히 내가 한 말인데, 불리해지면 “저는 그런 말 한 적 없는데요”라고 한다."},
+  {id:"h3", s:"holy", t:"내 생각이나 결정을 “기도해 보니 하나님이 이렇게 인도하셨어요”라고 말한다."},
+  {id:"h4", s:"holy", t:"확신할 수 없는 일을 하나님의 뜻이라고 쉽게 말한다."}
 ];
 /* 속이는 말 밑의 마음 — 자기은폐 척도(Larson·Chastain 1990; 한국판 박미란·이지연 2008)와 한국판 완벽주의적 자기제시 척도(Hewitt 외 2003; 하정희 2011)의 구분을 바탕으로 새로 쓴 문항 */
 const W2_MINDS = {
-  look:{nm:"높이려는 마음", d:"잘 보이려고 — 나를 실제보다 크게, 실수와 약함은 작게 보이게 합니다", v:"ijn4_19"},
-  fear:{nm:"지키려는 마음", d:"드러나면 사랑을 잃을 것 같아 두렵습니다", v:"ijn4_18"},
+  look:{nm:"높이려는 마음", d:"잘 보이려고 — 나를 실제보다 크게, 실수와 약함은 작게 보이게 합니다", v:"rom8_32"},
+  fear:{nm:"지키려는 마음", d:"드러나면 사랑을 잃을 것 같아 두렵습니다", v:"gen28_15"},
   alone:{nm:"혼자 지고 있는 마음", d:"말하지 못한 것이 마음에 계속 켜져, 쉼을 빼앗깁니다", v:"ps32_5"}
 };
 const W2_MD = [
@@ -1573,33 +1575,19 @@ const W2_MD = [
   {id:"a3", f:"alone", t:"누구에게 무슨 말을 했는지 맞추느라 마음이 쓰일 때가 있다."},
   {id:"a4", f:"alone", t:"속마음을 털어놓을 수 있는 사람이 거의 없다."}
 ];
-function w2Scores(){
-  const sh={}; Object.keys(W2_SHAPES).forEach(k=>sh[k]={s:0,c:0});
-  W2_PH.forEach(p=>{ const v=F(2,"w2p_"+p.id,null,2); if(v===null) return; sh[p.s].s+=v; sh[p.s].c++; });
-  const shapes=Object.keys(W2_SHAPES).map(k=>({id:k, v:sh[k].c?sh[k].s/sh[k].c:0}));
-  const answered=W2_PH.filter(p=>F(2,"w2p_"+p.id,null,2)!==null).length;
-  const top=[...shapes].sort((a,b)=>b.v-a.v).filter(x=>x.v>=0.75).slice(0,2).map(x=>x.id);
-  const md={}; Object.keys(W2_MINDS).forEach(k=>md[k]={s:0,c:0});
-  W2_MD.forEach(p=>{ const v=F(2,"w2m_"+p.id,null,2); if(v===null) return; md[p.f].s+=v; md[p.f].c++; });
-  const m={}; for(const k in md) m[k]=md[k].c?md[k].s/md[k].c:null;
-  const mAns=W2_MD.filter(p=>F(2,"w2m_"+p.id,null,2)!==null).length;
-  const picks=W2_PH.filter(p=>(F(2,"w2p_"+p.id,0,2)||0)>0);
-  return {shapes, top, answered, m, mAns, picks};
-}
-
 /* 신호어 — 설교의 둘째 연습 */
-const SIGS = [{id:"ok",t:"괜찮아요"},{id:"minor",t:"별일 아니에요"},{id:"always",t:"항상"},{id:"seen",t:"네, 다 봤습니다"},{id:"pray",t:"기도할게요"},{id:"fwd",t:"옮기려다 멈춤",act:true}];
-const SIG_SHAPE={ok:"exag",minor:"exag",always:"exag",seen:"exag",pray:"holy",fwd:"select"};
-function sigToast(id){ const s=SIGS.find(x=>x.id===id); if(!s) return ""; return s.act?"올리거나 옮기기 전에 — 원래 자료나 당사자의 말을 확인했나요?":`“${s.t}” — 실제와 같은 그림인가요? 무엇을 지키거나 높이려는 말인가요?`; }
+const SIGS = [{id:"ok",t:"괜찮아요"},{id:"minor",t:"별일 아니에요"},{id:"always",t:"항상"},{id:"seen",t:"다 했어요"},{id:"pray",t:"기도해 보니…"},{id:"fwd",t:"옮기려다 멈춤",act:true}];
+const SIG_SHAPE={ok:"exag",minor:"exag",always:"exag",seen:"holy",pray:"holy",fwd:"select"};
+function sigToast(id){ const s=SIGS.find(x=>x.id===id); if(!s) return ""; return s.act?"올리거나 옮기기 전에 — 진실인지 확인하기 어렵다면, 침묵하거나 ‘모른다’고 하는 것이 참된 말입니다.":`“${s.t}” — 실제와 같은 그림인가요? 두려움인가요, 교만이나 욕심인가요?`; }
 function todayKey(){ const d=window.__NOW__?new Date(window.__NOW__):new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
 function sigRow(){
   const day=((S.w2.sig||{})[todayKey()])||{};
-  return `<div class="panel soft"><p class="ph">오늘의 신호어 — 나오려 할 때 누르세요</p><div class="chips">${SIGS.map(s=>`<button type="button" class="chip" data-sig="${s.id}">${s.act?s.t:`“${s.t}”`} <b>${day[s.id]||0}</b></button>`).join("")}</div><p class="small" style="margin-top:8px">누를 때마다 한 번 멈추고 두 질문 — 이 말은 실제와 같은 그림인가? 무엇을 지키거나 높이려는 말인가? 확인할 수 없는 것이라면 옮기지 않는 것도 참된 말입니다.</p></div>`;
+  return `<div class="panel soft"><p class="ph">오늘의 신호어 — 나오려 할 때 누르세요</p><div class="chips">${SIGS.map(s=>`<button type="button" class="chip" data-sig="${s.id}">${s.act?s.t:`“${s.t}”`} <b>${day[s.id]||0}</b></button>`).join("")}</div><p class="small" style="margin-top:8px">누를 때마다 잠깐 멈추고 물어보세요. 이 말은 실제와 같은 그림인가? 그 밑에 두려움이 있나, 교만이나 욕심이 있나? 저녁에 하루를 돌아볼 때 이 기록을 다시 봅니다.</p></div>`;
 }
 function sigTotals(){ const tot={}; SIGS.forEach(s=>tot[s.id]=0); Object.values(S.w2.sig||{}).forEach(d=>SIGS.forEach(s=>tot[s.id]+=d[s.id]||0)); return tot; }
 
 function w2Close(n, extra=""){
-  return closeLayer(n, `<div class="quote">주님, 오늘 속이지 않을 담대함을 주십시오.</div><p class="small">사도들도 담대함을 구했습니다(행 4:29). 용기는 타고나는 것이 아니라, 은혜 앞에서 구하는 것입니다.</p>`, "오늘 “한 문장 더” 말할 것 하나 — 예: “사실은 조금 서운했어요.”", extra);
+  return closeLayer(n, `<div class="quote">${W2_PRAY[n]||"주님, 오늘도 당신의 진실한 새 그림을 주십시오."}</div>${n===1?`<p class="small">야곱은 그 그림을 받고도 다시 속이며 살았고, 회복되기까지 20년이 걸렸습니다. 그래도 그가 붙든 그 그림이 그의 인생을 이끌었습니다. 순식간에 변하지 않아도, 믿고 그 앞에 나아갑니다.</p>`:""}`, "오늘 “한 문장 더” 말할 것 하나 — 예: “사실은 조금 서운했어요.”", extra);
 }
 
 /* (1일째는 아래 보강판) */
@@ -1607,7 +1595,7 @@ function w2Close(n, extra=""){
 /* ---------- 2주 3일째 — 뿌리 ---------- */
 /* ---------- 2주 4일째 — 빛 ---------- */
 const ESAU=["늘 괜찮은 사람","일 잘하는 사람","믿음 좋은 사람","착하고 화 안 내는 사람","다 아는 사람","여유 있는 사람","늘 감사하는 사람"];
-const JACOB=["움켜쥐며 살아온 사람","은혜를 받기에 너무 작은 사람","지쳐 있는 사람","실수하는 사람","도움이 필요한 사람","모르는 게 많은 사람","사랑받고 싶은 사람"];
+const JACOB=["움켜쥐려고 애쓰는 사람","속이며 살아온 사람","잘 보이려고 꾸미는 사람","들킬까 두려워 숨는 사람","실수하는 사람","지쳐 있는 사람","도움이 필요한 사람"];
 /* ---------- 2주 5일째 — 두려움 없는 말 ---------- */
 const SAY={me:["“그거 제 실수예요.”","“잘 모르겠습니다. 확인해 보고 말씀드릴게요.”","“아빠(엄마)가 잘못했어. 미안해.”"],us:["“사실은 서운했어.”","“나 요즘 좀 힘들어. 도와줄 수 있어?”","“아까 그 말은 사실과 달랐어.”"],world:["“이대로 내보내면 문제가 생길 것 같습니다.”","“그만하자.” — 누군가를 놀리는 자리에서","“그건 제가 본 것과 다릅니다.”"]};
 /* ---------- 2주 6일째 — 거두기 ---------- */
@@ -1647,14 +1635,19 @@ const W2_SIT=[
     {v:"d",c:"avoid",t:"못 들은 척 넘어간다"}]},
   {id:"s7", q:"읽지 못한 자료를 두고 “다 보셨죠?”라는 물음에, 나는 대개", o:[
     {v:"a",c:"true",t:"“아직 다 못 봤습니다. 지금 확인하겠습니다.”"},
-    {v:"b",c:"exag",t:"“네, 다 봤습니다.”"},
+    {v:"b",c:"holy",t:"“네, 다 봤습니다.”"},
     {v:"c",c:"select",t:"“대충 훑어봤어요” — 사실은 거의 못 봤는데"},
     {v:"d",c:"avoid",t:"대답 대신 말을 돌린다"}]},
-  {id:"s8", q:"들은 이야기나 마음이 가는 글을 SNS에 올리거나 다른 사람에게 전할 때, 나는 대개", o:[
+  {id:"s8", q:"마음이 가는 영상이나 기사, 들은 이야기를 SNS나 카톡으로 공유하거나 다른 사람에게 전할 때, 나는 대개", o:[
     {v:"a",c:"true",t:"원래 자료나 당사자의 말을 확인하고 전한다"},
     {v:"b",c:"select",t:"제목이나 들은 대로만 보고 전한다"},
     {v:"c",c:"select",t:"내 생각과 맞으면 확인 없이 전한다"},
-    {v:"d",c:"true",t:"확인할 수 없으면 전하지 않는다"}]}
+    {v:"d",c:"true",t:"확인할 수 없으면 전하지 않는다"}]},
+  {id:"s9", q:"잘 모르는 일(사회 문제나 남의 사정)에 대해 누가 내 생각을 물을 때, 나는 대개", o:[
+    {v:"a",c:"true",t:"“그건 제가 잘 몰라서요”라고 말한다"},
+    {v:"b",c:"exag",t:"들은 대로 확신 있게 말한다"},
+    {v:"c",c:"select",t:"내 생각에 맞는 이야기만 골라 말한다"},
+    {v:"d",c:"holy",t:"아는 척 대답한다"}]}
 ];
 const W2_AVOID={nm:"말하지 않고 피하는 말", d:"참된 말 대신 침묵이나 거리 두기로 덮습니다"};
 function shapeNm(c){ return c==="avoid"?W2_AVOID.nm:(W2_SHAPES[c]||{}).nm||""; }
@@ -1686,7 +1679,7 @@ function w2Side(){
   const r={knife:{s:0,c:0},silent:{s:0,c:0}};
   W2_SIDE.forEach(p=>{ const v=F(5,"sd_"+p.id,null,2); if(v===null) return; r[p.f].s+=v; r[p.f].c++; });
   const sc=w2Scores(); const allSh=sc.shapes.reduce((a,x)=>a+x.v,0)/sc.shapes.length;
-  const m={hide: sc.answered?allSh:null, knife:r.knife.c?r.knife.s/r.knife.c:null, silent:r.silent.c?r.silent.s/r.silent.c:null};
+  const m={hide:null, knife:r.knife.c?r.knife.s/r.knife.c:null, silent:r.silent.c?r.silent.s/r.silent.c:null};
   const answered=W2_SIDE.filter(p=>F(5,"sd_"+p.id,null,2)!==null).length;
   const top=Object.keys(m).filter(k=>m[k]!=null).sort((a,b)=>m[b]-m[a])[0];
   return {m, answered, top};
@@ -1741,6 +1734,13 @@ function w2Scene(){
   return {said, shape, fact:F(2,"fact","",2), pic:F(2,"pic_own","",2)||F(2,"pic",null,2), guard:F(2,"guard",[],2)||[], afraid:F(2,"afraid",[],2)||[], belief:F(2,"belief",null,2), pct:F(2,"belief_pct",null,2)};
 }
 function pendHTML(done,total){ return `<p class="small" style="margin-top:10px;color:var(--teal)">${done} / ${total} · 모두 고르면 바로 아래에 결과가 나옵니다.</p>`; }
+/* 원래 말에 짝이 맞는 '실제 그림의 말' — 만약-그러면의 기본 문장에 */
+function w2NewFor(old,shape){
+  const o=String(old||"");
+  const pairs=[[/괜찮|별일/,"“사실 좀 힘들어요.”"],[/거의 다/,"“지금 막 나왔어. 20분쯤 걸릴 것 같아.”"],[/항상|맨날|원래/,"“당신, 최근에 두 번 그랬어.”"],[/다 했|다 봤|해 놨/,"“사실은 아직 다 못 했어요.”"],[/제가 (다 )?한/,"“사실은 동료가 많이 도와줬어요.”"],[/차가|막혀|막히/,"“제가 늦잠을 잤어요. 죄송합니다.”"],[/전달 못|못 받았/,"“제가 깜빡했어요. 제 실수예요.”"],[/그런 말 한 적|말한 적 없/,"“제가 그렇게 말했어요. 잘못 말했습니다.”"],[/기도해 보니|인도하셨/,"“제가 그렇게 결정했어요.”"],[/90점|수학/,"“수학은 90점인데, 나머지는 잘 못 봤어.”"]];
+  for(const [re,nw] of pairs) if(re.test(o)) return nw;
+  return shape&&W2_SHAPES[shape]?W2_SHAPES[shape].re[0]:"“사실은…”";
+}
 function quoteOf(t){ const m=String(t||"").match(/“([^”]+)”/); return m?m[1]:String(t||""); }
 function sceneCard(sn, title="해부한 장면"){
   if(!sn.said) return `<p class="empty">2일째에 해부한 장면이 여기에 나타납니다.</p>`;
@@ -1758,6 +1758,7 @@ function vW2Day1(){
   const n=1; const si=w2Sit(); const all=si.answered===W2_SIT.length; const p1=F1(1,"partner","");
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"속이는 말의 무게","")}
+    ${newFig(n)}${newIns(n)}
     <h3 class="h3">지금 내 온도</h3>
     <p class="small">토요일에 같은 질문으로 다시 잽니다. 한 주의 변화를 내가 직접 보게 됩니다.</p>
     ${fRange(n,"t_hide","지난 한 주, 실제와 다르게 말한 순간은 얼마나 자주 있었나요?",{lo:"전혀",hi:"자주"})}
@@ -1768,7 +1769,7 @@ function vW2Day1(){
     <p>상황마다, 내가 <b>가장 자주 하는 쪽</b>을 고르세요. 바람직한 대답이 아니라, 실제로 하는 대답을 고를 때 내 말이 보입니다.</p>
     ${W2_SIT.map(s=>fOpts(n,"sit_"+s.id,s.q,s.o)).join("")}
     ${all?`${w2SitBrief()}
-      ${si.hideN?fChips(n,"sit_why","속이는 쪽을 고를 때, 마음속에서 가장 먼저 드는 생각은",["들키면 곤란하다","실망시키고 싶지 않다","갈등이 싫다","약해 보이기 싫다","좋아 보이고 싶다","이기고 싶다","굳이 말할 필요 없다","잘 모르겠다"],{multi:true,hint:"앞의 넷은 지키려는 얼굴, 뒤의 둘은 높이려는 얼굴에 가깝습니다."}):""}`:pendHTML(si.answered,W2_SIT.length)}
+      `:pendHTML(si.answered,W2_SIT.length)}
     ${doneBar(n,2)}</section>
   <section class="layer" id="L3">${layerHead(n,3,"함께 걸을 사람, 그리고 신호어","")}
     <h3 class="h3">이번 주 대화 파트너</h3>
@@ -1777,69 +1778,9 @@ function vW2Day1(){
     ${F(n,"partner_keep",null)==="new"||!p1?fText(n,"partner","파트너 이름"):""}
     ${fText(n,"signal","우리의 멈춤 신호어 — 대화 중 한 사람이 이 말을 하면 곧바로 멈춥니다",{ph:F1(1,"signal","")||"예: 잠깐만"})}
     <h3 class="h3">신호어, 그리고 옮기기 전의 멈춤</h3>
-    <p>지난주에 말한 사투리처럼, 날마다 쓰는 말투는 내 귀에 잘 들리지 않습니다. 그래서 이번 주 첫걸음은 <b>멈추기</b>입니다. “괜찮아요”, “별일 아니에요”, “항상”, “네, 다 봤습니다”, “기도할게요” 같은 말이 입에서 나오려 할 때, 그리고 SNS에 무언가를 올리거나 들은 말을 다른 사람에게 옮기려 할 때, 한 번 멈추고 두 질문을 던집니다.</p>
+    <p>지난주에 말한 사투리처럼, 날마다 쓰는 말투는 내 귀에 잘 들리지 않습니다. 설교는 매일 하루를 돌아보며 내가 한 속이는 말을 점검하라고 권합니다. 그 저녁의 돌아봄을 돕도록, 하루 중 이런 말이 나오면 눌러 둡니다. “괜찮아요”, “별일 아니에요”, “항상”, “다 했어요”, “기도해 보니…”. 그리고 게시물을 올리거나 들은 말을 옮기려다 멈춘 순간도.</p>
     ${sigRow()}
     <p class="small">이 한 줄은 이번 주 내내 첫 화면에도 있습니다. 토요일에 엿새의 기록을 함께 봅니다.</p>
-    ${doneBar(n,3)}</section>`+
-  w2Close(n));
-}
-
-/* ---------- 2주 2일째 — 진단: 점검과 한 장면 해부 ---------- */
-function vW2Day2(){
-  const n=2; const sc=w2Scores(); const dx=Math.min(3,Math.max(1,F(n,"dx",1)));
-  const seg3=["거의 안 한다","가끔","자주"], seg5=["전혀","조금","보통","꽤","매우"];
-  const steps=["","내가 하는 말","그 밑의 마음","결과"];
-  const bar=`<div class="fb-steps" style="grid-template-columns:repeat(3,1fr);margin:4px 0 14px">${[1,2,3].map(k=>`<span class="fs ${k===dx?"now":""} ${k<dx?"done":""}">${steps[k]}</span>`).join("")}</div>`;
-  const nav=(label)=>`<div class="row" style="margin-top:18px">${dx>1?`<button type="button" class="btn" data-dx="prev">‹ 앞으로</button>`:""}<button type="button" class="btn primary" data-dx="next" style="flex:1">${label}</button></div>`;
-  const m=sc.m, lv=v=>v==null?"–":v<1.5?"낮음":v<2.5?"중간":"높음";
-  let body="";
-  if(dx===1) body=`${bar}<div class="privacy">이 점검은 이 기기에만 저장됩니다. 누구도 볼 수 없습니다. 좋아 보이는 답이 아니라, 정직한 답을 고르세요.</div>
-    <h3 class="h3">1 / 2 · 요즘 내가 하는 말</h3><p class="small">지난 몇 주를 떠올리며, 떠오르는 대로 누르세요.</p>
-    ${W2_PH.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"w2p_"+p.id,seg3)}</div>`).join("")}
-    <p class="small">${sc.answered} / ${W2_PH.length}</p>${nav("다음 ›")}`;
-  if(dx===2) body=`${bar}<h3 class="h3">2 / 2 · 속이는 말 밑의 마음</h3><p class="small">각 문장이 나와 얼마나 같은지 고르세요.</p>
-    ${W2_MD.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"w2m_"+p.id,seg5)}</div>`).join("")}
-    <p class="small">${sc.mAns} / ${W2_MD.length}</p>${nav("결과 보기 ›")}`;
-  if(dx===3){
-    const left=(W2_PH.length-sc.answered)+(W2_MD.length-sc.mAns);
-    const topM=Object.keys(W2_MINDS).filter(k=>m[k]!=null).sort((a,b)=>m[b]-m[a])[0];
-    let pattern="";
-    if(sc.mAns===W2_MD.length){
-      if(m.fear>=2.5) pattern="지키려는 얼굴 — 드러나면 사랑을 잃을 것 같은 두려움이 큽니다. 두려움에서 나오는 속이는 말은, 사랑은 잘 보여야만 받을 수 있고 들키면 잃는다는 믿음에서 나옵니다. 이번 주, 다 드러나도 버림받지 않는 자리를 먼저 붙드세요.";
-      else if(m.alone>=2.5) pattern="말하지 못한 것을 혼자 지고 있는 마음이 큽니다. 다윗이 “입을 다물었을 때 뼈가 삭았다”고 한 그 무게입니다. 하나님께 먼저, 그리고 믿을 수 있는 한 사람에게 하나씩 내려놓아 보세요.";
-      else if(m.look>=2.5) pattern="높이려는 얼굴 — 잘 보이려는 마음이 큽니다. 잘 보여야 한다는 마음 하나가 거짓말을 두 배로 늘렸던 연구처럼(설교 본론 2), 이 마음이 속이는 말을 부릅니다.";
-      else pattern="속이는 말 밑의 마음이 크지 않은 편입니다. 그래도 신호어가 나오는 순간을 이번 주 함께 살펴보세요.";
-    }
-    const vid=(sc.mAns===W2_MD.length&&m[topM]>=1.5)?W2_MINDS[topM].v:"ijn1_7";
-    body=`${bar}${left?`<p class="small">아직 답하지 않은 문장이 ${left}개 있습니다. 앞으로 돌아가 마저 답하면 결과가 더 정확해집니다.</p>`:""}
-    ${w2Brief()}
-    <h3 class="h3">속이는 말의 네 모양</h3>
-    <div class="bars">${sc.shapes.map(x=>`<div class="bar ${sc.top.includes(x.id)?"top":""}"><span class="nm">${W2_SHAPES[x.id].nm}</span><span class="tr"><span class="tk out"><i style="width:${x.v/2*100}%"></i></span></span></div>`).join("")}</div>
-    <h3 class="h3">속이는 말 밑의 마음 — 두 얼굴, 그리고 그 무게</h3>
-    <div class="bars">${Object.keys(W2_MINDS).map(k=>`<div class="bar"><span class="nm">${W2_MINDS[k].nm}</span><span class="tr"><span class="tk in"><i style="width:${m[k]==null?0:m[k]/4*100}%"></i></span><span class="small">${lv(m[k])} · ${W2_MINDS[k].d}</span></span></div>`).join("")}</div>
-    <h3 class="h3">이번 주 붙들 말씀</h3>${verseHTML(vid,{name:S.name})}
-    ${(m.alone!=null&&m.alone>=2.5)||(F(n,"w2m_a1",0)||0)>=3?`<div class="panel warn"><p class="ph">혹시 누군가에게 해를 입어 숨겨 온 일이라면</p><p>그것은 당신의 잘못이 아닙니다. 그런 일을 꺼내는 것은 ‘속이는 말’을 고치는 일과 다릅니다. 믿을 수 있는 사람, 도움을 줄 수 있는 곳에 먼저 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
-    <p class="small" style="margin-top:16px">이 점검은 공인된 진단 검사가 아닙니다. 1부의 네 모양은 이번 설교의 구분을, 2부는 자기은폐 척도(Larson · Chastain, 1990; 한국판 박미란 · 이지연, 2008)와 한국판 완벽주의적 자기제시 척도(Hewitt 외, 2003; 하정희, 2011)의 구분을 바탕으로 이 워크북을 위해 새로 쓴 문항입니다. 결과는 나를 알아보기 위한 거울로만 쓰세요.</p>
-    <div class="row" style="margin-top:12px"><button type="button" class="btn" data-dx="prev">‹ 답 고치기</button></div>`;
-  }
-  const sceneOpts=[...new Set([...w2Sit().picks, ...sc.picks.map(p=>p.t)])];
-  const sn=w2Scene();
-  return dayShell(n, calmLayer(n)+`
-  <section class="layer" id="L2">${layerHead(n,2,"속이는 말 점검","")}${body}${dx===3?doneBar(n,2):""}</section>
-  <section class="layer" id="L3">${layerHead(n,3,"한 장면 해부","")}
-    <p>점검이 내 말의 지도였다면, 이제 그 지도 위의 한 지점을 자세히 들여다봅니다. 진단은 혼내려는 것이 아니라 고치려는 것입니다. 설교의 두 질문으로 합니다. <b>내 말이 상대 머릿속에 실제와 다른 그림을 그렸나? 그 그림은 무엇을 지키거나 높이고 있었나?</b></p>
-    ${sceneOpts.length?fChips(n,"scene","1. 최근에 실제로 있었던 장면 하나 — 가장 마음에 걸리는 것",sceneOpts.map(x=>({v:x,t:x}))):""}
-    ${fText(n,"scene_own",sceneOpts.length?"또는 그때 내가 한 말 그대로":"1. 최근에 내가 속인 말 하나 — 그때 한 말 그대로")}
-    ${sn.said?`
-    ${fText(n,"fact","2. 실제로 있었던 일 — 카메라로 찍은 듯, 녹음기로 들은 듯",{area:true,hint:"해석이나 평가 없이, 일어난 일만 적습니다. 박재연은 관찰을 ‘카메라로 찍은 듯’ 묘사하는 것이라고 말합니다."})}
-    ${fChips(n,"pic","3. 내 말을 듣고 상대 머릿속에 그려졌을 그림",W2_PIC)}
-    ${fText(n,"pic_own","다른 그림이라면 (선택)")}
-    ${fChips(n,"guard","4. 그 말은 무엇을 지키려던 말이었나요?",W2_KEEP,{multi:true})}
-    ${fChips(n,"guard","…아니면 무엇을 높이거나 얻으려던 말이었나요?",W2_RAISE,{multi:true,hint:"둘 다 골라도 됩니다. 지키려는 얼굴과 높이려는 얼굴이 한 말 안에 함께 있기도 합니다."})}
-    ${fChips(n,"afraid","5. 그대로 드러났다면, 무엇이 두려웠나요?",["실망한 얼굴","꾸중이나 벌","등 돌림, 관계가 끊김","무시, 창피","버림받음","잘 모르겠다"],{multi:true})}
-    ${fChips(n,"belief","6. 그 두려움 밑에 깔린 믿음에 가장 가까운 것",BELIEFS)}
-    ${F(n,"belief",null)?fRange(n,"belief_pct","이 믿음을 지금 얼마나 믿고 있나요?",{min:0,max:100,step:5,lo:"전혀",hi:"완전히"}):""}
-    ${F(n,"belief",null)&&F(n,"belief_pct",null)!=null?sceneCard(sn,"해부 결과")+`<p class="small">목요일에 이 장면을 빛 앞에 가져가고, 토요일에 이 믿음을 다시 잽니다.</p>`:""}`:""}
     ${doneBar(n,3)}</section>`+
   w2Close(n));
 }
@@ -1848,33 +1789,32 @@ function vW2Day2(){
 function vW2Day4(){
   const n=4; const step=F(4,"step",1); const sn=w2Scene(); const coats=F(n,"coat",[])||[]; const name=F(n,"name",null); const vid=F(4,"verse",null);
   const verdict=(()=>{ const a=W2_DISCERN.map(q=>F(3,"d_"+q.id,null,2)); return a.every(v=>v!==null)?(a.filter(v=>v===1).length>=2?"속이는 쪽":"지혜로운 침묵"):null; })();
-  const sug = sn.belief&&BELIEF_V[sn.belief] ? BELIEF_V[sn.belief] : "ijn1_7";
-  const LIGHT=[...new Set([sug,"ijn1_7","ijn1_9","gen28_15","rom8_32","ijn4_18","ijn4_19","ps32_5","isa43_4"])];
-  const conf = coats.length&&name ? `저는 ${coats.map(c=>esc(c)).join(", ")}이 아닙니다. 저는 ${esc(name)}입니다.` : "";
+  const sug = sn.belief&&BELIEF_V[sn.belief] ? BELIEF_V[sn.belief] : "gen28_15";
+  const LIGHT=[...new Set(["gen32_28",sug,"rom8_32","gen28_15","isa43_4","ijn4_19","ijn1_9","ps32_5"])];
+  const conf = coats.length&&name ? `네, 저는 ${S.name?esc(S.name):"(내 이름)"}입니다. 저는 ${coats.map(c=>esc(c)).join(", ")}이 아닙니다. ${esc(name)}, 바로 그 이름입니다.` : "";
   let body="";
-  if(step===1) body=`<h3 class="h3">1. 오늘 빛 앞에 가져갈 장면</h3>
+  if(step===1) body=`<h3 class="h3">1. 오늘 하나님 앞에 가져갈 장면</h3>
     ${sceneCard(sn,"화요일에 해부한 장면")}
     ${verdict?`<p class="small">수요일의 분별 — <b>${verdict}</b>에 가깝다고 보았습니다.</p>`:""}${F(3,"face",null,2)?`<p class="small">수요일에 본 얼굴 — <b>${FACE_NM[F(3,"face",null,2)]}</b></p>`:""}
     ${sn.said?`<p>이 장면을 오늘 하나님 앞에 그대로 가져갑니다.</p>`:`<p>화요일의 해부를 아직 하지 않았다면, 지금 떠오르는 속인 말 하나로 시작하세요.</p>${fText(n,"scene4","내가 속인 말 하나")}`}`;
   if(step===2) body=`<h3 class="h3">2. 에서의 옷을 벗고, 이름으로</h3>
-    <p>“네 이름이 무엇이냐?” 이십 년 전에는 “에서입니다”라고 답했던 사람이, 그 밤에는 “야곱입니다”라고 답합니다. 그리고 그 자리에서 복을 받습니다.</p>
+    <p>주님이 물으십니다. “너는 누구냐?” 에서라고 대답하지 말고, 복을 움켜쥐려고 다른 사람인 척할 필요도 없이, 그냥 솔직하게 말합니다. “네, 저는 ○○입니다.”</p>
     ${coats.length?`<p class="small">위에서 고른 에서의 옷 — ${coats.map(esc).join(", ")}</p>`:`<p class="small">위 ‘에서의 옷’ 칸에서 옷을 먼저 골라 주세요.</p>`}
-    <div class="optlist">${JACOB.map(j=>`<button type="button" class="opt" aria-pressed="${name===j}" data-wiz-set="name" data-val="${esc(j)}"><div class="tx">하나님 앞에서, 나는 사실 — ${esc(j)}</div></button>`).join("")}</div>
+    <div class="optlist">${JACOB.map(j=>`<button type="button" class="opt" aria-pressed="${name===j}" data-wiz-set="name" data-val="${esc(j)}"><div class="tx">하나님 앞에서, 나는 사실 — ${esc(j)}, 바로 그 이름</div></button>`).join("")}</div>
     ${conf?`<div class="panel soft"><p class="ph">이름 고백</p><p class="serif" style="font-size:1.15em;line-height:1.7">${conf}</p><p class="small">소리 내어 한 번 말해 보세요.</p></div>`:""}`;
-  if(step===3) body=`<h3 class="h3">3. 하나님께 그대로</h3>
-    <div class="quote">내가 내 죄를 주께 아뢰고, 내 잘못을 덮지 않았습니다. ‘내 허물을 여호와께 털어놓겠다’ 하였더니, 주께서 내 죄의 잘못을 용서하셨습니다.<span class="ref">시편 32:5 · NJHV</span></div>
-    <p>있었던 그대로, 핑계 없이 적어 보세요. 말하기 편한 것 말고, 진짜 하나. 이 칸은 나만 봅니다.</p>
-    ${fText(n,"confess","하나님, 사실은 —",{area:true})}
-    <p class="small">1절의 ‘덮인’과 5절의 ‘덮지 않았습니다’는 히브리어로 같은 말입니다. 우리가 덮기를 멈추면, 하나님이 덮어 주십니다.</p>`;
-  if(step===4) body=`<h3 class="h3">4. 빛 가운데의 말씀 — 내 이름을 넣어</h3>
+  if(step===3) body=`<h3 class="h3">3. 진짜 내 이름을 하나님께 보여 드리기</h3>
+    <p>설교의 둘째 연습입니다. 수요일에 본 두려움과 교만을 그대로 들고, 하나님께 진짜 내 이름을 보여 드립니다. 야곱처럼, 베드로처럼, 있었던 그대로, 핑계 없이. 이 칸은 나만 봅니다.</p>${F(3,"face",null,2)||w2Face().scene?`<p class="small">수요일에 본 얼굴 — <b>${FACE_NM[F(3,"face",null,2)||w2Face().scene]}</b></p>`:""}
+    ${fText(n,"confess","하나님, 사실 저는 —",{area:true,ph:"예: 사실 저는 늦잠을 자 놓고 차가 막혔다고 했습니다. 실망한 얼굴을 보기가 두려웠습니다."})}
+    <div class="quote">내가 내 죄를 주께 아뢰고, 내 잘못을 덮지 않았습니다.<span class="ref">시편 32:5 · NJHV</span></div>`;
+  if(step===4) body=`<h3 class="h3">4. 하나님의 참된 그림 — 그리고 새 이름</h3>
     <p>내가 만든 좋은 말이 아니라, 하나님이 이미 하신 말씀을 고릅니다. ${sn.belief?`화요일에 찾은 믿음 “${esc(sn.belief)}”에 맞는 말씀이 맨 위에 있습니다.`:""}</p>
-    <div class="optlist">${LIGHT.map((id,i)=>{const v=VERSES[id]; return v?`<button type="button" class="opt" aria-pressed="${vid===id}" data-wiz-set="verse" data-val="${id}"><div class="tx">${esc(v.key||v.t)}</div><div class="small">${v.ref}${i===0&&sn.belief?" · 내 믿음에 맞춘 말씀":""}</div></button>`:"";}).join("")}</div>
+    <div class="optlist">${LIGHT.map((id,i)=>{const v=VERSES[id]; return v?`<button type="button" class="opt" aria-pressed="${vid===id}" data-wiz-set="verse" data-val="${id}"><div class="tx">${esc(v.key||v.t)}</div><div class="small">${v.ref}${id==="gen32_28"?" · 설교의 새 이름":id===sug&&sn.belief?" · 내 믿음에 맞춘 말씀":""}</div></button>`:"";}).join("")}</div>
     ${vid?verseHTML(vid,{name:S.name})+`<p class="small">말씀의 글자는 바꾸지 않고, 이름만 앞에 붙입니다. 자기와 관련지어 받아들인 말이 훨씬 잘 기억됩니다(자기 참조 효과).</p>`:""}`;
   if(step===5){ const v=VERSES[vid]||{}; body=`<h3 class="h3">5. 굵은 부분을 소리 내어 천천히 세 번</h3>
     ${vid?verseHTML(vid,{name:S.name}):""}
     <div class="row">${[1,2,3].map(i=>`<button type="button" class="chip" aria-pressed="${F(4,"read"+i,false)}" data-read="${i}">${i}번째</button>`).join("")}</div>
     <p class="small">소리 내어 읽은 것이 조용히 읽은 것보다 더 잘, 더 오래 기억됩니다(산출 효과). 시편 1편의 ‘묵상’(하가)도 원래 낮은 소리로 읊조린다는 뜻입니다.</p>`; }
-  if(step===6){ const v=VERSES[vid]||{}; const old=quoteOf(sn.said)||"그 말"; const nw=(sn.shape&&W2_SHAPES[sn.shape]?W2_SHAPES[sn.shape].re[0]:"“사실은…”");
+  if(step===6){ const v=VERSES[vid]||{}; const old=quoteOf(sn.said)||"그 말"; const nw=w2NewFor(old,sn.shape);
     if(F(4,"ifthen",null)===null) setF(4,"ifthen",`다음에 “${old}” 같은 말이 나오려 하면, 나는 ${nw} 하고 말하겠다. 그리고 “${v.key||v.t||""}”를 기억하겠다.`);
     body=`<h3 class="h3">6. 만약-그러면 한 줄, 그리고 카드</h3>
     ${fText(n,"ifthen","",{area:true})}
@@ -1896,13 +1836,14 @@ function vW2Day4(){
     ${fChips(n,"coat","내가 입어 온 ‘에서의 옷’ — 사람들 앞에서 나는 이런 사람이어야 한다고 느낀다",ESAU,{multi:true,hint:"여럿 골라도 됩니다."})}
     ${fChips(n,"applause","그 옷으로 박수를 받을 때, 내 마음은",["기뻤지만 허전했다","들킬까 불안했다","지쳤다","편했다","잘 모르겠다"],{multi:true})}
     <details class="voice"><summary><span class="nm">창세기 32장 — 네 이름이 무엇이냐</span></summary>${scriptureHTML("gen32")}</details>
-    <div class="panel soft"><p class="ph">이 사람에게 하나님이 하신 세 가지</p>
-      <p><b>거짓 그림을 깨뜨리심</b> — 형의 옷도 이름도 없이 돌을 베고 누운 밤, 아무것도 내놓지 못한 사람에게 하나님이 먼저 오셨습니다. “보아라, 내가 너와 함께 있다”(28:15). 하나님은 좋은 것을 감추는 분이 아니라 먼저 주시는 분이었습니다.</p>
-      <p><b>움켜쥐던 손을 펴게 하심</b> — “저는 … 너무 작은 사람입니다”(32:10). 허벅지 관절이 어긋나 더는 힘으로 이길 수 없게 된 밤, 그는 울며 매달렸고(호 12:4), “야곱입니다”라고 고백하고서 빼앗은 복이 아니라 주어진 복을 받습니다.</p>
-      <p><b>두려움을 내쫓으심</b> — “내가 하나님을 얼굴과 얼굴로 보았는데도, 내 목숨이 살았다”(32:30). 절뚝거리는 그의 위에 해가 떠올랐고(32:31), 그는 그토록 두려워하던 형의 얼굴 앞에 섭니다(33:10).</p></div>
+    <div class="panel soft"><p class="ph">속이다 모든 것을 잃은 야곱을 하나님이 회복하신 세 가지</p>
+      <p><b>하나님에 대한 거짓 그림을 새로 그려 주심</b> — 형에게 죽을까 봐 아무것도 없이 도망치다 길에서 노숙하던 밤, 하나님이 먼저 찾아오셨습니다. 기도도 회개도 하기 전이었고, “너 왜 그렇게 사니?” 하는 책망도 없었습니다. “보아라, 내가 너와 함께 있다. 네가 어디로 가든지 너를 지키고, 너를 떠나지 않겠다”(28:15). 사랑받으려면 꾸며야 한다던 그림과 전혀 다른 현실이었습니다.</p>
+      <p><b>교만을 꺾으심</b> — 20년 뒤 얍복강 나루터, 밤새 씨름하다 허벅지 관절이 어긋나도 그는 매달립니다. “저에게 복을 빌어 주지 않으면 보내 드리지 않겠습니다”(32:26). “너의 이름이 무엇이냐?” 20년 전 “너는 누구냐”에 “에서입니다”라고 했던 사람이 이제 답합니다. “네, 저는 야곱입니다. 발뒤꿈치를 붙잡는 사람, 평생 움켜쥐고 속이며 살아온 바로 그 이름입니다.” 그 자리에서 이스라엘이라는 새 이름과 복을 받습니다. 새 이름과 절뚝거리는 다리는 떼어 놓을 수 없습니다. 교만이 무너져야 복이 임합니다.</p>
+      <p><b>두려움을 쫓아내심</b> — “내가 하나님을 얼굴과 얼굴로 보았는데도, 목숨을 건졌다”(32:30). 가장 거룩하신 분 앞에서 다 드러나고도 살았다면, 사람 앞에서 숨길 까닭이 없습니다. 그토록 떨던 그가 형 앞에서 말합니다. “형님의 얼굴을 뵈니, 하나님의 얼굴을 뵌 것 같습니다”(33:10).</p></div>
+    ${newFig(n)}${newIns(n)}
     ${doneBar(n,2)}</section>
-  <section class="layer" id="L3">${layerHead(n,3,"빛 가운데 서기","7–10분")}${wiz}${doneBar(n,3)}</section>`+
-  w2Close(n, `<div class="quote">내가 내 죄를 주께 아뢰고, 내 잘못을 덮지 않았습니다.<span class="ref">시편 32:5 · NJHV</span></div>`));
+  <section class="layer" id="L3">${layerHead(n,3,"진짜 이름으로 서기","7–10분")}${wiz}${doneBar(n,3)}</section>`+
+  w2Close(n, `<div class="quote">그러면 주님은 분명 새 이름을 주실 것입니다. “너는 이스라엘”, “너는 내 백성이라.”<span class="ref">설교에서</span></div>`));
 }
 
 /* ---------- 2주 3일째 — 뿌리: 하나님에 대한 거짓 그림과 두 얼굴 ---------- */
@@ -1929,16 +1870,17 @@ function vW2Day3(){
     both:`<p>야곱이 그랬습니다. 평생 복을 움켜쥐려 한 사람이면서, 들키면 “복이 아니라 저주를 받을 거예요”(창 27:12) 하고 떨던 사람. 복을 움켜쥐려는 손과 저주를 두려워하는 떨림이 한 사람 안에 함께 있었습니다.</p>`};
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"하나님에 대한 거짓 그림","")}
+    ${newFig(n)}${newIns(n)}
     <p>동산의 이야기를 순서대로 보면, 맨 처음은 두려움이 아니었습니다. 뱀이 사실을 골라 붙여 <b>‘하나님은 좋은 것을 감추는 분’</b>이라는 그림을 그렸고, 그 그림을 믿자 사람은 하나님이 주시는 것을 기다리지 않고 스스로 움켜쥐었습니다(창 3:6). 그다음에야 부끄러움과 두려움과 숨음이 따라왔습니다(3:7, 10). 종교개혁자 칼뱅도 타락의 뿌리를 하나님을 믿지 못한 데서 찾았습니다.</p>
-    ${sceneCard(sn,"화요일에 해부한 장면")}
+    ${sn.said?`<p class="small">화요일에 해부한 말 — ${esc(sn.said)}${sn.belief?` · 그 밑의 믿음 “${esc(sn.belief)}”`:""}</p>`:""}
     <h3 class="h3">1. 내가 실제로 보고 있는 그림</h3>
     ${fChips(n,"picture","입으로는 ‘하나님은 좋으신 분’이라고 고백하면서도, 마음 깊은 곳에서 내가 실제로 보고 있는 그림",W2_PICTURES.map(p=>({v:p.v,t:p.t})),{multi:true,hint:"여럿 골라도 됩니다. 믿는다고 말하면서도 실제로는 믿지 못하는 자리를 찾는 질문입니다."})}
     ${pics.filter(v=>v!=="모름").length?`<div class="panel soft"><p class="ph">그 그림 앞에서 하나님이 하시는 말씀</p>${[...new Set(pics.filter(v=>v!=="모름").map(v=>W2_PICTURES.find(p=>p.v===v).vv))].map(id=>verseHTML(id,{name:S.name})).join("")}<p class="small">하나님은 좋은 것을 감추신 분이 아니라, 가장 좋은 것, 자기 아들까지 내주신 분입니다. 에덴에서 시작된 거짓 그림이 십자가에서 무너집니다.</p></div>`:""}
+    <div class="panel soft"><p class="ph">야곱이 더 크게 들은 목소리</p><p>야곱은 태어나기도 전에 하나님께 “큰 자가 작은 자를 섬길 것”(창 25:23)이라는 말씀을 받았습니다. 특별한 사랑의 약속이었습니다. 그런데 그는 어머니에게 전해 들은 하나님의 말씀보다, 눈앞에서 에서를 사랑하는 아버지의 반응을 더 민감하게 받아들였습니다. 그래서 에서가 되고 싶어 했습니다.</p></div>
+    ${fChips(n,"approval","나에게 하나님의 말씀보다 더 크게 들리는 반응은 누구의 것인가요?",["부모님","배우자","직장 상사나 동료","교회 사람들","친구들","SNS의 반응","잘 모르겠다"],{multi:true,hint:"그 사람의 실망이나 칭찬이 두려움과 교만을 움직이는 자리입니다."})}
     <h3 class="h3">2. 내 속이는 말의 얼굴</h3>
     <p>하나님을 믿을 수 없으면 남는 길은 하나입니다. 내가 나를 지키고, 내가 나를 높이는 것. 그래서 속이는 말에는 두 얼굴이 있습니다. <b>잃을까 봐 지키려는 얼굴</b>과, <b>더 가지려고 높이려는 얼굴</b>입니다.</p>
-    ${fc.scene||fc.score?`<p class="small">화요일의 기록으로 보면 — ${fc.scene?`해부한 장면은 <b>${FACE_NM[fc.scene]}</b>`:""}${fc.scene&&fc.score?", ":""}${fc.score?`점검에서는 <b>${FACE_NM[fc.score]}</b>에 더 가깝습니다`:""}.</p>`:""}
-    ${fOpts(n,"face","내 속이는 말은 주로 어느 얼굴인가요",[{v:"keep",t:"지키려는 얼굴 — 잃을까 봐 두려워서"},{v:"raise",t:"높이려는 얼굴 — 좋아 보이고, 얻고, 이기려고"},{v:"both",t:"둘 다 — 움켜쥐면서, 떨면서"}])}
-    ${face?faceText[face]:""}
+    ${(()=>{ const fd=face||fc.scene||fc.score; return fd?`<p class="small">${face?"":"화요일의 장면 해부와 점검으로 보면 — "}<b>${FACE_NM[fd]}</b>에 가깝습니다.</p>${faceText[fd]}`:fOpts(n,"face","화요일 기록이 없어 한 번만 묻습니다 — 내 속이는 말은 주로 어느 얼굴인가요",[{v:"keep",t:"지키려는 얼굴 — 잃을까 봐 두려워서"},{v:"raise",t:"높이려는 얼굴 — 좋아 보이고, 얻고, 이기려고"},{v:"both",t:"둘 다 — 움켜쥐면서, 떨면서"}]); })()}
     ${t1?`<div class="panel soft"><p class="ph">1주에 찾은 내 안의 가장 큰 목소리</p><p><b>${t1.nm}</b> — “${t1.self}”</p></div>${fChips(n,"echo","오늘 찾은 그림은 그 목소리와 닮았나요?",["많이 닮았다","조금","아니다","잘 모르겠다"])}`:""}
     <details class="voice"><summary><span class="nm">더 깊이 — 이 그림을 어디서 배웠을까 (선택)</span></summary>
       <p class="small">가정을 돌아보는 것은 잘못을 찾기 위해서가 아니라, 무엇이 건강했고 무엇이 아팠는지 정직하게 보고 그리스도 안에서 자라기 위해서입니다(피터 스캐지로).</p>
@@ -1951,15 +1893,15 @@ function vW2Day3(){
     ${stopLine()}${doneBar(n,2)}</section>
   <section class="layer" id="L3">${layerHead(n,3,"속이는 말이 빼앗는 것, 그리고 지혜로운 침묵","")}
     <p>속이는 말에는 무서운 역설이 있습니다. 지키고 높이려고 속였는데, 속이는 바로 그 일이 우리가 붙잡으려던 것을 빼앗아 갑니다.</p>
-    <details class="voice"><summary><span class="nm">사랑 — 사랑은 보이는 만큼만 닿습니다</span></summary><p class="small">필터를 씌운 사진에 ‘좋아요’가 백 개 달려도, 그것은 내 얼굴에 달린 것이 아닙니다. 30년 동안 “괜찮아”라고만 해 온 사람의 가족이 사랑하는 것은 ‘늘 괜찮은 사람’이지, 속으로 무너지고 있던 진짜 그 사람이 아닙니다. 그러면 두려움은 더 커집니다. ‘진짜 나를 알면 떠날 거야.’</p></details>
+    <details class="voice"><summary><span class="nm">사랑 — 사랑은 보이는 만큼만 닿습니다</span></summary><p class="small">가족을 걱정시키기 싫어서 무슨 일이 생겨도 “괜찮아, 별일 아니야”라고만 해 온 사람이 있습니다. 가족은 그가 정말 괜찮은 줄 알고 든든하다며 사랑해 주었습니다. 그런데 가족이 사랑한 것은 ‘늘 괜찮은 사람’이지, 속으로 몇 번이나 무너지고 있던 진짜 그 사람이 아니었습니다. 속일수록, 사랑받는 것처럼 보이는 모든 순간에도 진짜 나는 사랑받지 못한 사람으로 남습니다.</p></details>
     <details class="voice"><summary><span class="nm">쉼 — 속인 말은 계속 켜져 있습니다</span></summary><p class="small">뒤에서 몰래 돌아가는 앱처럼, 누구에게 무엇이라고 했는지 기억하고, 이야기를 맞추고, 들킬 대화를 피해야 합니다. 그 앱은 혼자 있을 때 더 세게 돌아갑니다.</p></details>
-    <details class="voice"><summary><span class="nm">나 — 가면이 얼굴이 됩니다</span></summary><p class="small">오래 속이면 가장 먼저 속는 사람이 나입니다. “만일 우리에게 죄가 없다고 말하면, 우리는 스스로를 속이는 것입니다”(요일 1:8). “그들은 자기 혀에게 거짓말하는 법을 가르쳤다”(렘 9:5).</p></details>
+    <details class="voice"><summary><span class="nm">나 — 가면이 얼굴이 됩니다</span></summary><p class="small">속이는 말이 너무 익숙해지면, 마침내 가면을 벗는 법 자체를 잊게 됩니다. 내가 누구인지, 내가 정말 무엇을 느끼는지가 희미해집니다. 그때부터는 ‘다짐’만으로는 바뀌지 않습니다. 뿌리에서 불신과 두려움과 교만이 계속 작동하기 때문입니다.</p></details>
     ${fChips(n,"cost","내 속이는 말이 내게서 빼앗아 간 것",W2_COSTS,{multi:true})}
     <div class="quote">내가 입을 다물었을 때, 온종일 신음하느라 내 뼈가 삭아 갔습니다.<span class="ref">시편 32:3 · NJHV</span></div>
     <h3 class="h3">지혜로운 침묵인가, 속이는 쪽인가</h3>
-    <p>모든 침묵이 속임은 아닙니다. “잠잠할 때가 있고, 말할 때가 있다”(전 3:7). 침묵할 자유는 있지만, 속일 자유는 없습니다. 화요일에 해부한 장면을 네 질문으로 가려 봅니다.</p>
+    <p>모든 침묵이 속임은 아닙니다. 설교의 말처럼, 잘 모르거나 진실인지 확인하기 어려울 때 침묵하거나 “모른다”고 하는 것은 참된 말입니다. 그러나 나를 지키거나 높이려고 진실을 가리는 침묵은 다릅니다. 화요일에 해부한 장면을 네 질문으로 가려 봅니다.</p>
     ${W2_DISCERN.map(q=>`<div class="phrase"><div class="t">${q.q}</div>${fSeg(n,"d_"+q.id,q.o)}</div>`).join("")}
-    ${dDone?`<div class="panel soft"><p class="ph">이 장면은</p><p>${hideN?`네 질문 가운데 ${hideN}곳에서 — ${W2_DISCERN.filter((q,i)=>dAns[i]===1).map(q=>`‘${q.o[1]}’`).join(", ")} — 를 고르셨습니다. `:"네 질문 모두에서 지혜로운 침묵 쪽을 고르셨습니다. "}${hideN>=2?`<b>속이는 쪽</b>에 가깝습니다. 나를 지키거나 높이려는 말이었고, 상대나 다른 사람에게 필요한 진실이 가려졌습니다. 내일, 이 장면을 들고 빛 가운데로 갑니다.`:`<b>지혜로운 침묵</b>에 가깝습니다. 모든 것을 모든 사람에게 말할 필요는 없습니다. 다만 말한다면, 참되게.`}</p></div>
+    ${dDone?`<div class="panel soft"><p class="ph">이 장면은</p><p>${hideN?`네 질문 가운데 ${hideN}곳에서 — ${W2_DISCERN.filter((q,i)=>dAns[i]===1).map(q=>`‘${q.o[1]}’`).join(", ")} — 를 고르셨습니다. `:"네 질문 모두에서 지혜로운 침묵 쪽을 고르셨습니다. "}${hideN>=2?`<b>속이는 쪽</b>에 가깝습니다. 나를 지키거나 높이려는 말이었고, 상대나 다른 사람에게 필요한 진실이 가려졌습니다. 내일, 이 장면을 들고 하나님 앞에 진짜 이름으로 섭니다.`:`<b>지혜로운 침묵</b>에 가깝습니다. 모든 것을 모든 사람에게 말할 필요는 없습니다. 다만 말한다면, 참되게.`}</p></div>
       <div class="quote">뱀처럼 지혜롭고 비둘기처럼 순결하거라.<span class="ref">마태복음 10:16 · NJHV</span></div>
       <p class="small">순결하다는 것은 속이지 않는 것이고, 지혜롭다는 것은 누구에게, 언제, 어떻게 말할지 분별하는 것입니다. 누군가에게 해를 입은 일이라면 이 질문의 대상이 아닙니다. 그 일은 안전한 사람에게 먼저 이야기해 주세요.</p>`:pendHTML(dAns.filter(v=>v!==null).length,W2_DISCERN.length)}
     ${doneBar(n,3)}</section>`+
@@ -1971,131 +1913,8 @@ const W2_STUDY=[
   {id:"st1", t:"SNS에 무언가를 올리거나 들은 말을 옮기기 전에, 원래의 자료나 당사자의 말을 확인한다."},
   {id:"st2", t:"내 생각과 다른 쪽의 설명도 끝까지 들어 본다."},
   {id:"st3", t:"내 편에 불리한 사실도 사실로 받아들인다."},
-  {id:"st4", t:"잘 모르는 일에는 쉽게 말하지 않고, 진실이 보일 때까지 판단을 미룬다."}
+  {id:"st4", t:"잘 모르는 일에는 말을 아끼고, “잘 모르겠다”고 말한다."}
 ];
-function vW2Day5(){
-  const n=5; const sd=w2Side(); const m=sd.m; const lv=v=>v==null?"–":v<0.75?"낮음":v<1.25?"중간":"높음"; const sn=w2Scene();
-  const partner=F(1,"partner_keep",null)==="same"?F1(1,"partner",""):F(1,"partner",""); const sig=F(1,"signal","")||F1(1,"signal",""); const vid=F(4,"verse",null);
-  const stA=W2_STUDY.map(p=>F(n,"sy_"+p.id,null)); const stDone=stA.every(v=>v!==null); const stAvg=stDone?stA.reduce((a,b)=>a+b,0)/stA.length:null;
-  const msg = sd.answered<W2_SIDE.length ? "" : sd.top==="knife" ? "사실을 칼처럼 쓰는 쪽이 가장 큽니다. 말하기 전에 두 번째 질문 — ‘이 말은 누구를 위한 말인가’를 먼저 물어보세요. 칼 같은 말도 결국 나를 지키고 높이는 말입니다. 속이는 말과 뿌리가 같습니다."
-    : sd.top==="silent" ? "말해야 할 때 입을 닫는 쪽이 가장 큽니다. 참된 말에는 용기가 필요합니다. 하나님은 “참된 것을 말하여라” 하시기 전에 두 번 “두려워하지 마라” 하셨습니다(슥 8:13, 15). 용기는 타고나는 게 아니라 은혜 앞에서 구하는 것입니다."
-    : "나를 지키거나 높이려고 속이는 쪽이 가장 큽니다. 오늘의 ‘고쳐 말하기’가 특히 필요한 자리입니다.";
-  const fact=F(n,"o_fact","")||""; const feel=F(n,"o_feel",[])||[]; const need=F(n,"o_need",[])||[]; const req=F(n,"o_req",null)||F(n,"o_req_own","");
-  const bad=/항상|원래|맨날|늘 그래|매번/.test(fact); const ready = fact && feel.length;
-  return dayShell(n, calmLayer(n)+`
-  <section class="layer" id="L2">${layerHead(n,2,"참된 말을 가늠하기","")}
-    <p>참된 말이 ‘사실이면 다 말해도 된다’는 뜻은 아닙니다. 서론의 제이콥스는 한 달 동안 거짓말을 하지 않으려 애썼지만, 그의 말은 아이를 놀라게 하고 어른을 무안하게 하고 친구를 민망하게 했습니다. 참된 말에서 벗어나는 길은 하나가 아닙니다. 나를 지키거나 높이려고 <b>속이기도</b> 하고, 사실을 <b>칼처럼 쓰기도</b> 하고, 말해야 할 때 <b>입을 닫기도</b> 합니다.</p>
-    <h3 class="h3">1. 참된 말에서 나는 어느 쪽으로</h3><p class="small">지난 몇 주를 떠올리며, 떠오르는 대로 누르세요.</p>
-    ${W2_SIDE.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sd_"+p.id,["거의 안 한다","가끔","자주"])}</div>`).join("")}
-    ${sd.answered===W2_SIDE.length?`<div class="bars" style="margin-top:14px">${["hide","knife","silent"].map(k=>`<div class="bar ${k===sd.top?"top":""}"><span class="nm">${W2_SIDES[k].nm}</span><span class="tr"><span class="tk ${k==="hide"?"in":"out"}"><i style="width:${m[k]==null?0:m[k]/2*100}%"></i></span><span class="small">${lv(m[k])} · ${W2_SIDES[k].d}</span></span></div>`).join("")}</div>
-      <p class="small" style="color:var(--teal)">아래 ‘말하기 전에 보기’까지 마치면, 두 진단을 엮은 금요일 브리핑이 나옵니다.${m.hide==null?" 속이는 쪽은 2일째 점검을 하면 함께 나옵니다.":""}</p>`:pendHTML(sd.answered,W2_SIDE.length)}
-    <div class="panel soft"><p class="ph">말하기 전 두 질문</p><p>이 말은 <b>실제와 같은 그림</b>인가? 이 말은 <b>누구를 위한 말</b>인가 — 무엇을 지키거나 높이려는 말인가?</p><p class="small">참된 말은, 실제와 같은 그림을, 사랑 안에서, 서로를 살리려고 하는 말입니다. “함부로 내뱉는 말은 칼로 찌르는 것 같지만, 지혜로운 사람의 혀는 사람을 낫게 한다”(잠 12:18). 칼 같은 진실은 사람을 숨게 만들지만, 은혜와 함께 오는 진실은 사마리아 여인처럼 사람을 일으켜 세웁니다(요 4:29).</p></div>
-    <h3 class="h3">2. 말하기 전에 보기</h3>
-    <p>실제와 같은 그림을 그리려면, 먼저 실제를 보아야 합니다. 참된 말을 연습하는 첫걸음은 말하기 전에 보는 것, 곧 공부입니다. 나는 어떤가요?</p>
-    ${W2_STUDY.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sy_"+p.id,["거의 안 한다","가끔","대개 그렇다"])}</div>`).join("")}
-    ${stDone?(sd.answered===W2_SIDE.length?w2SideBrief():`<p class="small" style="color:var(--teal)">위의 아홉 문장을 마저 고르면 금요일 브리핑이 나옵니다.</p>`)+`<p class="small">이런 공부를 가능하게 하는 것도 복음입니다. 내 안전이 내 편의 승리에 있지 않은 사람만이, 내 편에 불리한 사실 앞에서도 정직할 수 있습니다.</p>`:pendHTML(stA.filter(v=>v!==null).length,W2_STUDY.length)}
-    <div class="quote">너는 헛소문을 퍼뜨리지 마라. 악한 사람과 손잡고 거짓 증인이 되지 마라. 다수를 따라 악을 행하지 말고, 송사에서 다수를 따라 증언하여 정의를 굽게 하지 마라.<span class="ref">출애굽기 23:1–2 · NJHV</span></div>
-    <div class="quote">먼저 자기 사정을 말하는 사람이 옳아 보이지만, 상대가 와서 따져 물으면 드러난다.<span class="ref">잠언 18:17 · NJHV</span></div>
-    <p class="small">바울의 말을 듣고도 그것이 정말 그러한지 날마다 성경을 찾아본 베뢰아 사람들처럼(행 17:11).</p>
-    ${doneBar(n,2)}</section>
-  <section class="layer" id="L3">${layerHead(n,3,"고쳐 말하기, 용기의 한 문장, 그리고 파트너","")}
-    <h3 class="h3">고쳐 말하기 — 하루 안에</h3>
-    <p>이번 주에 적어도 한 번, 실제와 다르게 말한 것을 알아차렸다면 하루 안에 고쳐 말합니다. 처음에는 어색합니다. 그러나 길든 혀는 그렇게 다시 길듭니다.</p>
-    ${sn.said?`<p class="small">화요일에 해부한 말 — ${esc(sn.said)}</p>`:""}
-    ${fChips(n,"fix","고쳐 말할 한 문장",["“아까 그 말은 사실과 달랐어요.”","“사실은 괜찮지 않았어요.”","“사실은 아직 다 못 봤어요.”"])}
-    ${fText(n,"fix_own","내 말로 (선택)")}
-    ${fChips(n,"fix_done","",["고쳐 말했어요","아직이에요"])}
-    <h3 class="h3">용기의 한 문장 — 있는 그대로 이름을 불러 주기</h3>
-    <p class="small">속이는 말이 세상에 거짓 이름을 붙인다면, 참된 말은 있는 그대로 이름을 불러 줍니다. 오늘 할 한 문장을 고르세요.</p>
-    ${fChips(n,"say","나에 대해 — 실수를 실수라고, 모르는 것을 모른다고",SAY.me)}
-    ${fChips(n,"say","우리 사이에서 — 마음을 마음 그대로",SAY.us)}
-    ${fChips(n,"say","세상을 위해 — 위험을 위험이라고, 억울함을 억울하다고",SAY.world)}
-    ${fChips(n,"said","저녁에 — 어떻게 되었나요?",["말했어요","아직이에요","말할 상황이 아니었어요"])}
-    <div class="panel soft"><p class="ph">용기에는 지혜가 함께</p><p class="small">예수께서는 거짓 증인들 앞에서는 침묵하셨지만, “네가 그리스도냐?” 하는 물음에는 분명히 답하셨습니다(막 14:61–62). 침묵할 자유는 있어도, 속일 자유는 없습니다. 모든 사람이 아니라 그 일에 꼭 필요한 사람에게, 믿을 만한 사람에게 말합니다. 나를 해치는 관계라면 그 사람 앞에서 다 드러내야 할 의무는 없습니다. 먼저 안전한 사람, 도움을 줄 수 있는 곳에 말하는 것이 지혜입니다. 화가 끓어오를 때가 아니라 한 번 가라앉힌 다음에 — 이 이야기는 다음 주에 이어집니다.</p></div>
-    <details class="voice"><summary><span class="nm">더 어려운 대화를 위해 — 말할 문장 만들기 (선택)</span></summary>
-      <p>마셜 로젠버그는 말을 네 가지로 나누어 보라고 합니다. 판단이나 평가를 섞지 않은 <b>관찰</b>, 그때의 <b>느낌</b>, 그 밑의 <b>필요</b>, 그리고 구체적인 <b>부탁</b>입니다.</p>
-      <div class="panel soft"><p class="ph">거짓도 칼도 아닌 말의 예</p><p class="small">제이콥스가 그 노인에게 썼어야 했을 편지 — “선생님의 시를 읽으면서 아내분을 얼마나 그리워하시는지가 느껴졌습니다. 이 구절이 특히 마음에 남습니다. 책으로 내기까지는 아직 다듬을 곳이 많아 보이지만, 계속 써 보시면 좋겠습니다.” 실제와 같은 그림이면서, 그 사람을 살리는 말입니다.</p></div>
-      ${fText(n,"o_to","누구에게")}
-      ${fText(n,"o_fact","1. 있었던 사실 — 카메라로 찍은 듯",{area:true,hint:sn.fact?`화요일에 적은 사실: ${esc(sn.fact)}`:"해석이나 평가 없이, 일어난 일만.",ph:"예: 어제 회의 자료를 제가 빠뜨렸어요."})}
-      ${bad?`<p class="small" style="color:var(--warn)">‘항상’, ‘원래’, ‘맨날’ 같은 말이 들어 있습니다. 한 번의 일을 그 사람의 전부로 부풀리는 말입니다. 있었던 일만 남겨 보세요.</p>`:""}
-      ${fChips(n,"o_feel","2. 그때 내 마음",W2_FEEL,{multi:true})}
-      ${fChips(n,"o_need","3. 내가 바라는 것",W2_NEED,{multi:true})}
-      ${fChips(n,"o_req","4. 지금 할 수 있는 구체적인 부탁",W2_REQ,{hint:"박재연은 “앞으로 매번”처럼 지킬 수 없는 부탁 대신, 지금 할 수 있는 구체적인 부탁을 하라고 권합니다."})}
-      ${fText(n,"o_req_own","내 말로 부탁 (선택)")}
-      ${ready?`<div class="panel soft"><p class="ph">내가 할 말 — 네 줄</p>
-        <p><b>있었던 일</b> — ${esc(fact)}</p><p><b>그때 내 마음</b> — ${feel.map(esc).join(", ")}</p>
-        ${need.length?`<p><b>내가 바라는 것</b> — ${need.map(esc).join(", ")}</p>`:""}${req?`<p><b>부탁</b> — ${esc(req)}</p>`:""}
-        <p class="small">이 네 줄을 이어서, 내 말투로 한 번 말해 보세요.</p></div>
-      ${fText(n,"o_final","내 말투로 이어 쓴 문장 (선택)",{area:true})}`:""}
-    </details>
-    <h3 class="h3">파트너와 15분 — “말해 줘서 고마워요”</h3>
-    <div class="panel soft"><p class="ph">시작하기 전에 — 함께 읽어 주세요</p>
-      <p><b>듣기 규칙</b> — 판단하지 않습니다. 해결해 주려 하지 않습니다. 놀라지 않습니다. 듣는 사람의 첫 문장은 언제나 <b>“말해 줘서 고마워요.”</b> 그다음은 요약(“~라는 거구나”)만 합니다.</p>
-      <p><b>우리의 멈춤 신호어</b> — ${sig?`“${esc(sig)}”`:"(월요일에 정하지 않았다면 지금 정하세요)"}. 한 사람이 이 말을 하면 곧바로 멈춥니다.</p>
-      <p><b>말하기 3분</b> — 이번 주 속인 말 하나, 그리고 그 말이 지키거나 높이려던 것. 말할 수 있는 만큼만.</p>
-      <p><b>연습하기 2분</b> — 오늘 고른 고쳐 말하기나 용기의 한 문장을 파트너 앞에서 소리 내어 한 번.</p>
-      <p><b>말씀 건네기 1분</b> — 목요일에 고른 말씀을 보여 주면, 파트너가 이름을 넣어 천천히 읽어 줍니다.</p>
-      <p class="small">그리고 역할을 바꿉니다. 박재연은 듣기 어려운 말을 들을 때 끝까지 침묵으로 듣고 “말해 주어 고맙다”고 말하라고 권합니다. 손발이 잘 맞는 간호 팀일수록 실수 보고가 오히려 더 많았다는 연구처럼, 그 한 문장이 서로에게 드러나도 안전한 자리를 만듭니다.</p></div>
-    ${partner?`<p class="small">이번 주 파트너 — <b>${esc(partner)}</b></p>`:""}
-    ${vid?`<button type="button" class="btn" data-act="partner" data-v="${vid}">파트너에게 말씀 보여 주기</button><p class="small">이 화면에는 내 문장이 나오지 않고, 말씀만 보입니다.</p>`:""}
-    ${fText(n,"heard","내 속인 말을 “말해 줘서 고마워요”로 들었을 때…")}
-    <details class="voice"><summary><span class="nm">파트너와 만나지 못했다면</span></summary><p class="small">“이번 주 내가 속인 말 하나, 그리고 그 말이 지키거나 높이려던 것은?” 소리 내어 하나님께 답해 보세요. 그리고 목요일에 고른 말씀을 내 이름을 넣어 읽습니다. 다음 주에 파트너와 이어서 해도 됩니다.</p></details>
-    ${doneBar(n,3)}</section>`+
-  w2Close(n));
-}
-
-/* ---------- 2주 이번 주 화면 ---------- */
-function vWeek2(){
-  const W=SERIES.weeks[1];
-  return `${topbar(`2주 · ${W.tag}`,"#/more")}
-  <p class="h-hero">${W.q}</p>
-  <p class="lead">${W.sub}</p>
-  ${scriptureHTML("eph4_25")}
-  <h2 class="h2">이번 주에 발견할 것</h2>
-  <p>말은 듣는 사람 머릿속에 그림을 그립니다. 참된 말은 실제와 같은 그림을, 속이는 말은 실제와 다른 그림을 그립니다. 큰 거짓말만이 아니라, 어떤 이유에서든 실제와 다른 그림을 남기는 모든 말입니다.</p>
-  <p>그 뿌리에는 하나님에 대한 거짓 그림이 있습니다. ‘하나님은 좋은 것을 감추시는 분’이라는 그림을 믿으면, 남는 길은 내가 나를 지키고 높이는 것뿐입니다. 그래서 속이는 말에는 두 얼굴이 있습니다. 잃을까 봐 지키려는 얼굴과, 더 가지려고 높이려는 얼굴입니다.</p>
-  <p>그런데 다 드러나도 버림받지 않는 자리가 있습니다. 에서인 척하던 사람이 “야곱입니다”라고 고백한 자리에서, 하나님은 그에게 복을 빌어 주셨습니다. 빛 가운데서 기다리는 것은 형벌이 아니라, 우리를 계속 씻는 예수의 피입니다(요일 1:7).</p>
-  <h2 class="h2">이번 주 세 걸음 — 멈추고, 시인하고, 고쳐 말하기</h2>
-  <ol style="padding-left:1.2em"><li><b>멈추기</b> — “괜찮아요” · “별일 아니에요” · “항상” · “네, 다 봤습니다” · “기도할게요”가 나오려 할 때, 그리고 SNS에 무언가를 올리거나 들은 말을 옮기려 할 때. 첫 화면에서 누르고, 두 질문을 던집니다</li><li><b>시인하기</b> — 고요의 마지막 2분, 오늘 속인 말 하나를 하나님께 그대로. “주님, 오늘 속이지 않을 담대함을 주십시오.”</li><li><b>고쳐 말하기</b> — 하루 안에 “아까 그 말은 사실과 달랐어요.” 그리고 용기의 한 문장</li></ol>
-  <p class="small">그리고 누군가 자기를 드러낼 때, 우리의 첫 문장은 “말해 줘서 고마워요.”</p>
-  ${methodPanel(2)}
-  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 야곱의 두 밤</span></summary>${scriptureHTML("gen27")}${scriptureHTML("gen32")}</details>
-  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 빛 가운데</span></summary>${scriptureHTML("ijn1_79")}</details>
-  <h2 class="h2">이번 주의 여섯 날</h2>
-  ${[1,2,3,4,5,6].map(k=>`<a class="list-link" href="#/day/2/${k}"><span><span class="s">${k}일째 · ${DAYS_W[2][k].nm} · 약 ${DAYS_W[2][k].min}분</span><br><span class="t">${DAYS_W[2][k].title}</span></span><span class="s">${dayState(k,2)==="done"?"마침":dayState(k,2)==="part"?"진행 중":""}</span></a>`).join("")}
-  <a class="list-link" href="#/group/2"><span><span class="s">6일째 뒤</span><br><span class="t">소그룹 — 함께 나누기</span></span></a>
-  <h2 class="h2">설교 한 문장</h2>
-  <p class="serif" style="font-size:1.25em;font-weight:700;line-height:1.6">참된 말은 정직한 성격이 아니라, 드러나도 안전한 자리에서 나옵니다.</p>`;
-}
-
-/* ---------- 2주 소그룹 ---------- */
-function vGroup2(){
-  return `${topbar("소그룹 · 2주","#/week/2","약 60분")}
-  <h2 class="h2">나눔 규칙</h2>
-  <ol style="padding-left:1.2em"><li>여기서 들은 것은 여기에 둡니다</li><li>조언하지 않습니다 — 요약(“~라는 거구나”)과 공감(“힘들었겠다”)만</li><li>판단 대신 질문합니다</li><li>다른 사람 이야기 말고, 내 이야기를 합니다</li><li>말하지 않을 권리가 있습니다 — 침묵해도 괜찮습니다</li></ol>
-  <h2 class="h2">흐름</h2>
-  <div class="tablewrap"><table class="simple"><tr><th>순서</th><th>시간</th><th>내용</th></tr>
-  <tr><td>체크인</td><td>5분</td><td>온도 한 가지 — 월요일과 토요일, 무엇이 달라졌나요?</td></tr>
-  <tr><td>고요 나눔</td><td>10분</td><td>하나님께 그대로 시인하며 — 무엇이 어려웠나요?</td></tr>
-  <tr><td>속이는 말</td><td>25분</td><td>질문 1–3</td></tr>
-  <tr><td>말해 줘서 고마워요</td><td>15분</td><td>질문 4</td></tr>
-  <tr><td>기도</td><td>5분</td><td>서로를 위한 기도</td></tr></table></div>
-  <h2 class="h2">질문</h2>
-  <ol style="padding-left:1.2em">
-    <li><b>가장 자주 눌린 신호어 하나</b> — 그 말은 무엇을 지키거나 높이려던 말이었나요?</li>
-    <li><b>입으로는 고백하면서도 실제로 보고 있던 하나님에 대한 그림</b> 하나 — 그리고 그 앞에서 들은 말씀 (말할 수 있는 만큼만)</li>
-    <li><b>이번 주 고쳐 말한 순간</b>, 또는 용기의 한 문장을 말한 순간 — 어떻게 되었나요?</li>
-    <li><b>말해 줘서 고마워요</b> — 돌아가며 이번 주 속인 말 하나를 짧게 말합니다. 듣는 사람들은 판단하거나 조언하지 않고, 함께 “말해 줘서 고마워요”로만 대답합니다.</li>
-  </ol>
-  ${verseHTML("ijn1_7",{note:false})}
-  <div class="field"><label for="gp2">서로를 위한 기도 제목</label><textarea id="gp2" data-g="prayer">${esc((S.w2.group||{}).prayer||"")}</textarea></div>
-  <details class="voice"><summary><span class="nm">리더에게</span></summary>
-    <p><b>진행</b> — 규칙을 읽고 시작합니다. 질문 1은 리더가 먼저 짧게 나누면 문이 열립니다.</p>
-    <p><b>질문 4</b> — 누군가 무거운 이야기를 꺼내도, 그 자리에서 더 묻거나 풀어 주려 하지 않습니다. “말해 줘서 고마워요”로 받고, 모임 뒤에 따로 연락합니다.</p>
-    <p><b>누군가에게 해를 입은 일을 꺼내는 분이 있을 때</b> — 그것은 ‘속이는 말’의 문제가 아닙니다. 판단 없이 듣고, 목회자에게 연결합니다.</p>
-    <p><b>시간</b> — 60분을 넘기지 않습니다.</p></details>`;
-}
-
 /* ---------- 2주 6일째 — 거두기 ---------- */
 function vW2Day6(){
   const n=6; const sn=w2Scene(); const vid=F(4,"verse",null); const rev=F(6,"revealed",false); const tot=sigTotals(); const days=Object.entries(S.w2.sig||{}).sort((a,b)=>a[0]<b[0]?-1:1).slice(-7);
@@ -2105,13 +1924,39 @@ function vW2Day6(){
     sn.belief&&{k:"sh2",t:`속이는 말 밑의 믿음: “${sn.belief}”`},
     (F(3,"picture",[])||[]).filter(v=>v!=="모름").length&&{k:"sh6",t:`내가 보고 있던 하나님에 대한 그림: ${(F(3,"picture",[])||[]).filter(v=>v!=="모름").map(v=>W2_PICTURES.find(p=>p.v===v).t).join(" / ")}`},
     F(4,"name",null)&&{k:"sh3",t:`이름 고백: 저는 ${(F(4,"coat",[])||[]).join(", ")}이 아닙니다. 저는 ${F(4,"name","")}입니다.`},
-    vid&&{k:"sh4",t:`빛 가운데의 말씀: ${VERSES[vid].ref}`},
+    vid&&{k:"sh4",t:`참된 그림의 말씀: ${VERSES[vid].ref}`},
     F(6,"discover","")&&{k:"sh5",t:`이번 주의 발견: ${F(6,"discover","")}`}
   ].filter(Boolean);
   const shSel=F(6,"share",[])||[]; const shareText=shareItems.filter(x=>shSel.includes(x.k)).map(x=>x.t).join("\n");
-  const prayer=`아버지,\n저는 오랫동안 에서의 옷을 입고 살았습니다.\n잘 보이려고, 사랑을 잃을까 두려워서,\n실제와 다른 그림을 그리는 말로 저를 지키고 높였습니다.\n\n그러나 형의 옷도 이름도 없이 누운 야곱에게\n아버지는 꾸짖지 않으시고 먼저 오셨습니다.\n“보아라, 내가 너와 함께 있다.”\n아버지는 좋은 것을 감추시는 분이 아니라,\n아들까지 내주신 분이심을 믿습니다.\n\n이제 에서의 옷을 벗고, 야곱의 이름으로 빛 앞에 섭니다.\n제 죄를 아뢰고, 제 잘못을 덮지 않겠습니다.\n아들 예수의 피가 저를 계속 깨끗하게 하심을 믿습니다.\n\n두려워하지 말라 하신 아버지,\n오늘 속이지 않을 담대함을 주십시오.\n이웃에게 참된 것을 말하되, 사랑 안에서 말하게 하시고,\n누군가 자기를 드러낼 때 “말해 줘서 고마워요”라고 말하는\n안전한 자리가 되게 하십시오.\n\n여호와여, 내 입 앞에 파수꾼을 세우시고,\n내 입술의 문을 지켜 주소서.\n\n예수 그리스도의 이름으로 기도합니다. 아멘.`;
+  const prayer=`아버지,
+저는 오랫동안 하나님에 대한 거짓 그림을 붙들고 살았습니다.
+좋은 것은 감추시고, 조건이 맞아야 사랑하시는 분으로.
+그래서 두려워 숨고, 움켜쥐려고 꾸미고,
+실제와 다른 그림을 그리는 말로 저를 지키고 높였습니다.
+
+그러나 아무것도 내놓지 못한 야곱에게
+아버지는 꾸짖지 않으시고 먼저 오셨습니다.
+“보아라, 내가 너와 함께 있다.”
+자기 아들을 아끼지 않으시고 내주신 아버지께서
+모든 것을 은혜로 주시지 않겠습니까.
+
+“너는 누구냐” 물으실 때,
+이제 에서라고 대답하지 않겠습니다.
+네, 저는 ${S.name?esc(S.name):"○○"}입니다.
+움켜쥐려 애쓰던 바로 그 이름으로 아버지 앞에 섭니다.
+저를 이스라엘이라, 아버지의 백성이라 불러 주십시오.
+
+오늘도 아버지의 진실한 새 그림을 주십시오.
+두려움과 교만이 아니라 감사와 기쁨으로,
+진실을 말하되 사랑으로 세우는 말을 하게 하십시오.
+
+여호와여, 내 입 앞에 파수꾼을 세우시고,
+내 입술의 문을 지켜 주소서.
+
+예수 그리스도의 이름으로 기도합니다. 아멘.`;
   return dayShell(n, calmLayer(n)+`
   <section class="layer" id="L2">${layerHead(n,2,"한 주 돌아보기","")}
+    ${newFig(n)}
     <h3 class="h3">지금 내 온도</h3>
     ${fRange(n,"t_hide","지난 한 주, 실제와 다르게 말한 순간은 얼마나 자주 있었나요?",{lo:"전혀",hi:"자주"})}
     ${fRange(n,"t_safe","가까운 사람 앞에서, 있는 그대로 말해도 괜찮다고 느끼나요?",{lo:"전혀",hi:"충분히"})}
@@ -2120,7 +1965,7 @@ function vW2Day6(){
       <div class="c"><div class="k">실제와 다른 말 · 월요일 → 오늘</div><div class="v">${F(1,"t_hide","–")} → ${F(6,"t_hide","–")}</div></div>
       <div class="c"><div class="k">사람 앞 안전감 · 월요일 → 오늘</div><div class="v">${F(1,"t_safe","–")} → ${F(6,"t_safe","–")}</div></div>
       <div class="c"><div class="k">하나님 앞 솔직함 · 월요일 → 오늘</div><div class="v">${F(1,"t_god","–")} → ${F(6,"t_god","–")}</div></div></div>
-    <p class="small">숫자가 그대로이거나 늘어도 괜찮습니다. 내 말에 귀를 기울이면, 전에는 몰랐던 속이는 말이 더 많이 보이기도 합니다. 그것도 빛 가운데로 나오는 시작입니다.</p>
+    <p class="small">숫자가 그대로이거나 늘어도 괜찮습니다. 내 말에 귀를 기울이면, 전에는 몰랐던 속이는 말이 더 많이 보이기도 합니다. 그것도 진짜 이름으로 서는 시작입니다.</p>
     <h3 class="h3">신호어 — 이번 주 내 입에서</h3>
     ${days.length?`<div class="tablewrap"><table class="simple"><tr><th>날</th>${SIGS.map(s=>`<th>${s.t}</th>`).join("")}</tr>${days.map(([k,d])=>`<tr><td>${k.slice(5).replace("-","/")}</td>${SIGS.map(s=>`<td>${d[s.id]||0}</td>`).join("")}</tr>`).join("")}<tr><td><b>합계</b></td>${SIGS.map(s=>`<td><b>${tot[s.id]}</b></td>`).join("")}</tr></table></div>`:`<p class="empty">이번 주 누른 신호어가 여기에 모입니다.</p>`}
     <h3 class="h3">믿음의 변화</h3>
@@ -2136,13 +1981,13 @@ function vW2Day6(){
     ${fText(n,"discover","이번 주, 내가 속이는 까닭에 대해 새로 알게 된 것 하나")}
     ${doneBar(n,2)}</section>
   <section class="layer" id="L3">${layerHead(n,3,"거두어들이기","")}
-    <p class="serif" style="font-size:1.3em;font-weight:700;line-height:1.55;margin:18px 0">참된 말은 정직한 성격이 아니라, 드러나도 안전한 자리에서 나옵니다.</p>
-    <div class="quote">이번 주, 에서의 옷을 벗고 야곱의 이름으로 빛 앞에 서십시오. 속이는 말을 벗고, 참된 말을 입으십시오. 우리는 이미 그렇게 불린 사람들입니다.<span class="ref">설교의 결론에서</span></div>
+    <p class="serif" style="font-size:1.3em;font-weight:700;line-height:1.55;margin:18px 0">참된 말은 오직 하나님에 대한 온전한 그림에서만 나옵니다.</p>
+    <div class="quote">우리는 참된 말로 하나님 나라를 살아가는, 새로운 이름을 가진 백성입니다. 날마다 하나님의 참된 그림을 발견하고, 두려움과 교만이 아니라 감사와 기쁨으로, 진실을 말하되 사랑으로 세우는 참된 말을 하는 인생으로 회복되기를.<span class="ref">설교의 결론에서</span></div>
     <h3 class="h3">다섯 도구 — 이번 주 내가 쓴 것</h3>
     <div class="tablewrap"><table class="simple">
-      <tr><td><b>자각</b></td><td>${sc.answered?"속이는 말 점검":""}${sc.answered&&Object.values(tot).some(Boolean)?", ":""}${Object.values(tot).some(Boolean)?`신호어 ${Object.values(tot).reduce((a,b)=>a+b,0)}번`:""}${!sc.answered&&!Object.values(tot).some(Boolean)?"아직":""}</td></tr>
-      <tr><td><b>지연</b></td><td><span class="small">말하기 전에 멈추고 두 질문 — 화가 끓어오를 때의 멈춤은 3주에 깊이 다룹니다</span></td></tr>
-      <tr><td><b>대체</b></td><td>${vid?`빛 가운데의 말씀 — ${VERSES[vid].ref}`:"아직"}${F(5,"fix_done",null)==="고쳐 말했어요"?" · 하루 안에 고쳐 말함":""}${F(5,"said",null)==="말했어요"?" · 용기의 한 문장":""}</td></tr>
+      <tr><td><b>자각</b></td><td>${sc.answered?"월요일 상황 · 화요일 점검":""}${sc.answered&&Object.values(tot).some(Boolean)?", ":""}${Object.values(tot).some(Boolean)?`신호어 ${Object.values(tot).reduce((a,b)=>a+b,0)}번`:""}${!sc.answered&&!Object.values(tot).some(Boolean)?"아직":""}</td></tr>
+      <tr><td><b>지연</b></td><td><span class="small">게시물을 올리거나 말을 시작하기 전의 멈춤 — 화가 끓어오를 때의 멈춤은 3주에 깊이 다룹니다</span></td></tr>
+      <tr><td><b>대체</b></td><td>${vid?`참된 그림의 말씀 — ${VERSES[vid].ref}`:"아직"}${[1,2,3,4,5,6].some(d=>["말해 봤어요","써 두었어요"].includes(F(d,"ts_done",null)))?" · 실제 그림의 말":""}${F(5,"said",null)==="말했어요"?" · 사랑 안에서 살리는 말":""}</td></tr>
       <tr><td><b>샘 관리</b></td><td>아침 고요 ${[1,2,3,4,5,6].filter(d=>S.calm["2-"+d]).length} / 6</td></tr>
       <tr><td><b>공동체</b></td><td>${F(5,"heard","")?"파트너와 “말해 줘서 고마워요”":"아직"}</td></tr></table></div>
     <h3 class="h3">소그룹 나눔 준비</h3>
@@ -2171,7 +2016,7 @@ function w2MapHTML(){
   ${sn.belief?`<p>속이는 말 밑의 믿음 — “${esc(sn.belief)}” <span class="small">${[sn.pct,F(4,"belief4",null,2),F(6,"belief6",null,2)].map(v=>v==null?"–":v).join(" → ")}</span></p>`:""}
   <p class="small">이번 주 신호어 — ${SIGS.map(s=>`“${s.t}” ${tot[s.id]}`).join(" · ")}</p>
   ${coats.length&&nm?`<p>이름 고백 — <span class="serif">저는 ${coats.map(esc).join(", ")}이 아닙니다. 저는 ${esc(nm)}입니다.</span></p>`:""}
-  ${vid?`<p>빛 가운데의 말씀</p>${verseHTML(vid,{name:S.name})}`:""}
+  ${vid?`<p>참된 그림의 말씀</p>${verseHTML(vid,{name:S.name})}`:""}
   ${w2Brief()?`<details class="voice"><summary><span class="nm">2주 진단 브리핑</span></summary>${w2Brief()}</details>`:""}`;
 }
 
@@ -2214,32 +2059,468 @@ if(INST.on){
   if("serviceWorker" in navigator && location.protocol==="https:") window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
 }
 
+/* ====================== 2주 최종 원고(2026-10-11 「참된 말」)에 맞춘 본문과 화면 ====================== */
+Object.assign(SCR, {
+  w2_rom8:{ ref:"로마서 8:31–32", gloss:"뱀은 ‘하나님은 좋은 것을 감추신다’고 속삭였습니다. 십자가는 정반대를 말합니다. 가장 좋은 것까지 이미 내주셨습니다.", v:[
+    [31,"그러면 이 일들에 대하여 우리가 무엇이라고 말하겠습니까? 하나님이 우리 편이시라면, 누가 우리를 대적하겠습니까?"],
+    [32,"<b>자기 아들을 아끼지 않으시고 우리 모두를 위하여 내주신 분이, 어찌 그 아들과 함께 모든 것을 우리에게 은혜로 주시지 않겠습니까?</b>"]
+  ]},
+  w2_gen32:{ ref:"창세기 32:26–30", gloss:"20년 전 “너는 누구냐?”는 물음에 “에서입니다”라고 답했던 사람이, 이 밤에는 “야곱입니다”라고 답합니다.", v:[
+    [26,"그가 말했다. “날이 새려고 하니 나를 보내 다오.” 야곱이 말했다. “<b>저에게 복을 빌어 주지 않으면 보내 드리지 않겠습니다.</b>”"],
+    [27,"그가 야곱에게 물었다. “<b>너의 이름이 무엇이냐?</b>” 야곱이 대답했다. “<b>야곱입니다.</b>”"],
+    [28,"그가 말했다. “<b>이제 너의 이름은 야곱이 아니라 이스라엘이다.</b> 네가 하나님과 겨루고 사람들과 겨루어 이겼기 때문이다.”"],
+    [29,"야곱이 청했다. “당신의 이름을 알려 주십시오.” 그가 말했다. “어찌하여 내 이름을 묻느냐?” 그리고 그는 거기서 야곱에게 복을 빌어 주었다."],
+    [30,"야곱은 그곳 이름을 브니엘이라 하고 말했다. “<b>내가 하나님을 얼굴과 얼굴로 보았는데도, 목숨을 건졌다.</b>”"]
+  ]},
+  w2_eph4:{ ref:"에베소서 4:15, 25", gloss:"참된 말은 필터 없이 다 말하는 것이 아닙니다. 사랑 안에서, 서로를 살리려고 하는 말입니다.", v:[
+    [15,"<b>오히려 사랑 안에서 참된 것을 말하며</b>, 모든 면에서 그분에게까지 자라 갑시다. 그분은 머리이신 그리스도이십니다."],
+    [25,"그러므로 거짓을 벗어 버리고, 각자 자기 이웃과 더불어 참된 것을 말하십시오. <b>우리는 서로의 지체이기 때문입니다.</b>"]
+  ]},
+  jn8_44:{ ref:"요한복음 8:44", v:[
+    [44,"너희는 너희 아비인 마귀에게서 났고, 너희 아비의 욕망대로 하려고 한다. 그는 처음부터 살인자였고, 진리 안에 서 있지 않다. 그 안에 진리가 없기 때문이다. 그가 거짓말을 할 때는 자기 본성에서 나오는 말을 하는 것이다. <b>그는 거짓말쟁이이고, 거짓의 아비이기 때문이다.</b>"]
+  ]},
+  jn1_4751:{ ref:"요한복음 1:47, 51", gloss:"야곱이 본 벧엘의 사닥다리, 속이며 살던 인생에게 하늘을 열어 주던 그 사닥다리가 바로 예수님 자신입니다.", v:[
+    [47,"“<b>너는 참 이스라엘 사람이구나. 그 안에는 속임이 없구나.</b>”"],
+    [51,"“너희는 하늘이 열리고, 하나님의 천사들이 인자 위로 오르내리는 것을 보게 될 거야.”"]
+  ]}
+});
+SCR.gen32.v = SCR.gen32.v.map(([n,t])=>[n, t.replace("네 이름이 무엇이냐?","너의 이름이 무엇이냐?").replace("이제 네 이름은","이제 너의 이름은")]);
+Object.assign(VERSES, {
+  gen32_28:{ref:"창세기 32:28", who:"“야곱입니다”라고 진짜 이름을 고백한 사람에게", t:"이제 너의 이름은 야곱이 아니라 이스라엘이다.", key:"이제 너의 이름은 야곱이 아니라 이스라엘이다.", direct:false},
+  eph4_15:{ref:"에베소서 4:15", who:"참된 것을 칼처럼 쓰기 쉬운 사람에게 바울이", t:"오히려 사랑 안에서 참된 것을 말하며, 모든 면에서 그분에게까지 자라 갑시다.", key:"사랑 안에서 참된 것을 말하며", direct:false}
+});
+DAYS_W[2] = {
+  1:{n:1, nm:"출발", title:"속이는 말의 무게", scr:"w2_rom8", min:15},
+  2:{n:2, nm:"점검", title:"점검, 그리고 한 장면 해부", scr:"w2d2", min:25},
+  3:{n:3, nm:"뿌리", title:"하나님에 대한 거짓 그림", scr:"w2d4", min:20},
+  4:{n:4, nm:"이름", title:"진짜 이름으로 서기", scr:"w2_gen32", min:20},
+  5:{n:5, nm:"연습", title:"진실을 알고, 사랑으로 말하기", scr:"w2_eph4", min:30},
+  6:{n:6, nm:"거두기", title:"참된 말로 거두기", scr:"w2d6", min:30}
+};
+
+/* 5일째 — 사랑 안에서 살리는 말: 나는 대개 어떻게 말하나 */
+const W2_LOVE=[
+  {id:"g1", q:"마음에 들지 않는 선물을 받았을 때, 나는 대개", o:[
+    {v:"a",c:"flat",t:"“와, 정말 좋아요!”"},
+    {v:"b",c:"knife",t:"“이런 건 제 취향이 아니에요.”"},
+    {v:"c",c:"life",t:"“신경 써서 챙겨 주셔서 고마워요.” — 마음에 드는 점을 찾아 말한다"},
+    {v:"d",c:"mute",t:"웃고 아무 말 없이 넘어간다"}]},
+  {id:"g2", q:"아이가 죽은 벌레를 보고 “자고 있네” 할 때, 나는 대개", o:[
+    {v:"a",c:"flat",t:"“응, 자고 있네.”"},
+    {v:"b",c:"knife",t:"“아냐, 그거 죽은 거야.”"},
+    {v:"c",c:"life",t:"“정말 자는 것처럼 움직이지 않네. 왜 그럴까?”"},
+    {v:"d",c:"mute",t:"대답하지 않고 넘어간다"}]},
+  {id:"g3", q:"가족이나 동료가 공들인 결과물이 내 기준에 많이 아쉬울 때, 나는 대개", o:[
+    {v:"a",c:"flat",t:"“완벽해요, 최고예요.”"},
+    {v:"b",c:"knife",t:"“이건 다시 해야겠는데요.”"},
+    {v:"c",c:"life",t:"“애쓴 게 보여요. 이 부분이 특히 좋고, 여기는 조금 더 다듬으면 좋겠어요.”"},
+    {v:"d",c:"mute",t:"아무 말도 하지 않는다"}]}
+];
+const LOVE_NM={flat:"듣기 좋은 거짓 쪽",knife:"필터 없는 칼 쪽",life:"참되면서 살리는 쪽",mute:"말하지 않는 쪽"};
+function w2Love(){
+  const ans=W2_LOVE.map(s=>({s,o:s.o.find(x=>x.v===F(5,"lv_"+s.id,null,2))})).filter(x=>x.o);
+  const cnt={}; ans.forEach(x=>cnt[x.o.c]=(cnt[x.o.c]||0)+1);
+  return {answered:ans.length, cnt, ans};
+}
+function w2LoveBrief(){
+  const lv=w2Love(); if(lv.answered<W2_LOVE.length) return "";
+  const c=lv.cnt; let p;
+  if((c.life||0)===3) p="세 상황 모두에서 참되면서 살리는 쪽을 고르셨습니다. 이미 몸에 밴 말의 자리입니다. 이번 주에는 그 말을 가장 어려운 한 사람에게 건네 보세요.";
+  else if((c.flat||0)>=2) p="듣기 좋은 거짓 쪽을 자주 고르셨습니다. 상대를 아끼는 마음에서 나왔겠지만, 실제와 다른 그림을 남깁니다. 칭찬할 수 있는 ‘사실’을 찾아 말하는 연습이 필요합니다. 마음에 드는 점이 하나도 없다면, 마음 써 준 그 사람 자체에 고마워할 수 있습니다.";
+  else if((c.knife||0)>=2) p="필터 없는 칼 쪽을 자주 고르셨습니다. 서론의 제이콥스처럼, 사실이지만 사람을 다치게 하는 말입니다. 말하기 전에, 이 말을 들은 사람이 무엇을 느낄지 한 번 떠올려 보세요.";
+  else if((c.mute||0)>=2) p="말하지 않는 쪽을 자주 고르셨습니다. 거짓도 칼도 피했지만, 살리는 말 한마디도 함께 사라질 수 있습니다.";
+  else p="상황마다 다른 쪽을 고르셨습니다. 어떤 자리에서 쉽게 무너지는지 살펴보세요.";
+  return briefBox(`사랑 안에서 — ${nmOf()}의 말`,[{h:"내 대답",p:Object.keys(LOVE_NM).filter(k=>c[k]).map(k=>`${LOVE_NM[k]} ${c[k]}`).join(", ")+"."},{h:"보이는 것",p}]);
+}
+const W2_TONGUE=[
+  {v:"사실은 좀 힘들어요.",t:"“괜찮아요” 대신 — “사실은 좀 힘들어요.”"},
+  {v:"사실은 동료가 많이 도와줬어요.",t:"“제가 다 한 겁니다” 대신 — “사실은 동료가 많이 도와줬어요.”"},
+  {v:"그건 제가 잘 몰라서요.",t:"잘 모르는 일 앞에서 — “그건 제가 잘 몰라서요.”"},
+  {v:"이 부분은 확인해 보고 말씀드릴게요.",t:"확신이 없을 때 — “이 부분은 확인해 보고 말씀드릴게요.”"}
+];
+
+function vW2Day5(){
+  const n=5; const sd=w2Side(); const m=sd.m; const lv=v=>v==null?"–":v<0.75?"낮음":v<1.25?"중간":"높음"; const sn=w2Scene();
+  const partner=F(1,"partner_keep",null)==="same"?F1(1,"partner",""):F(1,"partner",""); const sig=F(1,"signal","")||F1(1,"signal",""); const vid=F(4,"verse",null);
+  const stA=W2_STUDY.map(p=>F(n,"sy_"+p.id,null)); const stDone=stA.every(v=>v!==null);
+  const lvv=w2Love();
+  const fact=F(n,"o_fact","")||""; const feel=F(n,"o_feel",[])||[]; const need=F(n,"o_need",[])||[]; const req=F(n,"o_req",null)||F(n,"o_req_own","");
+  const bad=/항상|원래|맨날|늘 그래|매번/.test(fact); const ready = fact && feel.length;
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"진실을 알고 말하기","")}
+    <p>참된 말은 실제와 같은 그림을 그리는 말입니다. 그러니 실제를 제대로 알지 못한 채 말할 때 문제가 생길 수밖에 없습니다. 설교의 셋째 연습 — 진실을 파악하고 말하는 법을 배우는 것입니다. 잘 모르는 일에는 말을 아끼고, “모른다”고 하는 것이 훨씬 참된 말일 때가 많습니다.</p>
+    ${newIns(n)}
+    <h3 class="h3">1. 말하기 전에 보기 — 나는 어떤가요?</h3>
+    ${W2_STUDY.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sy_"+p.id,["거의 안 한다","가끔","대개 그렇다"])}</div>`).join("")}
+    ${stDone?"":pendHTML(stA.filter(v=>v!==null).length,W2_STUDY.length)}
+    <div class="quote">먼저 자기 사정을 말하는 사람이 옳아 보이지만, 상대가 와서 따져 물으면 새로이 드러난다.<span class="ref">잠언 18:17 · NJHV</span></div>
+    <p class="small">동영상 몇 개, 기사 제목 몇 줄로 진실을 안다고 착각하지 않기. 말하고 싶다면 원래 자료를 찾아보고, 내 편에 불리한 설명도 끝까지 들어 보기. 게시물을 올리거나 어떤 말을 시작하기 전에 한 번 멈추고, 진실인지 확인하기 어렵다면 침묵하거나 “모른다”고 하기.</p>
+    <h3 class="h3">2. 속이는 말 말고, 참된 말에서 벗어나는 두 길</h3><p class="small">속이는 말은 이번 주 내내 보았습니다. 참된 말에서 벗어나는 길이 둘 더 있습니다. 사실을 칼처럼 쓰는 길, 말해야 할 때 입을 닫는 길. 지난 몇 주를 떠올리며 누르세요.</p>
+    ${W2_SIDE.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"sd_"+p.id,["거의 안 한다","가끔","자주"])}</div>`).join("")}
+    ${sd.answered===W2_SIDE.length?`<div class="bars" style="margin-top:14px">${["knife","silent"].map(k=>`<div class="bar ${k===sd.top?"top":""}"><span class="nm">${W2_SIDES[k].nm}</span><span class="tr"><span class="tk out"><i style="width:${m[k]==null?0:m[k]/2*100}%"></i></span><span class="small">${lv(m[k])} · ${W2_SIDES[k].d}</span></span></div>`).join("")}</div>${w2SideBrief()}`:pendHTML(sd.answered,W2_SIDE.length)}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"사랑 안에서 살리는 말","")}
+    ${newFig(n)}
+    <p>설교의 넷째 연습입니다. 참된 말은 필터 없이 솔직하게 말하는 것이 전부가 아닙니다. “오히려 사랑 안에서 참된 것을 말하며, 모든 면에서 그분에게까지 자라 갑시다”(엡 4:15).</p>
+    <div class="panel soft"><p class="ph">거짓도 칼도 아닌 말</p>
+      <p class="small">죽은 딱정벌레를 보고 “자고 있네” 하는 아이에게 — “와, 정말 자고 있네”는 거짓이고, “아냐, 그거 죽은 거야”는 칼입니다. “이 벌레는 정말 자는 것처럼 움직이지 않는구나.”</p>
+      <p class="small">마음에 들지 않는 선물 앞에서 — “와, 정말 좋아요”는 거짓이지만, “신경 써서 챙겨 주셔서 감사해요. 덕분에 필요한 걸 잘 골라 볼게요”는 참되면서 사람을 살리는 말입니다.</p></div>
+    <h3 class="h3">이런 순간, 나는 대개</h3>
+    <p class="small">바람직한 대답이 아니라, 실제로 하는 쪽을 고르세요.</p>
+    ${W2_LOVE.map(s=>fOpts(n,"lv_"+s.id,s.q,s.o)).join("")}
+    ${lvv.answered===W2_LOVE.length?w2LoveBrief():pendHTML(lvv.answered,W2_LOVE.length)}
+    <h3 class="h3">오늘 건넬, 참되면서 살리는 말</h3>
+    <p>마셜 로젠버그는 말을 네 가지로 나누어 보라고 합니다. 판단이나 평가를 섞지 않은 <b>관찰</b>, 그때의 <b>느낌</b>, 그 밑의 <b>필요</b>, 그리고 구체적인 <b>부탁</b>입니다. 사실과 마음을 갈라 말하면, 같은 진실도 칼이 아니라 다리가 됩니다.</p>
+    ${fText(n,"o_to","누구에게")}
+    ${fText(n,"o_fact","1. 있었던 사실 — 카메라로 찍은 듯",{area:true,hint:"해석이나 평가 없이, 일어난 일만.",ph:"예: 어제 회의 자료를 제가 빠뜨렸어요."})}
+    ${bad?`<p class="small" style="color:var(--warn)">‘항상’, ‘원래’, ‘맨날’ 같은 말이 들어 있습니다. 한 번의 일을 그 사람의 전부로 부풀리는 말입니다. 있었던 일만 남겨 보세요.</p>`:""}
+    ${fChips(n,"o_feel","2. 그때 내 마음",W2_FEEL,{multi:true})}
+    ${fChips(n,"o_need","3. 내가 바라는 것",W2_NEED,{multi:true})}
+    ${fChips(n,"o_req","4. 지금 할 수 있는 구체적인 부탁",W2_REQ,{hint:"박재연은 “앞으로 매번”처럼 지킬 수 없는 부탁 대신, 지금 할 수 있는 구체적인 부탁을 하라고 권합니다."})}
+    ${fText(n,"o_req_own","내 말로 부탁 (선택)")}
+    ${ready?`<div class="panel soft"><p class="ph">내가 할 말 — 네 줄</p>
+      <p><b>있었던 일</b> — ${esc(fact)}</p><p><b>그때 내 마음</b> — ${feel.map(esc).join(", ")}</p>
+      ${need.length?`<p><b>내가 바라는 것</b> — ${need.map(esc).join(", ")}</p>`:""}${req?`<p><b>부탁</b> — ${esc(req)}</p>`:""}
+      <p class="small">이 네 줄을 이어서, 내 말투로 한 번 말해 보세요.</p></div>
+    ${fText(n,"o_final","내 말투로 이어 쓴 문장 (선택)",{area:true})}`:""}
+    ${fChips(n,"said","저녁에 — 어떻게 되었나요?",["말했어요","아직이에요","말할 상황이 아니었어요"])}
+    <h3 class="h3">파트너와 15분</h3>
+    <div class="panel soft"><p class="ph">시작하기 전에 — 함께 읽어 주세요</p>
+      <p><b>듣기 규칙</b> — 판단하지 않습니다. 해결해 주려 하지 않습니다. 놀라지 않습니다. 듣는 사람의 첫 문장은 <b>“말해 줘서 고마워요.”</b> 그다음은 요약(“~라는 거구나”)만 합니다.</p>
+      <p><b>우리의 멈춤 신호어</b> — ${sig?`“${esc(sig)}”`:"(월요일에 정하지 않았다면 지금 정하세요)"}. 한 사람이 이 말을 하면 곧바로 멈춥니다.</p>
+      <p><b>말하기 3분</b> — 이번 주 속인 말 하나, 그리고 그 근원 — 두려움이었는지, 교만이나 욕심이었는지. 말할 수 있는 만큼만.</p>
+      <p><b>연습하기 2분</b> — 오늘 만든 ‘참되면서 살리는 말’을 파트너 앞에서 소리 내어 한 번.</p>
+      <p><b>말씀 건네기 1분</b> — 목요일에 고른 말씀을 보여 주면, 파트너가 이름을 넣어 천천히 읽어 줍니다.</p>
+      <p class="small">그리고 역할을 바꿉니다. “우리는 서로의 지체입니다”(엡 4:25). 듣기 어려운 말을 끝까지 침묵으로 듣고 “말해 주어 고맙다”고 말하는 것(박재연), 그 한 문장이 서로에게 드러나도 안전한 자리를 만듭니다.</p></div>
+    ${partner?`<p class="small">이번 주 파트너 — <b>${esc(partner)}</b></p>`:""}
+    ${vid?`<button type="button" class="btn" data-act="partner" data-v="${vid}">파트너에게 말씀 보여 주기</button><p class="small">이 화면에는 내 문장이 나오지 않고, 말씀만 보입니다.</p>`:""}
+    ${fText(n,"heard","내 이야기를 “말해 줘서 고마워요”로 들었을 때…")}
+    <details class="voice"><summary><span class="nm">파트너와 만나지 못했다면</span></summary><p class="small">“이번 주 내가 속인 말 하나, 그리고 그 근원은?” 소리 내어 하나님께 답해 보세요. 그리고 목요일에 고른 말씀을 내 이름을 넣어 읽습니다. 다음 주에 파트너와 이어서 해도 됩니다.</p></details>
+    ${doneBar(n,3)}</section>`+
+  w2Close(n));
+}
+
+/* ---------- 2주 이번 주 화면 ---------- */
+function vWeek2(){
+  const W=SERIES.weeks[1];
+  return `${topbar(`2주 · ${W.tag}`,"#/more")}
+  <p class="h-hero">${W.q}</p>
+  <p class="lead">${W.sub}</p>
+  ${scriptureHTML("eph4_25")}
+  <h2 class="h2">이번 주에 발견할 것</h2>
+  <p>말은 듣는 사람 머릿속에 그림을 그립니다. 참된 말은 실제와 같은 그림을, 속이는 말은 실제와 다른 그림을 그립니다. 과장하거나 축소하는 말, 둘러대는 말, 반쪽짜리 사실만 말하는 말, 그리고 아예 지어내는 말.</p>
+  <p>그 뿌리에는 하나님에 대한 거짓 그림이 있습니다. 좋은 것은 감추시고, 제약을 거시고, 조건적으로 사랑하시는 분. 그 그림을 믿으면 두 가지가 작동합니다. 사랑과 인정을 잃을까 하는 <b>두려움</b>, 그리고 내 손으로 직접 만들어 내려는 <b>교만과 욕심</b>. 그래서 다짐만으로는 바뀌지 않습니다.</p>
+  <p>그런데 하나님은 속이다 모든 것을 잃은 야곱을 찾아오셔서 새 그림을 주시고, 교만을 꺾어 “야곱입니다”라고 고백하게 하시고, 두려움을 내쫓으셨습니다. 그 사닥다리가 예수님 자신입니다. “너는 누구냐?” 물으실 때, 에서라고 대답하지 말고 진짜 내 이름으로 대답하면, 주님은 새 이름을 주십니다. “너는 이스라엘”, “너는 내 백성이라.”</p>
+  <h2 class="h2">이번 주 네 가지 연습</h2>
+  <ol style="padding-left:1.2em">
+    <li><b>날마다 하나님의 참된 그림을 붙잡기</b> — 고요에서 두려움과 교만과 욕심을 지우는 말씀 앞에 머물러, 그 말씀이 그려 주는 그림을 붙듭니다. “주님, 오늘도 당신의 진실한 새 그림을 주십시오.”</li>
+    <li><b>하루를 돌아보며 분별하고, 진짜 이름을 보여 드리기</b> — 날마다 마무리의 ‘오늘의 세 걸음’에서 내가 한 속이는 말과 그 근원의 두려움과 교만을 살피고, 그 옆에 실제 그림의 말을 씁니다. “괜찮아요” 옆에 “사실 좀 힘들어요.”</li>
+    <li><b>진실을 파악하고 말하기</b> — 잘 모르는 일에는 말을 아끼고, 게시물을 올리거나 말을 시작하기 전에 한 번 멈춥니다. 확인하기 어렵다면 침묵하거나 “모른다”고 하는 것이 참된 말입니다.</li>
+    <li><b>사랑 안에서 살리는 말</b> — 필터 없는 솔직함이 아니라, 참되면서 사람을 살리는 말(엡 4:15).</li>
+  </ol>
+  ${methodPanel(2)}
+  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 야곱</span></summary>${scriptureHTML("gen27")}${scriptureHTML("w2_gen32")}</details>
+  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 예수, 하늘을 여는 사닥다리</span></summary>${scriptureHTML("jn1_4751")}${verseHTML("rom8_32",{note:false})}</details>
+  <details class="voice"><summary><span class="nm">설교에서 함께 본 말씀 — 거짓의 아비</span></summary>${scriptureHTML("jn8_44")}</details>
+  <h2 class="h2">이번 주의 여섯 날</h2>
+  ${[1,2,3,4,5,6].map(k=>`<a class="list-link" href="#/day/2/${k}"><span><span class="s">${k}일째 · ${DAYS_W[2][k].nm} · 약 ${DAYS_W[2][k].min}분</span><br><span class="t">${DAYS_W[2][k].title}</span></span><span class="s">${dayState(k,2)==="done"?"마침":dayState(k,2)==="part"?"진행 중":""}</span></a>`).join("")}
+  <a class="list-link" href="#/group/2"><span><span class="s">6일째 뒤</span><br><span class="t">소그룹 — 함께 나누기</span></span></a>
+  <h2 class="h2">설교 한 문장</h2>
+  <p class="serif" style="font-size:1.25em;font-weight:700;line-height:1.6">참된 말은 오직 하나님에 대한 온전한 그림에서만 나옵니다.</p>`;
+}
+
+/* ---------- 2주 소그룹 ---------- */
+function vGroup2(){
+  return `${topbar("소그룹 · 2주","#/week/2","약 60분")}
+  <h2 class="h2">나눔 규칙</h2>
+  <ol style="padding-left:1.2em"><li>여기서 들은 것은 여기에 둡니다</li><li>조언하지 않습니다 — 요약(“~라는 거구나”)과 공감(“힘들었겠다”)만</li><li>판단 대신 질문합니다</li><li>다른 사람 이야기 말고, 내 이야기를 합니다</li><li>말하지 않을 권리가 있습니다 — 침묵해도 괜찮습니다</li></ol>
+  <h2 class="h2">흐름</h2>
+  <div class="tablewrap"><table class="simple"><tr><th>순서</th><th>시간</th><th>내용</th></tr>
+  <tr><td>체크인</td><td>5분</td><td>온도 한 가지 — 월요일과 토요일, 무엇이 달라졌나요?</td></tr>
+  <tr><td>참된 그림</td><td>10분</td><td>질문 1</td></tr>
+  <tr><td>속이는 말</td><td>25분</td><td>질문 2–3</td></tr>
+  <tr><td>진짜 이름</td><td>15분</td><td>질문 4</td></tr>
+  <tr><td>기도</td><td>5분</td><td>서로를 위한 기도</td></tr></table></div>
+  <h2 class="h2">질문</h2>
+  <ol style="padding-left:1.2em">
+    <li><b>이번 주 붙든 하나님의 참된 그림</b> — 어떤 말씀이, 어떤 거짓 그림을 지우고 어떤 그림을 그려 주었나요?</li>
+    <li><b>내 속이는 말과 그 근원</b> — 두려움이었나요, 교만이나 욕심이었나요? 그 옆에 쓴 ‘실제 그림의 말’은?</li>
+    <li><b>“모른다”고 말하거나, 확인하느라 말을 아낀 순간</b>, 또는 사랑 안에서 살리는 말을 해 본 순간 — 어떻게 되었나요?</li>
+    <li><b>진짜 내 이름</b> — 하나님 앞에서 “네, 저는 ○○입니다”라고 말해 본 한 줄을 나눕니다(말할 수 있는 만큼만). 듣는 사람들은 판단하거나 조언하지 않고, 함께 “말해 줘서 고마워요”로만 대답합니다.</li>
+  </ol>
+  ${verseHTML("eph4_25",{note:false})}
+  <div class="field"><label for="gp2">서로를 위한 기도 제목</label><textarea id="gp2" data-g="prayer">${esc((S.w2.group||{}).prayer||"")}</textarea></div>
+  <details class="voice"><summary><span class="nm">리더에게</span></summary>
+    <p><b>진행</b> — 규칙을 읽고 시작합니다. 질문 1은 리더가 먼저 짧게 나누면 문이 열립니다.</p>
+    <p><b>질문 4</b> — 누군가 무거운 이야기를 꺼내도, 그 자리에서 더 묻거나 풀어 주려 하지 않습니다. “말해 줘서 고마워요”로 받고, 모임 뒤에 따로 연락합니다.</p>
+    <p><b>누군가에게 해를 입은 일을 꺼내는 분이 있을 때</b> — 그것은 ‘속이는 말’의 문제가 아닙니다. 판단 없이 듣고, 목회자에게 연결합니다.</p>
+    <p><b>시간</b> — 60분을 넘기지 않습니다.</p></details>`;
+}
+
+/* ====================== 2주 — 날마다 새로 만나는 이야기와 새로 배우는 것 (설교 밖으로 넓히기) ====================== */
+Object.assign(SCR, {
+  abr20:{ ref:"창세기 20:2, 11–12", v:[
+    [2,"아브라함이 자기 아내 사라를 두고 “<b>그는 내 누이입니다</b>” 하고 말하였다. 그러자 그랄 왕 아비멜렉이 사람을 보내 사라를 데려갔다."],
+    [11,"아브라함이 말했다. “이곳에는 하나님을 두려워하는 마음이 전혀 없으니, <b>사람들이 내 아내 때문에 나를 죽일 것이라고 생각했습니다.</b>"],
+    [12,"게다가 그는 정말 내 누이이기도 합니다. 내 아버지의 딸이지만 내 어머니의 딸은 아닌데, 내 아내가 되었습니다.”"]
+  ]},
+  dav11:{ ref:"사무엘하 11:8, 25", v:[
+    [8,"다윗이 우리아에게 말했다. “<b>네 집으로 내려가서 발을 씻어라.</b>” 우리아가 왕궁에서 나가자, 왕의 선물이 그 뒤를 따라갔다."],
+    [25,"다윗이 전령에게 말했다. “너는 요압에게 이렇게 전하여라. ‘이 일로 언짢아하지 마라. <b>칼은 이 사람도 저 사람도 삼키는 법이다.</b>’”"]
+  ]},
+  geh5:{ ref:"열왕기하 5:20, 22, 25–26", v:[
+    [20,"하나님의 사람 엘리사의 종 게하시가 생각했다. “<b>내 주인이 저 아람 사람 나아만을 너무 쉽게 놓아주고, 그가 가져온 것을 받지 않았구나.</b> 여호와께서 살아 계심을 두고 말하는데, 내가 그를 뒤쫓아가서 무엇이든 받아 내야겠다.”"],
+    [22,"게하시가 말했다. “내 주인께서 저를 보내시며 말씀하셨습니다. ‘<b>방금 에브라임 산지에서 예언자의 제자 젊은이 둘이 나에게 왔으니</b>, 그들에게 은 한 달란트와 옷 두 벌을 주십시오.’”"],
+    [25,"게하시가 들어가 주인 앞에 서자, 엘리사가 물었다. “게하시야, 어디 갔다 오느냐?” 게하시가 대답했다. “<b>당신의 종은 아무 데도 가지 않았습니다.</b>”"],
+    [26,"엘리사가 말했다. “그 사람이 수레에서 내려 너를 맞으러 돌아설 때, 내 마음이 거기 함께 가지 않았느냐? <b>지금이 은을 받고 옷을 받을 때냐?</b>”"]
+  ]},
+  pet14:{ ref:"마가복음 14:29, 71–72 · 요한복음 21:15, 17", v:[
+    ["막 14:29","베드로가 예수께 말했다. “모두가 넘어질지라도, 저는 그러지 않겠습니다.”"],
+    ["14:71","그러자 베드로는 저주하며 맹세하기 시작했다. “<b>나는 너희가 말하는 그 사람을 알지 못한다.</b>”"],
+    ["14:72","곧 닭이 두 번째 울었다. 베드로는 예수께서 “닭이 두 번 울기 전에 너는 세 번 나를 모른다고 할 거야” 하신 말씀이 생각나서, 무너져 울었다."],
+    ["요 21:15","그들이 아침을 먹은 뒤에, 예수께서 시몬 베드로에게 말씀하셨다. “<b>요한의 아들 시몬아, 네가 이 사람들보다 나를 더 사랑하느냐?</b>” 베드로가 대답했다. “예, 주님. 제가 주님을 사랑하는 줄 주님께서 아십니다.” 예수께서 말씀하셨다. “내 어린양들을 먹여라.”"],
+    ["21:17","세 번째로 물으셨다. “요한의 아들 시몬아, 네가 나를 사랑하느냐?” 베드로는 예수께서 세 번째 “네가 나를 사랑하느냐?” 하고 물으시므로 마음이 아팠다. 그래서 대답했다. “주님, 주님은 모든 것을 아십니다. <b>제가 주님을 사랑하는 줄 주님께서 아십니다.</b>” 예수께서 말씀하셨다. “내 양들을 먹여라.”"]
+  ]},
+  nat12:{ ref:"사무엘하 12:1, 7, 13", v:[
+    [1,"여호와께서 나단을 다윗에게 보내셨다. 나단이 다윗에게 가서 말했다. “어느 성에 두 사람이 있었는데, 한 사람은 부자이고 한 사람은 가난했습니다.”"],
+    [7,"나단이 다윗에게 말했다. “<b>임금님이 바로 그 사람입니다.</b>”"],
+    [13,"다윗이 나단에게 말했다. “<b>내가 여호와께 죄를 지었습니다.</b>”"]
+  ]},
+  nath1:{ ref:"요한복음 1:46–47", v:[
+    [46,"나다나엘이 빌립에게 말했다. “<b>나사렛에서 무슨 좋은 것이 나올 수 있겠습니까?</b>” 빌립이 말했다. “와서 보십시오.”"],
+    [47,"예수께서 나다나엘이 자기에게 오는 것을 보시고 그를 두고 말씀하셨다. “<b>너는 참 이스라엘 사람이구나. 그 안에는 속임이 없구나.</b>”"]
+  ]}
+});
+const W2_NEW = {
+  1:{who:"아브라함", scr:"abr20", body:"믿음의 조상도 두려울 때는 반쪽짜리 사실로 자기를 지켰습니다. 그랄 땅에서 그는 아내 사라를 두고 “그는 내 누이입니다”라고 말합니다. 틀린 말은 아니었습니다. 사라는 아버지가 같은 이복누이였습니다. 그러나 듣는 사람들 머릿속에는 ‘이 여인은 아브라함의 아내가 아니다’라는 거짓 그림이 그려졌습니다. 그 밑에는 두려움이 있었습니다. 그리고 그는 같은 말을 전에도 한 번 했습니다(창 12:13). 속이는 말은 한 번으로 끝나지 않고 버릇이 됩니다.",
+     ins:"우리는 생각보다 자주 속입니다", insBody:"1996년 미국의 심리학자 드파울로와 동료들은 147명에게 일주일 동안 사람을 만날 때마다 그 안에서 한 거짓말을 일기로 적게 했습니다. 대학생은 하루 평균 두 번, 지역 주민은 하루 한 번쯤 거짓말을 했습니다. 사람을 만나는 세 번에 한 번(대학생), 다섯 번에 한 번(주민)꼴입니다. 대부분은 작은 거짓말이라 미리 계획하지도, 크게 걱정하지도 않았습니다. 그래서 내 말은 내가 생각하는 것보다 더 자주 실제와 다른 그림을 그립니다.", src:"DePaulo, Kashy, Kirkendol, Wyer, Epstein (1996), Lying in everyday life, Journal of Personality and Social Psychology 70(5), 979–995"},
+  2:{who:"다윗", scr:"dav11", body:"하나님의 마음에 합한 사람도 덮기 시작하자 말이 점점 커졌습니다. 밧세바의 일을 덮으려고 그는 전쟁터의 우리아를 불러 “네 집으로 내려가서 발을 씻어라” 하고 집에 보내려 했습니다. 뜻대로 되지 않자 결국 우리아가 전사하게 만드는 명령을 내리고는, 그 죽음을 “칼은 이 사람도 저 사람도 삼키는 법”이라는 말로 덮습니다. 처음의 덮음은 작았지만, 끝은 그렇지 않았습니다. 오늘 고요의 시편 32편은 덮기를 멈춘 사람의 노래입니다.",
+     ins:"작은 거짓은 왜 점점 커질까", insBody:"2016년 영국 UCL의 개릿과 샤롯 연구팀은 사람들에게 자기에게 이득이 되는 거짓말을 되풀이할 기회를 주고 뇌를 촬영했습니다. 처음 거짓말할 때는 감정과 관련된 뇌 부위인 편도체가 가장 크게 반응했지만, 거짓말을 거듭할수록 그 반응은 줄어들었고 거짓말의 크기는 점점 커졌습니다. 반응이 많이 줄어들수록 다음 거짓말이 더 컸습니다. 반면 남을 위한 거짓말은 커지지 않고 일정했습니다. ‘처음엔 작은 말이었다’는 것은 위로가 아니라 경고입니다.", src:"Garrett, Lazzaro, Ariely, Sharot (2016), The brain adapts to dishonesty, Nature Neuroscience 19(12), 1727–1732"},
+  3:{who:"게하시", scr:"geh5", body:"엘리사의 종 게하시는 나아만이 병을 고치고 돌아갈 때, 스승이 사양한 선물이 아까웠습니다. 그는 먼저 자기에게 말합니다. “내 주인이 너무 쉽게 놓아주었구나.” 그리고 뒤쫓아가 없는 이야기를 지어냅니다. 돌아와서는 “당신의 종은 아무 데도 가지 않았습니다.” 두려움이 아니라 욕심이 지어낸 말이었습니다. 엘리사는 묻습니다. “지금이 은을 받고 옷을 받을 때냐?”",
+     ins:"남을 속이기 전에, 먼저 나를 속입니다", insBody:"진화심리학자 폰 히펠과 생물학자 트리버스(2011)는, 사람이 스스로를 속이는 까닭 가운데 하나가 남을 더 감쪽같이 속이기 위해서라고 주장합니다. 내가 믿어 버린 거짓은 들킬 표정도, 기억해야 할 부담도 줄여 주기 때문입니다. 아직 학계에서 논쟁 중인 이론이지만, 설교가 말한 ‘스스로도 속는 일’을 잘 보여 줍니다. 게하시도 남을 속이기 전에 “내 주인이 너무 쉽게 놓아주었다”는 말로 자기 욕심을 먼저 자기에게 설명했습니다.", src:"von Hippel & Trivers (2011), The evolution and psychology of self-deception, Behavioral and Brain Sciences 34(1) — 이론적 주장이며, 같은 학술지의 논평에서 실험적 검증이 필요하다는 반론도 제기됨"},
+  4:{who:"베드로", scr:"pet14", body:"“모두가 넘어질지라도, 저는 그러지 않겠습니다” 했던 베드로가, 여종의 물음 앞에서 저주하며 맹세합니다. “나는 너희가 말하는 그 사람을 알지 못한다.” 두려움이 지어낸 말이었습니다. 부활하신 주님은 그를 꾸짖지 않으시고, 갈릴리 바닷가에서 아침을 먹인 뒤 그의 이름을 부르십니다. “요한의 아들 시몬아, 네가 나를 사랑하느냐?” 세 번 부인한 사람에게 세 번. 야곱에게 “너의 이름이 무엇이냐” 물으신 그분이, 베드로에게는 이름을 불러 진짜 마음을 물으십니다.",
+     ins:"털어놓지 못한 것은 혼자 있을 때 무겁습니다", insBody:"미국 컬럼비아대의 슬레피언 연구팀(2017)이 1만 3천여 개의 비밀을 분석해 보니, 사람들은 평균 13가지 비밀을 지니고 있었고 그 가운데 다섯 가지는 아무에게도 말한 적이 없었습니다. 그런데 비밀을 감춰야 하는 대화보다, 혼자 있을 때 그 비밀이 마음에 떠오르는 일이 훨씬 잦았고, 그렇게 자주 떠오를수록 안녕감이 낮았습니다. 비밀의 무게는 숨기는 순간보다 품고 있는 시간에 있습니다. 오늘의 일곱 단계는 그 무게를 하나님 앞에 내려놓는 시간입니다.", src:"Slepian, Chun, Mason (2017), The experience of secrecy, Journal of Personality and Social Psychology 113(1), 1–33"},
+  5:{who:"나단", scr:"nat12", body:"다윗의 죄를 알게 된 예언자 나단은 왕에게 칼을 휘두르지 않았습니다. 가난한 사람의 하나뿐인 양을 빼앗은 부자 이야기로 다가갔고, 다윗이 스스로 분노하자 그때 말합니다. “임금님이 바로 그 사람입니다.” 진실을 비켜 가지도, 사람을 짓밟지도 않고, 상대가 스스로 보게 돕는 말이었습니다. 그리고 다윗은 숨지 않고 대답합니다. “내가 여호와께 죄를 지었습니다.” 사랑 안에서 참된 것을 말한 한 본보기입니다.",
+     ins:"거짓 소식은 참된 소식보다 멀리, 빨리 퍼집니다", insBody:"2018년 MIT 연구팀은 2006년부터 2017년까지 트위터에서 사실 여부가 판명된 뉴스 약 12만 6천 건이 퍼진 길을 추적했습니다. 거짓 소식은 모든 분야에서 참된 소식보다 더 멀리, 더 빨리, 더 깊게 퍼졌고, 다시 공유될 가능성이 70% 높았습니다. 참된 소식이 1,500명에게 닿는 데는 거짓 소식보다 약 여섯 배의 시간이 걸렸습니다. 퍼뜨린 것은 자동 프로그램이 아니라 사람이었고, 새롭고 놀라운 소식일수록 더 쉽게 공유했습니다. 공유하기 전의 한 번의 멈춤이 중요한 까닭입니다.", src:"Vosoughi, Roy, Aral (2018), The spread of true and false news online, Science 359(6380), 1146–1151"},
+  6:{who:"나다나엘", scr:"nath1", body:"예수께서 “그 안에는 속임이 없구나” 하신 나다나엘은 흠 없는 사람이 아니었습니다. 바로 직전에 그는 빌립에게 “나사렛에서 무슨 좋은 것이 나올 수 있겠습니까?”라고 말했습니다. 편견 섞인 의심이었지만, 그는 그것을 꾸미지 않고 그대로 말했습니다. 속임이 없다는 것은 흠이 없다는 뜻이 아니라, 있는 그대로 주님 앞에 나온다는 뜻입니다. 그리고 주님은 그런 사람에게 하늘이 열리는 것을 보여 주십니다(요 1:51).", ins:"", insBody:"", src:""}
+};
+function newFig(n){ const x=(CW===1?W1_NEW:W2_NEW)[n]; if(!x) return "";
+  return `<div class="panel soft"><p class="ph">오늘 새로 만나는 사람 — ${x.who}</p><p>${x.body}</p><details class="voice"><summary><span class="nm">본문 읽기 · ${SCR[x.scr].ref}</span></summary>${scriptureHTML(x.scr)}</details></div>`; }
+function newIns(n){ const x=(CW===1?W1_NEW:W2_NEW)[n]; if(!x||!x.ins) return "";
+  return `<div class="panel soft"><p class="ph">오늘 새로 배우는 것 — ${x.ins}</p><p>${x.insBody}</p><p class="small">${x.src}</p></div>`; }
+
+/* 날마다 다른 마무리 기도 */
+const W2_PRAY={1:"주님, 두려울 때 반쪽만 말하지 않게 하소서. 오늘도 당신의 진실한 새 그림을 주십시오.",2:"주님, 덮으려 할 때 덮기를 멈추게 하소서. 작은 거짓이 자라기 전에 당신 앞에 내놓게 하소서.",3:"주님, 움켜쥐려고 지어내는 말에서 저를 지켜 주소서. 모든 것을 은혜로 주시는 당신을 믿게 하소서.",4:"주님, 저를 이름으로 부르실 때, 진짜 이름으로 대답하게 하소서.",5:"주님, 확인하지 않은 말을 옮기지 않게 하시고, 참된 것을 사랑 안에서 말하게 하소서."};
+
+/* 화요일 — 자리 지도 */
+const W2_PLACES=["배우자에게","자녀에게","부모님께","직장에서","교회에서","친구에게","SNS · 온라인에서"];
+const W2_PLACE_NOUN={"배우자에게":"배우자 앞","자녀에게":"자녀 앞","부모님께":"부모님 앞","직장에서":"직장","교회에서":"교회","친구에게":"친구 앞","SNS · 온라인에서":"SNS · 온라인"};
+
+/* 모양은 월요일 상황에서 한 번만 — 점검 2부(마음)는 화요일 */
+function w2Scores(){
+  const si=w2Sit(); const cnt=si.cnt||{};
+  const shapes=Object.keys(W2_SHAPES).map(k=>({id:k, v:Math.min(2,cnt[k]||0)}));
+  const top=Object.keys(W2_SHAPES).filter(k=>(cnt[k]||0)>=1).sort((a,b)=>(cnt[b]||0)-(cnt[a]||0)).slice(0,2);
+  const md={}; Object.keys(W2_MINDS).forEach(k=>md[k]={s:0,c:0});
+  W2_MD.forEach(p=>{ const v=F(2,"w2m_"+p.id,null,2); if(v===null) return; md[p.f].s+=v; md[p.f].c++; });
+  const m={}; for(const k in md) m[k]=md[k].c?md[k].s/md[k].c:null;
+  const mAns=W2_MD.filter(p=>F(2,"w2m_"+p.id,null,2)!==null).length;
+  return {shapes, top, answered:si.answered, m, mAns, picks:[]};
+}
+
+/* 저녁 카드 — 날마다 다른 각도 */
+const W2_ANGLE={1:{s1:"① 오늘 내 입에서 나온 속이는 말 — 어떤 모양이었나요?"},2:{s1:"① 오늘 속이는 말이 나온 자리와 그 말",x:"who"},3:{s1:"① 오늘 내가 한 속이는 말",x:"root"},4:{s1:"① 오늘 하나님께 가져갈 속이는 말",x:"name"},5:{s1:"① 오늘 확인하지 않고 한 말, 또는 속이는 말",x:"check"},6:{s1:"① 이번 주 가장 마음에 남은 속이는 말"}};
+function w2AngleExtra(n){
+  const a=(W2_ANGLE[n]||{}).x;
+  if(a==="who") return fChips(n,"ts_who","누구 앞에서였나요?",W2_PLACES,{multi:true});
+  if(a==="root") return fChips(n,"ts_root","그 근원은 — 무엇이 작동했나요?",W2_ROOTS,{multi:true});
+  if(a==="name") return fText(n,"ts_name","하나님께 보여 드린 진짜 이름 한 줄",{ph:"예: 네, 저는 잘 보이려고 꾸미는 ○○입니다."});
+  if(a==="check") return fChips(n,"ts_check","오늘 확인하지 않고 옮기거나 단정한 말이 있었나요?",["없었어요","있었어요","옮기려다 멈췄어요"]);
+  return "";
+}
+
+/* ---------- 2주 2일째 — 그 밑의 마음과 자리, 그리고 한 장면 해부 ---------- */
+function vW2Day2(){
+  const n=2; const sc=w2Scores(); const dx=Math.min(3,Math.max(1,F(n,"dx",1)));
+  const seg5=["전혀","조금","보통","꽤","매우"];
+  const steps=["","자리 지도","그 밑의 마음","결과"];
+  const bar=`<div class="fb-steps" style="grid-template-columns:repeat(3,1fr);margin:4px 0 14px">${[1,2,3].map(k=>`<span class="fs ${k===dx?"now":""} ${k<dx?"done":""}">${steps[k]}</span>`).join("")}</div>`;
+  const nav=(label)=>`<div class="row" style="margin-top:18px">${dx>1?`<button type="button" class="btn" data-dx="prev">‹ 앞으로</button>`:""}<button type="button" class="btn primary" data-dx="next" style="flex:1">${label}</button></div>`;
+  const m=sc.m, lv=v=>v==null?"–":v<1.5?"낮음":v<2.5?"중간":"높음";
+  let body="";
+  if(dx===1) body=`${bar}<div class="privacy">이 점검은 이 기기에만 저장됩니다. 누구도 볼 수 없습니다. 좋아 보이는 답이 아니라, 정직한 답을 고르세요.</div>
+    <h3 class="h3">1 / 2 · 자리 지도 — 누구 앞에서?</h3>
+    <p class="small">월요일에 내 말의 모양을 보았다면, 오늘은 그 말이 어디서 나오는지 봅니다. 같은 사람이라도 자리에 따라 말이 달라집니다.</p>
+    ${fChips(n,"place","속이는 말이 가장 쉽게 나오는 자리",W2_PLACES,{multi:true})}
+    ${fChips(n,"hard","있는 그대로 말하기 가장 어려운 사람",W2_PLACES)}
+    ${fText(n,"safe","반대로, 있는 그대로 말해도 안전하다고 느끼는 사람 한 명 (이름이나 관계)")}
+    ${nav("다음 ›")}`;
+  if(dx===2) body=`${bar}<h3 class="h3">2 / 2 · 속이는 말 밑의 마음</h3><p class="small">각 문장이 나와 얼마나 같은지 고르세요.</p>
+    ${W2_MD.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"w2m_"+p.id,seg5)}</div>`).join("")}
+    <p class="small">${sc.mAns} / ${W2_MD.length}</p>${nav("결과 보기 ›")}`;
+  if(dx===3){
+    const left=W2_MD.length-sc.mAns;
+    const topM=Object.keys(W2_MINDS).filter(k=>m[k]!=null).sort((a,b)=>m[b]-m[a])[0];
+    const vid=(sc.mAns===W2_MD.length&&m[topM]>=1.5)?W2_MINDS[topM].v:"rom8_32";
+    body=`${bar}${left?`<p class="small">아직 답하지 않은 문장이 ${left}개 있습니다. 앞으로 돌아가 마저 답하면 결과가 더 정확해집니다.</p>`:""}
+    ${w2Brief()}
+    <h3 class="h3">속이는 말 밑의 마음 — 두 얼굴, 그리고 그 무게</h3>
+    <div class="bars">${Object.keys(W2_MINDS).map(k=>`<div class="bar"><span class="nm">${W2_MINDS[k].nm}</span><span class="tr"><span class="tk in"><i style="width:${m[k]==null?0:m[k]/4*100}%"></i></span><span class="small">${lv(m[k])} · ${W2_MINDS[k].d}</span></span></div>`).join("")}</div>
+    <h3 class="h3">이번 주 붙들 말씀</h3>${verseHTML(vid,{name:S.name})}
+    ${(m.alone!=null&&m.alone>=2.5)||(F(n,"w2m_a1",0)||0)>=3?`<div class="panel warn"><p class="ph">혹시 누군가에게 해를 입어 숨겨 온 일이라면</p><p>그것은 당신의 잘못이 아닙니다. 그런 일을 꺼내는 것은 ‘속이는 말’을 고치는 일과 다릅니다. 믿을 수 있는 사람, 도움을 줄 수 있는 곳에 먼저 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
+    <p class="small" style="margin-top:16px">이 점검은 공인된 진단 검사가 아닙니다. 모양은 월요일 상황의 답에서, 마음은 자기은폐 척도(Larson · Chastain, 1990; 한국판 박미란 · 이지연, 2008)와 한국판 완벽주의적 자기제시 척도(Hewitt 외, 2003; 하정희, 2011)의 구분을 바탕으로 이 워크북을 위해 새로 쓴 문항에서 읽었습니다. 결과는 나를 알아보기 위한 거울로만 쓰세요.</p>
+    <div class="row" style="margin-top:12px"><button type="button" class="btn" data-dx="prev">‹ 답 고치기</button></div>`;
+  }
+  const sceneOpts=[...new Set(w2Sit().picks)];
+  const sn=w2Scene();
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"그 밑의 마음과 자리","")}${newFig(n)}${newIns(n)}${body}${dx===3?doneBar(n,2):""}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"한 장면 해부","")}
+    <p>점검이 내 말의 지도였다면, 이제 그 지도 위의 한 지점을 자세히 들여다봅니다. 진단은 혼내려는 것이 아니라 고치려는 것입니다. 설교의 두 질문으로 합니다. <b>내 말이 상대 머릿속에 실제와 다른 그림을 그렸나? 그 그림은 무엇을 지키거나 높이고 있었나?</b></p>
+    ${sceneOpts.length?fChips(n,"scene","1. 최근에 실제로 있었던 장면 하나 — 월요일에 고른 대답 가운데, 또는 직접",sceneOpts.map(x=>({v:x,t:x}))):""}
+    ${fText(n,"scene_own",sceneOpts.length?"또는 그때 내가 한 말 그대로":"1. 최근에 내가 속인 말 하나 — 그때 한 말 그대로")}
+    ${sn.said?`
+    ${fText(n,"fact","2. 실제로 있었던 일 — 카메라로 찍은 듯, 녹음기로 들은 듯",{area:true,hint:"해석이나 평가 없이, 일어난 일만 적습니다. 박재연은 관찰을 ‘카메라로 찍은 듯’ 묘사하는 것이라고 말합니다."})}
+    ${fChips(n,"pic","3. 내 말을 듣고 상대 머릿속에 그려졌을 그림",W2_PIC)}
+    ${fText(n,"pic_own","다른 그림이라면 (선택)")}
+    ${fChips(n,"guard","4. 그 말은 무엇을 지키려던 말이었나요?",W2_KEEP,{multi:true})}
+    ${fChips(n,"guard","…아니면 무엇을 높이거나 얻으려던 말이었나요?",W2_RAISE,{multi:true,hint:"둘 다 골라도 됩니다. 지키려는 얼굴과 높이려는 얼굴이 한 말 안에 함께 있기도 합니다."})}
+    ${fChips(n,"afraid","5. 그대로 드러났다면, 무엇이 두려웠나요?",["실망한 얼굴","꾸중이나 벌","등 돌림, 관계가 끊김","무시, 창피","버림받음","잘 모르겠다"],{multi:true})}
+    ${fChips(n,"belief","6. 그 두려움 밑에 깔린 믿음에 가장 가까운 것",BELIEFS)}
+    ${F(n,"belief",null)?fRange(n,"belief_pct","이 믿음을 지금 얼마나 믿고 있나요?",{min:0,max:100,step:5,lo:"전혀",hi:"완전히"}):""}
+    ${F(n,"belief",null)&&F(n,"belief_pct",null)!=null?sceneCard(sn,"해부 결과")+`<p class="small">목요일에 이 장면을 들고 하나님 앞에 진짜 이름으로 서고, 토요일에 이 믿음을 다시 잽니다.</p>`:""}`:""}
+    ${doneBar(n,3)}</section>`+
+  w2Close(n));
+}
+
+/* ====================== 1주 — 날마다 새로 만나는 이야기와 새로 배우는 것 ====================== */
+Object.assign(SCR, {
+  isa49:{ ref:"이사야 49:15–16", gloss:"오래 들은 목소리가 ‘너는 잊힌 사람’이라고 말할 때, 하나님은 손바닥을 보여 주십니다.", v:[
+    [15,"“여인이 어찌 젖 먹는 자기 아이를 잊겠느냐? 자기 태에서 난 아들을 가엾게 여기지 않겠느냐? 혹시 그들은 잊을지라도, <b>나는 너를 잊지 않는다.</b>"],
+    [16,"보아라, <b>내가 너를 내 손바닥에 새겼다.</b> 너의 성벽이 늘 내 앞에 있다.”"]
+  ]},
+  lk15_20:{ ref:"누가복음 15:20–22", gloss:"아들은 준비한 말 — “품꾼의 하나로 삼아 주십시오”(15:19) — 을 끝까지 하지 못합니다. 아버지의 대답이 먼저 왔기 때문입니다.", v:[
+    [20,"그는 일어나 아버지에게로 갔다. <b>아직 거리가 먼데, 아버지가 그를 보고 가엾게 여겨, 달려가 목을 끌어안고 입을 맞추었다.</b>"],
+    [21,"아들이 말했다. ‘아버지, 제가 하늘과 아버지께 죄를 지었습니다. 이제는 아버지의 아들이라 불릴 자격이 없습니다.’"],
+    [22,"그러나 아버지는 종들에게 말했다. ‘<b>어서 가장 좋은 옷을 가져와 입히고, 손에 반지를 끼우고, 발에 신을 신겨라.</b>’"]
+  ]},
+  han1:{ ref:"사무엘상 1:6–7, 14, 17", v:[
+    [6,"그의 적수 브닌나는, 여호와께서 한나의 태를 닫으셨기 때문에, 그를 몹시 괴롭혀 격분하게 하였다."],
+    [7,"해마다 한나가 여호와의 집에 올라갈 때마다 브닌나가 이렇게 그를 괴롭혔으므로, <b>한나는 울며 먹지 않았다.</b>"],
+    [14,"엘리가 그에게 말했다. “<b>언제까지 취해 있으려느냐? 포도주를 끊어라.</b>”"],
+    [17,"엘리가 대답했다. “<b>평안히 가거라. 이스라엘의 하나님께서 네가 구한 것을 들어주실 것이다.</b>”"]
+  ]},
+  gid6:{ ref:"사사기 6:11–12, 15–16", v:[
+    [11,"여호와의 사자가 와서 오브라에 있는 상수리나무 아래 앉았다. 그때 요아스의 아들 기드온은 미디안 사람들을 피하려고 포도주 틀에서 밀을 타작하고 있었다."],
+    [12,"여호와의 사자가 그에게 나타나 말했다. “<b>큰 용사여, 여호와께서 너와 함께 계신다.</b>”"],
+    [15,"기드온이 그에게 말했다. “아, 주님, 제가 어떻게 이스라엘을 구원하겠습니까? 보십시오, <b>제 집안은 므낫세 지파에서 가장 약하고, 저는 제 아버지 집에서 가장 작은 사람입니다.</b>”"],
+    [16,"여호와께서 그에게 말씀하셨다. “<b>내가 너와 함께 있을 것이다.</b> 너는 미디안 사람들을 한 사람 치듯 칠 것이다.”"]
+  ]},
+  dav17:{ ref:"사무엘상 17:28–30", v:[
+    [28,"맏형 엘리압은 다윗이 사람들과 하는 말을 듣고 다윗에게 화를 내며 말했다. “네가 왜 여기 내려왔느냐? 들에 있는 그 몇 마리 안 되는 양은 누구에게 맡겼느냐? <b>나는 네 교만과 네 마음의 악함을 안다.</b> 너는 싸움 구경하러 내려온 것이다.”"],
+    [29,"다윗이 말했다. “제가 무엇을 했다고 그러십니까? 그냥 말 한마디 한 것뿐이지 않습니까?”"],
+    [30,"그리고 다윗은 형에게서 돌아서서 다른 사람에게로 가서, 같은 말을 물었다."]
+  ]},
+  eli19:{ ref:"열왕기상 19:4–5, 12–13", v:[
+    [4,"그는 홀로 광야로 하룻길을 걸어가 로뎀나무 아래 앉아 죽기를 구하며 말했다. “여호와여, 이제 충분합니다. 제 목숨을 거두어 주십시오. <b>저는 제 조상들보다 낫지 못합니다.</b>”"],
+    [5,"그는 로뎀나무 아래 누워 잠들었다. 그때 천사가 그를 어루만지며 말했다. “<b>일어나서 먹어라.</b>”"],
+    [12,"지진 뒤에 불이 있었으나, 불 가운데도 여호와께서 계시지 않았다. 불 뒤에 <b>고요하고 가느다란 소리</b>가 있었다."],
+    [13,"엘리야가 그 소리를 듣고 겉옷으로 얼굴을 가리고 나가 굴 어귀에 섰다. 그러자 소리가 그에게 들려왔다. “<b>엘리야야, 네가 여기서 무엇을 하느냐?</b>”"]
+  ]},
+  bar9:{ ref:"사도행전 4:36 · 9:26–27", v:[
+    ["4:36","구브로 출신 레위 사람 요셉은 사도들에게서 바나바라고 불렸는데, 그 이름은 <b>‘위로의 아들’</b>이라는 뜻이다."],
+    ["9:26","사울이 예루살렘에 와서 제자들과 어울리려고 했으나, <b>그들은 모두 그를 두려워하여 그가 제자라는 것을 믿지 않았다.</b>"],
+    ["9:27","<b>그러나 바나바가 그를 데리고 사도들에게 가서</b>, 사울이 길에서 어떻게 주님을 보았는지, 주님께서 그에게 말씀하신 것과 그가 다마스쿠스에서 예수의 이름으로 담대하게 말한 것을 이야기해 주었다."]
+  ]},
+  mar20:{ ref:"요한복음 20:15–16", v:[
+    [15,"예수께서 그에게 말씀하셨다. “여자여, 왜 울고 있느냐? 누구를 찾느냐?” 마리아는 그가 동산지기인 줄 알고 말했다. “선생님, 당신이 그분을 옮겨 갔다면, 어디에 두었는지 말해 주십시오. 제가 모셔 가겠습니다.”"],
+    [16,"예수께서 그에게 말씀하셨다. “<b>마리아야.</b>” 마리아가 돌아서서 히브리 말로 “<b>라부니</b>” 하고 말했다. 그것은 ‘선생님’이라는 뜻이다."]
+  ]}
+});
+const W1_NEW = {
+  1:{who:"한나", scr:"han1", body:"한나는 해마다 같은 말을 들었습니다. 아이가 없는 그를 브닌나가 해마다 괴롭혔고, 한나는 울며 먹지 못했습니다. 성전에서 소리 없이 입술만 움직여 기도하자, 제사장 엘리는 그를 술 취한 여인으로 오해합니다. “언제까지 취해 있으려느냐?” 그러나 사정을 들은 엘리의 입에서 다른 말이 나옵니다. “평안히 가거라.” 같은 입에서 사람을 무너뜨리는 말과 일으키는 말이 함께 나옵니다(약 3:10). 이번 주는 그 무게를 내 말에서 봅니다.",
+     ins:"나쁜 말은 좋은 말보다 무겁습니다", insBody:"심리학자 바우마이스터와 동료들(2001)은 수많은 연구를 모아 검토한 끝에 한 가지 일반 원리를 내놓았습니다. 나쁜 감정, 나쁜 부모, 나쁜 피드백이 같은 크기의 좋은 것보다 더 큰 영향을 미치고, 나쁜 정보가 더 오래, 더 깊게 처리되며, 나쁜 인상은 더 빨리 생기고 잘 바뀌지 않는다는 것입니다. 한 번 들은 날 선 말이 열 번의 칭찬보다 오래 남는 까닭입니다. 그래서 내가 건네는 한마디는 생각보다 무겁습니다.", src:"Baumeister, Bratslavsky, Finkenauer, Vohs (2001), Bad is stronger than good, Review of General Psychology 5(4), 323–370"},
+  2:{who:"기드온", scr:"gid6", body:"미디안을 피해 포도주 틀 속에 숨어 밀을 타작하던 사람에게 하나님의 사자가 말합니다. “큰 용사여.” 그러나 기드온의 입에서 나온 것은 그가 오래 들어 온 문장입니다. “제 집안은 가장 약하고, 저는 가장 작은 사람입니다.” 하나님은 그 문장과 다투지 않으시고, 하나만 말씀하십니다. “내가 너와 함께 있을 것이다.” 오늘 내 안에서 찾는 문장들 옆에, 하나님이 먼저 부르신 이름이 있습니다."},
+  3:{who:"다윗과 엘리압", scr:"dav17", body:"골리앗 앞에 선 진영에서, 맏형 엘리압이 막내 다윗에게 쏘아붙입니다. “나는 네 교만과 네 마음의 악함을 안다.” 가족에게서 온 목소리였습니다. 그러나 다윗은 그 말을 자기 이름으로 받아들이지 않았습니다. “제가 무엇을 했다고 그러십니까?” 그리고 형에게서 돌아섭니다. 그는 이미 하나님께 기름 부음을 받은 사람이었습니다(16:13). 오래 들은 목소리의 출처를 알면, 그 목소리에서 돌아설 수 있습니다."},
+  4:{who:"엘리야", scr:"eli19", body:"갈멜산의 승리 뒤, 엘리야는 로뎀나무 아래 주저앉아 말합니다. “저는 제 조상들보다 낫지 못합니다.” 완벽해야 하고, 남과 견주는 그 목소리입니다. 하나님의 대답은 논쟁이 아니었습니다. 천사가 어루만지며 “일어나서 먹어라.” 잠을 재우고, 먹이시고, 지진도 불도 아닌 고요하고 가느다란 소리로 그의 이름을 부르십니다. “엘리야야.” 아버지의 대답은 먼저 돌보고, 그다음에 이름을 부릅니다.",
+     ins:"내 이름으로 나에게 말할 때", insBody:"미국 미시간대의 크로스 연구팀(2014)은 일곱 개의 연구에서, 힘든 일을 앞두고 자기를 돌아볼 때 ‘나’ 대신 자기 이름이나 ‘너’로 부르게 했습니다. 그렇게 한 사람들은 한 걸음 떨어져서 자기를 볼 수 있었고, 첫인상을 남기거나 발표하는 일에서 더 잘 해냈으며, 다가올 일을 위협보다 도전으로 받아들였습니다. 오늘 말씀에 내 이름을 넣어 읽는 것도, 오래 들은 목소리에서 한 걸음 떨어져 하나님의 목소리를 듣게 돕습니다.", src:"Kross 외 (2014), Self-talk as a regulatory mechanism: How you do it matters, Journal of Personality and Social Psychology 106(2), 304–324"},
+  5:{who:"바나바", scr:"bar9", body:"회심한 사울이 예루살렘에 왔을 때, 모두가 그를 두려워했고 아무도 그가 제자라는 것을 믿지 않았습니다. 그때 ‘위로의 아들’ 바나바가 그를 데리고 사도들에게 가서, 주님이 그에게 하신 일을 대신 이야기해 줍니다. 모두가 한 목소리로 말할 때, 하나님이 하신 일을 말해 주는 다른 목소리. 오늘 파트너와 내가 서로에게 되어 줄 목소리입니다.",
+     ins:"좋은 소식에 반갑게 반응할 때", insBody:"게이블과 동료들(2004)은 네 개의 연구에서, 좋은 일을 다른 사람에게 이야기하면 그날의 기쁨과 안녕감이 더 커지고, 듣는 사람이 적극적이고 반갑게 반응할 때 그 효과가 더 커진다는 것을 보여 주었습니다. 늘 그렇게 반응해 주는 배우자와의 관계는 친밀감과 만족도 더 높았습니다. 누군가의 ‘그 한 사람’이 되어 주는 일은, 아플 때 곁에 있어 주는 것만이 아니라 기쁠 때 함께 기뻐해 주는 데서도 시작됩니다.", src:"Gable, Reis, Impett, Asher (2004), What do you do when things go right?, Journal of Personality and Social Psychology 87(2), 228–245"},
+  6:{who:"막달라 마리아", scr:"mar20", body:"빈 무덤 앞에서 마리아의 귀에는 슬픔과 혼란의 소리만 가득했습니다. 눈앞의 예수님도 동산지기로 보였습니다. 그런데 그분이 이름을 부르시자 마리아가 돌아섭니다. “마리아야.” “라부니.” 목자는 자기 양의 이름을 불러 인도합니다(요 10:3). 한 주 동안 내 안의 가장 큰 목소리를 찾아왔다면, 오늘은 내 이름을 부르시는 그 목소리가 가장 크게 들리게 합니다."}
+};
+const W1_ANGLE={1:"① 오늘 내가 한 말, 또는 들은 말 가운데 무거웠던 것",2:"① 오늘 내 안에서 들린 말",3:"① 오늘 그 목소리가 다시 들린 순간",4:"① 오늘 아버지의 대답이 필요했던 말",5:"① 오늘 누군가에게 건넨 말, 또는 건네지 못한 말",6:"① 이번 주 가장 자주 들린 말"};
+
+/* ====================== 1주 5일째 — 내 안의 말이 맴돌 때: 되새김과 성찰 ====================== */
+const W1_RUM=[
+  {id:"b1",f:"brood",t:"“나는 왜 늘 이 모양일까?” 하고 되묻는다."},
+  {id:"b2",f:"brood",t:"그때 왜 그렇게 말했을까, 그 장면을 머릿속에서 되풀이한다."},
+  {id:"b3",f:"brood",t:"“왜 나만 이런 일을 겪을까?” 하는 생각이 떠나지 않는다."},
+  {id:"b4",f:"brood",t:"잠자리에 누워서도 낮에 들은 말, 한 말이 계속 맴돈다."},
+  {id:"b5",f:"brood",t:"생각할수록 나에 대한 말이 더 가혹해진다."},
+  {id:"r1",f:"reflect",t:"마음이 상한 까닭을 차분히 적어 보거나 정리해 본다."},
+  {id:"r2",f:"reflect",t:"그 일에서 내가 무엇을 다르게 할 수 있을지 생각해 본다."},
+  {id:"r3",f:"reflect",t:"조용한 시간을 내어 내 마음이 왜 그런지 살펴본다."},
+  {id:"r4",f:"reflect",t:"믿을 만한 사람에게 이야기하며 그 일을 다른 눈으로 본다."},
+  {id:"r5",f:"reflect",t:"기도하며 그 일을 하나님 앞에 펼쳐 놓는다."}
+];
+function w1Rum(){ const r={brood:{s:0,c:0},reflect:{s:0,c:0}}; W1_RUM.forEach(p=>{ const v=F(5,"rm_"+p.id,null,1); if(v===null) return; r[p.f].s+=v; r[p.f].c++; });
+  return {b:r.brood.c?r.brood.s/r.brood.c:null, r:r.reflect.c?r.reflect.s/r.reflect.c:null, answered:W1_RUM.filter(p=>F(5,"rm_"+p.id,null,1)!==null).length}; }
+function rumLv(v){ return v>=2?"높음":v>=1?"중간":"낮음"; }
+function w1RumBrief(){
+  const x=w1Rum(); if(x.answered<W1_RUM.length) return ""; const B=x.b, R=x.r, hiB=B>=1.5, hiR=R>=1.5;
+  const p = hiB&&!hiR ? "내 안의 말이 맴돌며 나를 끌어내리는 쪽, 곧 되새김이 큽니다. 연구에서 시간이 지나 마음을 더 무겁게 한 것은 성찰이 아니라 이 되새김이었습니다. 혼자 더 생각하는 것보다 다른 목소리가 필요한 자리입니다. 오늘 파트너와의 15분이 특히 중요합니다."
+    : hiB&&hiR ? "되새기기도 하고 살피기도 합니다. 같은 일을 오래 붙들고 있다는 뜻입니다. 살피는 힘을 ‘왜 나는’에서 ‘무엇을 할 수 있을까’로 옮겨 보세요."
+    : !hiB&&hiR ? "맴돌기보다 살피는 쪽입니다. 좋은 힘입니다. 그 힘을 누군가의 맴도는 마음 곁에 서 주는 데에도 써 보세요."
+    : "내 안의 말을 오래 붙들지 않는 편입니다. 다만 살피지 않고 덮어 두는 것은 아닌지, 한 번 물어보세요.";
+  const often=W1_RUM.filter(q=>q.f==="brood"&&(F(5,"rm_"+q.id,0,1)||0)>=2).map(q=>qb(q.t)).slice(0,2);
+  return briefBox(`되새김과 성찰 — ${nmOf()}의 말`,[{h:"내 안의 말의 움직임",p:`되새김 ${B.toFixed(1)}(${rumLv(B)}), 성찰 ${R.toFixed(1)}(${rumLv(R)}) — 0에서 3 사이. ${p}`},{h:"자주 맴도는 말",p:often.length?`‘자주’ 이상으로 고르신 것은 ${often.join(", 그리고 ")}입니다.`:""}]);
+}
+function w1RumLayer(n){
+  const x=w1Rum(); const done=x.answered===W1_RUM.length; const nmv=S.name?vocative(S.name):"○○아";
+  return `<section class="layer" id="L2">${layerHead(n,2,"내 안의 말이 맴돌 때","")}
+    <p>2일째에는 내 안에서 <b>어떤</b> 목소리가 들리는지 보았습니다. 오늘은 그 목소리가 내 안에서 <b>어떻게 움직이는지</b> 봅니다. 같은 말을 빙빙 되뇌며 나를 끌어내리는지(되새김), 아니면 무엇이 문제인지 살피고 길을 찾는지(성찰).</p>
+    <div class="panel soft"><p class="ph">오늘 새로 배우는 것 — 되새김과 성찰은 다릅니다</p><p>미국의 심리학자 놀런-혹세마 연구팀(2003)은 마음이 가라앉을 때 사람들이 보이는 반응을 분석해, 겉으로는 비슷해 보이는 두 가지를 갈라냈습니다. “나는 왜 이럴까”를 되뇌며 맴도는 <b>되새김</b>과, 원인과 할 일을 살피는 <b>성찰</b>입니다. 시간이 지나 마음을 더 무겁게 만든 것은 되새김이었고, 성찰은 그렇지 않았습니다. 한국판 척도(김소정 외, 2010)에서도 ‘자책’과 ‘숙고’가 갈렸고, 우울과 이어진 것은 자책 쪽이었습니다. 생각을 많이 하는 것이 문제가 아니라, 어떻게 생각하느냐가 문제입니다.</p><p class="small">Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered, Cognitive Therapy and Research 27(3), 247–259 · 김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19</p></div>
+    <h3 class="h3">마음이 상한 일이 있을 때, 나는</h3><p class="small">지난 몇 주를 떠올리며 고르세요.</p>
+    ${W1_RUM.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"rm_"+p.id,["거의 없다","가끔","자주","거의 늘"])}</div>`).join("")}
+    ${done?w1RumBrief():pendHTML(x.answered,W1_RUM.length)}
+    ${done?`<h3 class="h3">맴도는 질문 바꾸기</h3>
+      <p>로뎀나무 아래의 엘리야에게 하나님은 “너는 왜 그 모양이냐” 하지 않으시고 “엘리야야, 네가 여기서 무엇을 하느냐?” 하고 물으셨습니다. 되새김의 질문은 ‘왜 나는’으로 시작하고, 성찰의 질문은 ‘무엇을’, ‘어떻게’로 시작합니다. 그리고 내 이름을 넣어 물으면 한 걸음 떨어져 볼 수 있습니다(어제 본 크로스 연구).</p>
+      ${fChips(n,"rq","요즘 맴도는 질문을 바꾼다면",[`“${nmv}, 지금 무엇이 필요하니?”`,"“이 일에서 내가 할 수 있는 한 가지는 무엇일까?”","“하나님은 이 일에 대해 무엇이라고 하실까?”","“누구에게 이 이야기를 할 수 있을까?”"])}
+      ${fText(n,"rq_own","또는 내 말로")}`:""}
+    ${done&&x.b>=2.5?`<div class="panel warn"><p class="ph">생각이 맴돌아 잠들기 어렵거나 하루가 버거울 만큼이라면</p><p>혼자 견디지 마세요. 믿을 수 있는 사람, 도움을 줄 수 있는 곳에 이야기해 주세요.</p><a class="btn" href="#/help/stop">멈추고 싶을 때</a></div>`:""}
+    <p class="small" style="margin-top:12px">이 점검은 진단 검사가 아닙니다. 반추 척도의 되새김(자책)과 성찰(숙고) 구분을 바탕으로 이 워크북을 위해 새로 쓴 문항이며, 성찰 문항 가운데 두 개(다른 사람과 나누기, 기도)는 이 워크북의 주제에 맞춰 더했습니다.</p>
+    ${doneBar(n,2)}</section>`;
+}
+
 VIEWS_W[2] = [null, vW2Day1, vW2Day2, vW2Day3, vW2Day4, vW2Day5, vW2Day6];
 /* ====================== 오늘의 세 걸음 — 1주 설교의 회복 방식: 알아채기 → 말씀을 나에게 → 새 말 ====================== */
-const BELIEF_V={"잘 보여야 사랑받는다":"ijn4_19","실수하면 끝이다":"ijn1_9","약해 보이면 안 된다":"ps32_5","있는 그대로의 나는 부족하다":"isa43_4","하나님도 나에게 실망하실 것이다":"gen28_15","내가 챙기지 않으면 아무도 안 챙겨 준다":"rom8_32","잘 모르겠다":"ijn1_7"};
+const BELIEF_V={"잘 보여야 사랑받는다":"ijn4_19","실수하면 끝이다":"ijn1_9","약해 보이면 안 된다":"ps32_5","있는 그대로의 나는 부족하다":"isa43_4","하나님도 나에게 실망하실 것이다":"gen28_15","내가 챙기지 않으면 아무도 안 챙겨 준다":"rom8_32","잘 모르겠다":"gen32_28"};
 function tsInfo(n,w){
   w=w||CW; const said=F(n,"ts_said",null,w), own=F(n,"ts_own","",w), none=said==="none";
   if(w===2){
     const sc=w2Scores(); const ph=W2_PH.find(p=>p.t===said); const sg=SIGS.find(s=>`“${s.t}”`===said||s.t===said); const st=W2_SIT.flatMap(s=>s.o).find(o=>o.t===said&&o.c!=="true"&&o.c!=="avoid");
     const kind = ph?ph.s : sg?SIG_SHAPE[sg.id] : st?st.c : (!said&&own) ? F(n,"ts_shape",null,w) : (none?(sc.top[0]||null):null);
     const topM=Object.keys(W2_MINDS).filter(k=>sc.m[k]!=null).sort((a,b)=>sc.m[b]-sc.m[a])[0];
-    const b3=F(2,"belief",null,2);
-    const verse = b3&&BELIEF_V[b3] ? BELIEF_V[b3] : (topM&&sc.m[topM]>=1.5 ? W2_MINDS[topM].v : "ijn1_7");
-    return {opts:[...w2Sit().picks, ...sc.picks.map(p=>p.t), ...SIGS.filter(s=>!s.act).map(s=>`“${s.t}”`)].filter((v,i,a)=>a.indexOf(v)===i), askKind:!said&&!!own, kindKey:"ts_shape", kindLbl:"어떤 모양에 가까운가요?", kinds:Object.entries(W2_SHAPES).map(([k,s])=>({v:k,t:s.nm})), kind, verse, news: [...(kind&&W2_SHAPES[kind]?W2_SHAPES[kind].re:[]), "“아까 그 말은 사실과 달랐어요.”", "“사실은 괜찮지 않았어요.”"]};
+    const b3=F(2,"belief",null,2); const rt=F(n,"ts_root",[],w)||[];
+    const rv = rt.some(x=>x.startsWith("두려움"))?"gen28_15" : rt.some(x=>/^(교만|욕심)/.test(x))?"rom8_32" : null;
+    const verse = rv || (b3&&BELIEF_V[b3] ? BELIEF_V[b3] : (topM&&sc.m[topM]>=1.5 ? W2_MINDS[topM].v : "gen32_28"));
+    return {opts:[...w2Sit().picks, ...sc.picks.map(p=>p.t), ...SIGS.filter(s=>!s.act).map(s=>`“${s.t}”`)].filter((v,i,a)=>a.indexOf(v)===i), askKind:!said&&!!own, kindKey:"ts_shape", kindLbl:"어떤 모양에 가까운가요?", kinds:Object.entries(W2_SHAPES).map(([k,s])=>({v:k,t:s.nm})), kind, verse, news: [...(kind&&W2_SHAPES[kind]?W2_SHAPES[kind].re:[]), "“사실 좀 힘들어요.”", "“사실은 동료가 많이 도와줬어요.”"].filter((v,i,a)=>a.indexOf(v)===i)};
   }
   const v1=voiceScores();
   const kind = typeOfText(said) || ((!said&&own) ? F(n,"ts_type",null,w) : (none?(v1.top[0]||null):null));
   const picks=PHRASES.filter(p=>(F1(2,"ph_"+p.id,0)||0)>0).map(p=>p.t);
   return {opts: picks.length?picks:TYPES.map(x=>x.self), askKind:!said&&!!own, kindKey:"ts_type", kindLbl:"그 말 밑의 마음은?", kinds:TYPES.map(x=>({v:x.id,t:x.nm})), kind, verse: kind?TYPE[kind].answer:"isa43_1", news: kind?NEWW[kind]:[]};
 }
+const W2_ROOTS=["두려움 — 잃을까 봐","교만 — 높아 보이려고","욕심 — 더 얻으려고","잘 모르겠다"];
 function threeSteps(n){
   const I=tsInfo(n); const w2=CW===2;
-  const L=w2?{intro:"이번 주의 세 걸음 — 멈추고, 시인하고, 고쳐 말합니다. 1주에 배운 회복의 방식(알아채기 · 말씀을 나에게 · 새 말)이 이번 주에는 이렇게 이어집니다.",s1:"① 멈추기 — 오늘 알아챈 말 하나 (멈췄든, 멈추지 못했든)",s2:"② 시인하기 — 하나님께 그대로, 그리고 들려오는 말씀",h:"하나님께 그대로 말씀드리고, 이 말씀을 들었어요",s3:"③ 고쳐 말하기 — 하루 안에",d:["고쳐 말했어요","아직이에요"],dl:"저녁에 —"}
-    :{intro:"1주 설교에서 배운 회복의 방식 — 내 말을 알아채고, 하나님의 말씀을 나에게 들려주고, 새 말을 합니다.",s1:"① 오늘 알아챈 말 — 가장 가까운 것 하나",s2:"② 그 말 앞에서, 하나님의 말씀을 나에게",h:"소리 내어 나에게 들려줬어요",s3:"③ 오늘의 새 말",d:["말했어요","아직이에요"],dl:"저녁에 — 새 말을"};
+  const L=w2?{intro:"설교의 둘째 연습 — 하루를 돌아보며 내가 한 속이는 말을 점검하고, 그 근원에 어떤 두려움과 교만이 있었는지 분별하고, 그 옆에 실제 그림을 그리는 말을 씁니다. 1주에 배운 세 걸음(알아채기 · 말씀을 나에게 · 새 말)이 이번 주에는 이렇게 이어집니다.",s1:(W2_ANGLE[n]||{}).s1||"① 오늘 내가 한 속이는 말",s2:"② 그 앞에서 — 하나님의 참된 그림, 그리고 진짜 내 이름",h:"이 그림 앞에 진짜 내 이름을 말씀드렸어요",s3:"③ 그 옆에 — 실제 그림을 그리는 말",d:["말해 봤어요","써 두었어요","아직이에요"],dl:"그리고 —"}
+    :{intro:"1주 설교에서 배운 회복의 방식 — 내 말을 알아채고, 하나님의 말씀을 나에게 들려주고, 새 말을 합니다.",s1:W1_ANGLE[n]||"① 오늘 알아챈 말 — 가장 가까운 것 하나",s2:"② 그 말 앞에서, 하나님의 말씀을 나에게",h:"소리 내어 나에게 들려줬어요",s3:"③ 오늘의 새 말",d:["말했어요","아직이에요"],dl:"저녁에 — 새 말을"};
   return `<div class="panel soft" style="margin:6px 0 16px"><p class="ph">오늘의 세 걸음</p><p class="small">${L.intro}</p>
     ${fChips(n,"ts_said",L.s1,[...I.opts.map(o=>({v:o,t:o})),{v:"none",t:"오늘은 없었어요"}])}
     ${fText(n,"ts_own","보기에 없으면 그대로 적기 (선택)")}
     ${I.askKind?fChips(n,I.kindKey,I.kindLbl,I.kinds):""}
+    ${w2?w2AngleExtra(n):""}
     <div class="lbl" style="margin-top:14px">${L.s2}</div>
     ${verseHTML(I.verse,{name:S.name})}
     ${fChips(n,"ts_heard","",[{v:"yes",t:L.h}])}
@@ -2251,8 +2532,8 @@ function threeSteps(n){
 function tsWeekHTML(w){
   const rows=[1,2,3,4,5,6].map(d=>{ const s=F(d,"ts_said",null,w), o=F(d,"ts_own","",w); if(!s&&!o) return "";
     const I=tsInfo(d,w); const said = s==="none"?"(알아챈 말 없음)":(s||o); const nw=F(d,"ts_new",null,w)||F(d,"ts_new_own","",w);
-    return `<tr><td>${d}일째</td><td>${esc(said)}</td><td>${VERSES[I.verse]?VERSES[I.verse].ref:""}${F(d,"ts_heard",null,w)?" · 들려줌":""}</td><td>${esc(nw||"")}${["말했어요","고쳐 말했어요"].includes(F(d,"ts_done",null,w))?" · 말함":""}</td></tr>`; }).join("");
-  return rows?`<div class="tablewrap"><table class="simple"><tr><th>날</th><th>${w===2?"① 멈춘 말":"① 알아챈 말"}</th><th>${w===2?"② 시인과 말씀":"② 들려준 말씀"}</th><th>${w===2?"③ 고쳐 말한 말":"③ 새 말"}</th></tr>${rows}</table></div>`:`<p class="empty">날마다 마무리의 ‘오늘의 세 걸음’이 여기에 모입니다.</p>`;
+    return `<tr><td>${d}일째</td><td>${esc(said)}</td><td>${w===2&&(F(d,"ts_root",[],w)||[]).length?(F(d,"ts_root",[],w)||[]).map(x=>x.split(" — ")[0]).join(" · ")+" — ":""}${VERSES[I.verse]?VERSES[I.verse].ref:""}${F(d,"ts_heard",null,w)?" · 들려줌":""}</td><td>${esc(nw||"")}${["말했어요","말해 봤어요"].includes(F(d,"ts_done",null,w))?" · 말함":F(d,"ts_done",null,w)==="써 두었어요"?" · 써 둠":""}</td></tr>`; }).join("");
+  return rows?`<div class="tablewrap"><table class="simple"><tr><th>날</th><th>${w===2?"① 속이는 말":"① 알아챈 말"}</th><th>${w===2?"② 근원과 말씀":"② 들려준 말씀"}</th><th>${w===2?"③ 실제 그림의 말":"③ 새 말"}</th></tr>${rows}</table></div>`:`<p class="empty">날마다 마무리의 ‘오늘의 세 걸음’이 여기에 모입니다.</p>`;
 }
 /* ====================== 진단 브리핑 — 답의 조합을 정해진 원칙으로 읽어 문장으로 (기기 안에서만) ====================== */
 function nmOf(){ return S.name?`${esc(S.name)} 님`:"나"; }
@@ -2302,10 +2583,10 @@ function w1Brief(){
 }
 
 /* 2주 2일째 — 속이는 말 점검 */
-const SHAPE_MECH={exag:"실제보다 크게, 혹은 작게 그려 내 몫을 흐립니다. 상대를 크게 그리면 그 그림 뒤에서 내 몫이 가려집니다.",excuse:"내 몫을 다른 이유 뒤에 둡니다. 상대 머릿속에는 ‘내 책임이 아닌 일’이라는 그림이 남습니다.",select:"사실만 골라 다른 그림을 그립니다. 틀린 말은 하나도 없지만, 그림은 거짓입니다.",holy:"하나님의 이름을 붙여 아무도 더 묻지 못하게 합니다. 그래서 가장 두꺼운 가림막이 됩니다."};
-const SHAPE_LINK={exag:{keep:"부풀리거나 줄이는 말이 지키려는 마음과 만나면, “괜찮아요”, “별일 아니에요”처럼 내 상태를 작게 그려 걱정이나 실망을 피하는 말이 됩니다.",raise:"부풀리거나 줄이는 말이 높이려는 마음과 만나면, “네, 다 봤습니다”처럼 내 몫을 크게 그려 좋아 보이려는 말이 됩니다."},excuse:{keep:"둘러대는 말은 대개 꾸중이나 실망한 얼굴을 피하려는 말입니다. 수학 90점만 말한 아이처럼, 무서운 것은 사실이 아니라 그 뒤에 올 얼굴입니다.",raise:"둘러대는 말이 높이려는 마음과 만나면, “내 잘못이 40, 저 사람이 60”처럼 이기려는 계산이 됩니다."},select:{keep:"반쪽만 말하는 말은 나머지 반쪽이 드러날까 두려운 마음에서 나옵니다.",raise:"반쪽만 말하는 말이 높이려는 마음과 만나면, 좋은 것만 골라 실제보다 나은 나, 내 편이 이기는 그림을 그립니다."},holy:{keep:"하나님 이름 뒤에 숨는 말은, 사람에게 내 마음을 그대로 말하기 두려울 때 하나님의 이름을 방패로 씁니다.",raise:"하나님 이름 뒤에 숨는 말이 높이려는 마음과 만나면, 실제보다 믿음 있어 보이는 말이 됩니다."}};
+const SHAPE_MECH={exag:"실제보다 크게, 혹은 작게 그려 내 몫을 흐립니다. 상대를 크게 그리면 그 그림 뒤에서 내 몫이 가려집니다.",excuse:"내 몫을 다른 이유 뒤에 둡니다. 상대 머릿속에는 ‘내 책임이 아닌 일’이라는 그림이 남습니다.",select:"사실만 골라 다른 그림을 그립니다. 틀린 말은 하나도 없지만, 그림은 거짓입니다.",holy:"없는 것을 있다고, 아닌 것을 그렇다고 말합니다. 가장 대담한 방식이고, 하나님의 이름을 빌리면 스스로도 속게 됩니다."};
+const SHAPE_LINK={exag:{keep:"과장하거나 축소하는 말이 지키려는 마음과 만나면, “괜찮아요”, “별일 아니에요”처럼 내 상태를 작게 그려 걱정이나 실망을 피하는 말이 됩니다.",raise:"과장하거나 축소하는 말이 높이려는 마음과 만나면, “이거 전부 제가 한 겁니다”처럼 내 몫을 크게 그려 좋아 보이려는 말이 됩니다."},excuse:{keep:"둘러대는 말은 대개 꾸중이나 실망한 얼굴을 피하려는 말입니다. 수학 90점만 말한 아이처럼, 무서운 것은 사실이 아니라 그 뒤에 올 얼굴입니다.",raise:"둘러대는 말이 높이려는 마음과 만나면, 내 몫의 실수는 다른 이유 뒤에 두고 잘한 것만 남겨, 유능해 보이려는 말이 됩니다."},select:{keep:"반쪽짜리 사실만 말하는 말은 나머지 반쪽이 드러날까 두려운 마음에서 나옵니다. 수학 90점만 말한 아이처럼, 무서운 것은 엄마의 실망입니다.",raise:"반쪽짜리 사실만 말하는 말이 높이려는 마음과 만나면, 좋은 것만 골라 실제보다 나은 나, 내 편이 이기는 그림을 그립니다."},holy:{keep:"지어내는 말이 지키려는 마음과 만나면, 들킬 것 같은 순간을 “저는 그런 말 한 적 없는데요”로 막아섭니다.",raise:"지어내는 말이 높이려는 마음과 만나면, “다 했어요”, “기도해 보니 하나님이 이렇게 인도하셨어요”처럼 나를 실제보다 크고 거룩하게 보이게 합니다."}};
 function w2Brief(){
-  const sc=w2Scores(); if(sc.answered<8) return "";
+  const sc=w2Scores(); if(sc.mAns<W2_MD.length && sc.answered<W2_SIT.length) return "";
   const m=sc.m; const allM=sc.mAns===W2_MD.length; const top=sc.top; const shp=sc.shapes.reduce((o,x)=>(o[x.id]=x.v,o),{});
   const minds=Object.keys(W2_MINDS).filter(k=>m[k]!=null).sort((a,b)=>m[b]-m[a]); const topM=minds[0];
   const face = !allM?null : (m.look>=2.5&&m.fear>=2.5)?"both" : (m.fear>=m.look ? (m.fear>=1.5?"keep":null) : (m.look>=1.5?"raise":null));
@@ -2314,10 +2595,10 @@ function w2Brief(){
   else if(allM&&!top.length) s1+=" 그 밑의 마음도 크게 움직이지 않는 편입니다. 이번 주 신호어로, 내가 미처 모르는 순간을 한 번 더 살펴보세요.";
   let s2="";
   if(top.length){
-    const q=W2_PH.filter(p=>top.includes(p.s)&&F(2,"w2p_"+p.id,null,2)===2).slice(0,2).map(p=>qb(p.t));
-    s2=(q.length?`‘자주’라고 고르신 것은 ${q.join(", 그리고 ")}입니다. `:"")+top.map(k=>`‘${W2_SHAPES[k].nm}’은 ${SHAPE_MECH[k]}`).join(" ");
+    const q=w2Sit().picks.slice(0,2).map(t=>qb(t));
+    s2=(q.length?`월요일에 속이는 쪽으로 고르신 대답은 ${q.join(", 그리고 ")}입니다. `:"")+top.map(k=>`‘${W2_SHAPES[k].nm}’은 ${SHAPE_MECH[k]}`).join(" ");
     const strong=Object.keys(W2_SHAPES).filter(k=>shp[k]<=0.25);
-    if(strong.length) s2+=` 반대로 ${joinKo(strong.map(k=>`‘${W2_SHAPES[k].nm}’`))}은 거의 없다고 답하셨습니다. 이미 지키고 있는 자리입니다.`;
+    if(strong.length) s2+=` 반대로 월요일의 상황들에서 ${joinKo(strong.map(k=>`‘${W2_SHAPES[k].nm}’`))} 쪽은 고르지 않으셨습니다. 이미 지키고 있는 자리일 수 있습니다.`;
   }
   let s3="";
   if(allM){
@@ -2336,11 +2617,13 @@ function w2Brief(){
   const tips=[];
   const sigs=[...new Set(top.flatMap(k=>W2_SHAPES[k].sig))]; if(sigs.length) tips.push(`신호어 가운데 ${sigs.map(s=>s==="옮기려다 멈춤"?"[옮기려다 멈춤]":`“${s}”`).join(", ")}를 특히 눈여겨보세요.`);
   if(top.length) tips.push(`오늘 3단계에서는 ‘${W2_SHAPES[top[0]].nm}’ 장면 하나를 해부해 보세요.`);
-  if(allM&&topM&&m[topM]>=1.5){ const v=VERSES[W2_MINDS[topM].v]; if(v) tips.push(`목요일에는 ${qt(v.key)}(${v.ref})를 들고 빛 앞에 서 보세요.`); }
+  if(allM&&topM&&m[topM]>=1.5){ const v=VERSES[W2_MINDS[topM].v]; if(v) tips.push(`목요일에는 ${qt(v.key)}(${v.ref})를 붙들고, 진짜 이름으로 하나님 앞에 서 보세요.`); }
   if(allM&&m.alone>=2.5) tips.push("금요일 파트너 15분은 꼭 해 보시기를 권합니다. 숨겨 온 것을 처음으로 한 사람 앞에 내려놓는 시간입니다.");
-  if(allM&&m.look>=2.5) tips.push("금요일의 ‘용기의 한 문장’ 가운데 “그거 제 실수예요”나 “잘 모르겠습니다”를 골라 보세요. 좋아 보이려는 마음을 내려놓는 말입니다.");
-  if(top.includes("holy")) tips.push("기도할 때도 괜찮은 척 대신, 고요의 마지막 2분에 진짜 하나를 말씀드려 보세요.");
-  return briefBox(`진단 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내 말에서 보이는 것",p:s2},{h:"그 밑의 마음",p:s3},{h:"말과 마음의 연결",p:s4},{h:"이번 주에",p:tips.join(" ")}]);
+  if(allM&&m.look>=2.5) tips.push("저녁의 ‘오늘의 세 걸음’에서 “사실은 동료가 많이 도와줬어요”처럼, 내 몫을 실제 크기로 돌려놓는 말을 써 보세요. 좋아 보이려는 마음을 내려놓는 말입니다.");
+  if(top.includes("holy")) tips.push("“다 했어요”, “기도해 보니…”가 나오려 할 때 첫 화면에서 눌러 두고, 저녁에 실제 그림의 말로 고쳐 써 보세요.");
+  const pl=F(2,"place",[],2)||[], hd=F(2,"hard",null,2), sf=F(2,"safe","",2);
+  const s5 = pl.length? `속이는 말이 가장 쉽게 나오는 자리는 ${pl.map(x=>`‘${W2_PLACE_NOUN[x]||x}’`).join(", ")}입니다.${hd?` 있는 그대로 말하기 가장 어려운 자리는 ‘${W2_PLACE_NOUN[hd]||hd}’입니다. 그 자리에서 무엇을 잃을까, 무엇을 얻으려는지 아래 장면 해부에서 봅니다.`:""}${sf?` 반대로 ${esc(sf)} 앞에서는 안전하다고 느낍니다. 그 사람이 금요일의 파트너가 될 수 있습니다.`:""}`:"";
+  return briefBox(`진단 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내 말에서 보이는 것",p:s2},{h:"자리",p:s5},{h:"그 밑의 마음",p:s3},{h:"말과 마음의 연결",p:s4},{h:"이번 주에",p:tips.join(" ")}]);
 }
 
 /* 2주 1일째 — 여덟 상황 */
@@ -2352,13 +2635,8 @@ function w2SitBrief(){
   const s1 = si.hideN? `${W2_SIT.length}가지 상황 가운데 ${si.hideN}곳에서 속이는 쪽을 고르셨습니다.${si.top.length?` 가장 자주 나온 모양은 ${joinKo(si.top.map(k=>`‘${shapeNm(k)}’`))}입니다.`:""}` : `${W2_SIT.length}가지 상황 모두에서 있는 그대로 말하는 쪽을 고르셨습니다.`;
   const s2 = hide.length? hide.slice(0,4).map(x=>`${qs(x.s.q)} ${qb(x.o.t)}`).join(", ")+(hide.length>4?` 외 ${hide.length-4}곳`:"")+".":"";
   const s3 = truth.length&&hide.length? `반대로 ${truth.slice(0,2).map(x=>`‘${qs(x.s.q)}’`).join(", ")}에서는 있는 그대로 말한다고 답하셨습니다. 이미 참된 말이 자리 잡은 곳입니다.`:"";
-  const why=F(1,"sit_why",[],2)||[]; const keep=["들키면 곤란하다","실망시키고 싶지 않다","갈등이 싫다","약해 보이기 싫다"], raise=["좋아 보이고 싶다","이기고 싶다"];
-  let s4="";
-  if(why.length){ const k=why.filter(x=>keep.includes(x)).length, r=why.filter(x=>raise.includes(x)).length;
-    s4 = k&&r? "그때의 마음에는 지키려는 얼굴과 높이려는 얼굴이 함께 있습니다." : k? "그때의 마음은 주로 지키려는 얼굴입니다. 잃을까 봐, 들킬까 봐 실제와 다른 그림을 그립니다." : r? "그때의 마음은 주로 높이려는 얼굴입니다. 좋아 보이려고, 이기려고 그림을 고칩니다." : "";
-    if(why.includes("굳이 말할 필요 없다")) s4+=" ‘굳이 말할 필요 없다’는 지혜로운 침묵일 수도 있습니다. 수요일에 그 둘을 가려 봅니다."; }
-  else if(si.hideN) s4="아래에서 그때 마음속에 먼저 드는 생각을 고르시면, 이 브리핑에 그 마음이 더해집니다.";
-  return briefBox(`월요일 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"속이는 쪽을 고른 상황",p:s2},{h:"이미 자리 잡은 곳",p:s3},{h:"그때의 마음",p:s4},{h:"내일",p:"화요일 점검에서 이 모양들을 더 자세히 보고, 한 장면을 해부합니다."}]);
+  const s4 = si.hideN? "아브라함처럼, ‘틀린 말은 아니잖아’ 하고 스스로 위로하며 반쪽만 말한 적은 없었나요? 그 말들이 누구 앞에서, 무엇 때문에 나오는지는 내일 봅니다." : "";
+  return briefBox(`월요일 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"속이는 쪽을 고른 상황",p:s2},{h:"이미 자리 잡은 곳",p:s3},{h:"아브라함처럼",p:s4},{h:"내일",p:"화요일에는 이 말들이 나오는 자리와 그 밑의 마음을 보고, 한 장면을 해부합니다."}]);
 }
 
 /* 2주 5일째 — 세 쪽과 말하기 전에 보기 */
@@ -2378,18 +2656,18 @@ function w2SideBrief(){
   if(st!=null&&H("silent")&&st>=1.6) s1+=" 그리고 말하기 전에 보는 습관은 잘 자리 잡혀 있습니다. 알면서도 말하지 못하는 자리, 지식보다 용기가 필요한 자리입니다.";
   const s2 = often.length? `‘자주’라고 고르신 것은 ${often.slice(0,2).join(", 그리고 ")}입니다.`:"";
   const s3 = st==null?"" : st<1? "말하기 전에 보는 습관은 아직 약합니다. 들은 말을 다른 사람에게 옮기거나 SNS에 무언가를 올리기 전에, 원래 자료와 다른 쪽 설명을 한 번 찾아보는 것부터 시작해 보세요. 확인할 수 없는 것이라면 옮기지 않는 것도 참된 말입니다." : st<1.6? "말하기 전에 보는 습관은 자리 잡아 가는 중입니다. ‘가끔’이라고 답한 문장 하나를 이번 주의 연습으로 삼아 보세요." : "말하기 전에 보는 습관이 잘 자리 잡혀 있습니다. 이 습관이 공동체 안에서 다른 사람에게도 안전한 자리가 되게 해 보세요.";
-  const tips=[]; if(H("knife")) tips.push("오늘은 ‘더 어려운 대화를 위해’에서 관찰과 느낌을 나누어 보세요. 사실과 판단이 갈라집니다.");
-  if(H("silent")) tips.push("오늘의 ‘용기의 한 문장’은 ‘세상을 위해’나 “도와줄 수 있어?”에서 골라 보세요.");
-  if(H("hide")) tips.push("오늘은 ‘고쳐 말하기’ 한 문장을 꼭 해 보세요.");
-  if(!tips.length) tips.push("이번 주에는 누군가 자기를 드러낼 때 “말해 줘서 고마워요”로 받아 주는, 안전한 사람이 되어 보세요.");
+  const tips=[]; if(H("knife")) tips.push("오늘의 ‘참되면서 살리는 말’에서 관찰과 느낌을 나누어 보세요. 사실과 판단이 갈라집니다.");
+  if(H("silent")) tips.push("오늘의 ‘참되면서 살리는 말’로, 꼭 해야 할 말 하나를 준비해 보세요.");
+  if(H("hide")) tips.push("저녁의 ‘오늘의 세 걸음’에서 실제 그림의 말을 꼭 써 보세요.");
+  if(!tips.length) tips.push("이번 주에는 그 단단한 자리에서, 누군가 자기를 드러낼 때 “말해 줘서 고마워요”로 받아 주는 사람이 되어 보세요.");
   return briefBox(`금요일 브리핑 — ${nmOf()}의 말`,[{h:"요약",p:s1},{h:"내가 고른 것",p:s2},{h:"말하기 전에 보기",p:s3},{h:"오늘",p:tips.join(" ")}]);
 }
 
 function methodPanel(w){
   return `<div class="panel soft"><p class="ph">말이 회복되는 세 걸음 — 1주 설교에서</p>
-   <p>① <b>알아채기</b> — 옛 말을 벗으려면, 먼저 내가 무엇을 입고 있는지 알아야 합니다(골 3:8).${w===2?" 이번 주에는 <b>멈추기</b>로 — 신호어가 나오려 할 때, 옮기려 할 때.":""}<br>
-   ② <b>말씀을 나에게 들려주기</b> — 그리스도의 말씀이 내 안에 집을 삼아 머물게 합니다(골 3:16).${w===2?" 이번 주에는 <b>시인하기</b>로 — 하나님께 그대로 아뢰고, 덮어 주시는 말씀을 듣습니다(시 32:5).":""}<br>
-   ③ <b>새 말 하기</b> — 옛 말 옆에, 주님이시라면 해 주셨을 말을(골 3:12–14).${w===2?" 이번 주에는 <b>고쳐 말하기</b>로 — 하루 안에, 그리고 용기의 한 문장.":""}</p>
+   <p>① <b>알아채기</b> — 옛 말을 벗으려면, 먼저 내가 무엇을 입고 있는지 알아야 합니다(골 3:8).${w===2?" 이번 주에는 <b>하루를 돌아보며 내가 한 속이는 말을 점검</b>합니다.":""}<br>
+   ② <b>말씀을 나에게 들려주기</b> — 그리스도의 말씀이 내 안에 집을 삼아 머물게 합니다(골 3:16).${w===2?" 이번 주에는 <b>하나님의 참된 그림을 붙잡고, 그 앞에 진짜 내 이름을 보여 드립니다</b>.":""}<br>
+   ③ <b>새 말 하기</b> — 옛 말 옆에, 주님이시라면 해 주셨을 말을(골 3:12–14).${w===2?" 이번 주에는 <b>그 옆에 실제 그림을 그리는 말을 쓰고, 말해 봅니다</b>.":""}</p>
    <p class="small">날마다 마지막 단계의 ‘오늘의 세 걸음’으로 연습합니다.</p></div>`;
 }
 
