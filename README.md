@@ -1,49 +1,53 @@
-# 깊은 샘에서 흐르는 말 — 워크북
+# 『1도의 가격』 함께 읽기 웹앱
 
-진실한숲교회 설교 시리즈 『깊은 샘에서 흐르는 말』(4주)과 함께 쓰는 웹앱 워크북입니다.
-서버 없이 파일만으로 동작하며, 성도들의 기록은 각자의 기기(브라우저)에만 저장됩니다.
+진실한숲교회 책읽기 모임용 휴대폰 웹앱이다. 서버 없이 GitHub Pages에서 돌아가고, 나눔판(함께 보기)만 Supabase를 쓴다.
 
-## 파일 구조
+## 1. 오늘 바로 올리기 (나눔판 없이)
 
-```
-index.html              앱 전체(화면 · 내용 · 동작)
-manifest.webmanifest    휴대전화 홈 화면에 추가할 때 쓰는 설정
-.nojekyll               깃허브 페이지가 빌드 과정 없이 그대로 올리도록 하는 빈 파일
-fonts/                  서체(고운바탕, Deepspring Sans)와 라이선스 파일
-icons/                  홈 화면 아이콘
-README.md               이 안내문
-```
+1. GitHub에 새 저장소(예: bookclub-1do)를 만들고 이 폴더의 파일을 폴더 구조 그대로 올린다.
+2. 저장소의 Settings > Pages에서 main 브랜치의 루트(/)로 배포를 켠다.
+3. 몇 분 뒤 `https://<아이디>.github.io/bookclub-1do/` 주소가 열린다. 이 주소를 성도들에게 보낸다.
+4. 휴대폰에서 주소를 연 뒤 아이폰은 사파리 공유 버튼의 "홈 화면에 추가", 안드로이드는 크롬 메뉴의 "앱 설치"를 누르면 앱처럼 쓸 수 있다.
 
-## 처음 올리기 (깃허브 웹 화면에서)
+`config.js`의 `supabaseAnonKey`가 비어 있으면 나눔판 없이 읽기, 내 문장, 이야기, 더 깊이, 내 노트가 작동한다. 이 상태에서 인도자 미리보기를 쓰려면 `config.js`의 `leaderPin`에 숫자를 넣는다.
 
-1. 깃허브에 로그인한 뒤 오른쪽 위 **+** → **New repository**
-2. 저장소 이름을 정합니다(예: `deepspring`). 공개 범위는 **Public**. 무료 계정에서는 공개 저장소만 깃허브 페이지를 쓸 수 있습니다
-3. **Create repository**
-4. 저장소 화면에서 **uploading an existing file**(또는 **Add file → Upload files**)을 누르고, 이 폴더의 파일과 `fonts`, `icons` 폴더를 끌어다 놓습니다 → **Commit changes**
-5. `.nojekyll`은 이름이 점(.)으로 시작해 끌어다 놓을 때 빠질 수 있습니다. 빠졌다면 **Add file → Create new file**에서 이름을 `.nojekyll`로 적고 내용 없이 **Commit changes**
-6. **Settings → Pages**에서 **Build and deployment**의 Source를 **Deploy from a branch**, Branch를 **main**, 폴더를 **/(root)**로 고르고 **Save**
-7. 몇 분 뒤 같은 화면 위쪽에 사이트 주소가 나타납니다. 예: `https://아이디.github.io/deepspring/`
-8. 그 주소를 휴대전화로 열어 확인한 뒤 성도들에게 나눕니다
+## 2. 나눔판 켜기 (새 Supabase 계정)
 
-## 매주 새 내용 올리기
+1. supabase.com에서 새 계정으로 가입하고, 조직(Organization)을 Free 플랜으로 만든다.
+2. New project를 누르고 이름(예: bookclub-1do), 데이터베이스 비밀번호(Generate로 만든 뒤 따로 보관), 지역 Northeast Asia (Seoul)를 고른 뒤 만든다. 준비되는 데 몇 분 걸린다.
+3. SQL Editor에서 `supabase/setup.sql`을 통째로 붙여 넣는다. 맨 아래 INSERT 문의 모임 코드와 인도자 PIN을 바꾼 뒤 실행한다.
+4. 새 쿼리에서 `select public.bookclub_check_code('정한코드');`를 실행해 `true`가 나오는지 확인한다.
+5. 프로젝트 주소(`https://<프로젝트ID>.supabase.co`)와 Project Settings > API Keys의 Publishable key(`sb_publishable_`로 시작)를 복사해 `config.js`의 `supabaseUrl`, `supabaseAnonKey`에 넣는다. Secret key(`sb_secret_`)는 절대 넣지 않는다.
+6. `config.js`를 다시 올린다. 이제 앱을 처음 여는 사람에게 모임 코드와 나눔판에 보일 이름(선택)을 묻는다.
 
-새 `index.html`을 받으면 **Add file → Upload files**로 같은 이름의 파일을 올리고 **Commit changes**. 같은 이름이면 덮어씁니다.
-- 성도들의 기록은 사라지지 않습니다(기록은 각자의 기기에 있기 때문)
-- 올린 뒤 바로 바뀌지 않으면 몇 분 기다렸다가 새로 고침해 보세요
+Publishable key는 원래 공개되는 값이다. 나눔판의 보안은 SQL 함수가 매번 모임 코드를 확인하는 데서 나온다. 코드를 바꾸면 기존 사용자도 코드를 다시 넣어야 한다.
 
-## 알아 두실 것
+무료 플랜 프로젝트는 일주일 가까이 사용이 거의 없으면 일시 정지된다. 정지 전에 경고 메일이 오며, 대시보드에 한 번 들어가면 막을 수 있다. 정지되어도 자료는 남고 대시보드에서 다시 켤 수 있다.
 
-- **주소를 하나로.** 기록은 주소마다 따로 저장됩니다. claude.ai에서 게시한 버전과 이 주소의 기록은 서로 이어지지 않으니, 성도들에게는 처음부터 이 주소 하나만 알려 주세요. 필요하면 앱의 [더보기 → 설정 → 내 기록 내보내기 / 불러오기]로 옮길 수 있습니다
-- **아이폰 홈 화면.** 홈 화면에 추가해 쓰면 사파리와 기록이 따로 저장될 수 있습니다. 홈 화면으로 쓸 분은 처음부터 홈 화면 아이콘으로 시작하시도록 안내해 주세요
-- **개인정보.** 앱은 아무것도 수집하거나 보내지 않습니다. 다만 깃허브 페이지는 보안을 위해 방문자의 IP 주소를 기록·보관합니다. 서체는 이 저장소 안에 들어 있어 다른 곳으로 요청이 나가지 않습니다
-- **검색 노출.** 검색엔진에 뜨지 않도록 표시해 두었습니다(링크를 받은 사람이 쓰는 앱). 다만 주소를 아는 사람은 누구나 열 수 있습니다
-- **공개 저장소.** 저장소의 파일은 누구나 볼 수 있습니다. 개인 정보나 기록 파일은 저장소에 올리지 마세요
+## 3. 매주 자료 올리기
 
-## 출처와 라이선스
+1. `content/_template.json`을 복사해 `content/s2.json`처럼 회차 번호로 저장하고 내용을 채운다. 대괄호 자리를 바꾸고, 쓰지 않는 칸은 지운다.
+2. `content/index.json`에서 그 회차의 `"file": null`을 `"file": "s2.json"`으로 바꾼다.
+3. 두 파일을 올린다. 앱이 날짜에 맞춰 연다. 모임 4일 전(수요일)에 읽기와 내 문장 적기가, 모임 날(일요일)에 이야기, 나눔판, 더 깊이가 열린다.
+4. 여는 날을 바꾸고 싶으면 `index.json`의 그 회차에 `"readOpens": "2026-10-08"`, `"allOpens": "2026-10-11"`처럼 날짜를 넣는다.
+5. 모임 시간과 장소는 `index.json`의 `club.time`, `club.place`에 넣으면 이번 주 화면에 나온다. 특정 회차만 다르면 그 회차에 `time`, `place`를 넣는다.
 
-- **성경 본문**: NJHV(나종현 목사 개인 번역). 야고보서 3:11은 개역개정을 인용(성경전서 개역개정판 © 대한성서공회)
-- **인용한 책과 연구**: 앱의 [더보기 → 출처] 화면에 책 제목과 쪽수, 연구 서지를 밝혀 두었습니다. 인용은 짧게, 출처를 밝혀 옮겼습니다
-- **서체**
-  - 고운바탕 — © The Gowun Batang Project Authors, SIL Open Font License 1.1 (`fonts/OFL-GowunBatang.txt`)
-  - Deepspring Sans — IBM Plex Sans KR(© IBM Corp., SIL Open Font License 1.1, Reserved Font Name "Plex")에서 이 앱에 쓰는 글자와 자주 쓰는 한글 2,350자만 남겨 줄인 서체입니다. 라이선스의 예약된 이름 조항에 따라 이름을 바꿨습니다 (`fonts/OFL-IBMPlexSansKR.txt`)
-- **워크북 내용**: 진실한숲교회 · 나종현
+올린 뒤에는 따로 할 일이 없다. 앱이 늘 최신 파일을 먼저 받아 온다.
+
+## 4. 알아 둘 것
+
+- 잠금은 날짜를 기준으로 화면에서만 걸린다. 파일을 미리 올리면 마음먹은 사람은 내용을 볼 수 있으니, 정말 미리 보이면 안 되는 내용은 그 주에 올린다.
+- 내 노트는 각자의 휴대폰 브라우저에 저장된다. 브라우저 기록을 지우면 사라지므로, 설정의 "내 노트 내보내기"를 안내한다.
+- 아이폰은 사파리와 홈 화면 앱의 저장 공간이 따로다. 성도들에게 처음부터 홈 화면에 추가한 뒤 쓰도록 안내하면 기록이 갈라지지 않는다.
+- 인도자 모드는 설정 > 인도자 모드에서 PIN으로 켠다. 아직 열리지 않은 자료를 미리 볼 수 있고, 나눔판의 글을 숨길 수 있다.
+- 숨긴 글 되살리기와 나눔판 비우기는 `setup.sql` 맨 아래 주석에 적어 두었다.
+
+## 파일
+
+- `index.html`, `styles.css`, `app.js`: 앱 본체
+- `config.js`: 나눔판 설정
+- `content/index.json`: 모임 목록과 날짜
+- `content/s0.json`, `content/s1.json`: 오리엔테이션과 1회차 자료
+- `content/_template.json`: 새 회차 자료 틀
+- `manifest.webmanifest`, `sw.js`, `icons/`: 홈 화면 설치와 오프라인용
+- `supabase/setup.sql`: 나눔판 표와 함수
