@@ -3,7 +3,7 @@
    그래서 새 index.html을 올리면, 성도들은 다음에 열 때 바로 새 내용을 받습니다.
    서체 · 아이콘처럼 바뀌지 않는 파일은 저장해 둔 것을 먼저 씁니다.
    서체나 아이콘 파일을 바꿀 때만 아래 CACHE 이름의 숫자를 올리세요. */
-const CACHE = "deepspring-v1";
+const CACHE = "deepspring-v2";
 const CORE = [
   "./", "./index.html", "./manifest.webmanifest",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-64.png",
