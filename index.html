@@ -172,6 +172,16 @@ p{ margin:.55em 0; }
 .chip[aria-pressed="true"]{ border-color:var(--teal); background:var(--teal-soft); color:var(--ink); font-weight:600; }
 .seg{ display:grid; grid-template-columns:repeat(3,1fr); border:1.5px solid var(--line); border-radius:12px; overflow:hidden; }
 .seg button{ border:0; background:var(--sheet); padding:10px 4px; cursor:pointer; font-size:.86em; min-height:44px; color:var(--ink-soft); }
+.pathbar{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:6px 0 4px; }
+.pathbar button{ border:1.5px solid var(--line); background:var(--sheet); border-radius:12px; padding:9px 6px; min-height:52px; font-size:.95em; color:var(--ink-soft); cursor:pointer; }
+.pathbar button span{ display:block; font-size:.78em; margin-top:2px; }
+.pathbar button[aria-pressed="true"]{ background:var(--teal); border-color:var(--teal); color:#fff; }
+.pathnote{ margin:4px 0 10px; }
+details.deep{ border:1.5px dashed var(--line); border-radius:12px; padding:6px 12px; margin:12px 0; }
+details.deep > summary{ cursor:pointer; color:var(--ink-soft); font-size:.92em; min-height:40px; display:flex; align-items:center; }
+details.deep[open] > summary{ margin-bottom:8px; }
+.segn button{ font-size:.74em; padding:8px 2px; line-height:1.25; word-break:keep-all; }
+.segends{ display:flex; justify-content:space-between; font-size:.74em; color:var(--ink-soft); margin-top:4px; }
 .seg button + button{ border-left:1.5px solid var(--line); }
 .seg button[aria-pressed="true"]{ background:var(--teal); color:var(--teal-ink); font-weight:600; }
 
@@ -519,9 +529,9 @@ const TOOLS5 = [
 
 const DAYS = [
   null,
-  {n:1, nm:"출발", title:"함께 걸을 사람", scr:"isa43", min:15},
+  {n:1, nm:"출발", title:"함께 걸을 사람", scr:"isa43", min:20},
   {n:2, nm:"알아보기", title:"말과 마음 점검", scr:"isa49", min:20},
-  {n:3, nm:"알아보기", title:"그 목소리의 정체", scr:"mt3", min:15},
+  {n:3, nm:"알아보기", title:"그 목소리의 정체", scr:"mt3", min:20},
   {n:4, nm:"채우기", title:"아버지의 대답", scr:"lk15_20", min:15},
   {n:5, nm:"채우기", title:"다른 목소리로 듣기", scr:"ps139", min:30},
   {n:6, nm:"거두기", title:"한 주를 거두어들이기", scr:"isa50", min:35, ext:true}
@@ -593,8 +603,11 @@ function fChips(n,k,label,opts,{multi=false,hint=""}={}){
   return `<div class="field"><div class="lbl">${label}</div>${hint?`<div class="hint">${hint}</div>`:""}<div class="chips" role="group" aria-label="${esc(label)}">${opts.map(o=>{const val=typeof o==="string"?o:o.v; const txt=typeof o==="string"?o:o.t; const on= multi? (cur||[]).includes(val) : cur===val; return `<button type="button" class="chip" aria-pressed="${on}" data-chip="${n}|${k}|${multi?1:0}" data-val="${esc(val)}">${esc(txt)}</button>`;}).join("")}</div></div>`;
 }
 function fSeg(n,k,opts){
-  const cur=F(n,k,null);
-  return `<div class="seg" role="group">${opts.map((o,i)=>`<button type="button" aria-pressed="${cur===i}" data-seg="${n}|${k}" data-val="${i}">${o}</button>`).join("")}</div>`;
+  const cur=F(n,k,null); const m=opts.length;
+  if(m<=3) return `<div class="seg" role="group">${opts.map((o,i)=>`<button type="button" aria-pressed="${cur===i}" data-seg="${n}|${k}" data-val="${i}">${o}</button>`).join("")}</div>`;
+  /* 4점 이상 — 눈금이 한 줄로 보이게. 6칸 이상은 숫자로, 양 끝에 뜻을 단다 */
+  const num=m>=6;
+  return `<div class="seg segn" role="group" style="grid-template-columns:repeat(${m},1fr)">${opts.map((o,i)=>`<button type="button" aria-pressed="${cur===i}" aria-label="${o}" title="${o}" data-seg="${n}|${k}" data-val="${i}">${num?i+1:o}</button>`).join("")}</div>${num?`<div class="segends"><span>1 ${opts[0]}</span><span>${opts[m-1]} ${m}</span></div>`:""}`;
 }
 function layerDone(n,L){ return !!D(n).done[L]; }
 function doneBar(n,L){ return `<div class="donebar">${L>1?`<button type="button" class="btn" data-prev="${n}|${L}">‹ 이전</button>`:""}<button type="button" class="btn primary" data-done="${n}|${L}">${L<4?"다음 단계 ›":"오늘 마치기"}</button></div>`; }
@@ -642,6 +655,11 @@ function chime(){
 
 /* ---------- 고요 타이머 ---------- */
 const STAGES = {
+  short:[
+    {nm:"멈춤", s:30, ins:"숨을 세 번 깊이 쉬세요."},
+    {nm:"말씀 듣기", s:150, ins:"말씀을 천천히 한 번 읽고,\n마음에 머무는 한 단어에 머무세요.", text:true},
+    {nm:"응답", s:60, ins:"한 문장으로 기도하세요."}
+  ],
   daily:[
     {nm:"멈춤", s:60, ins:"편히 앉아 숨을 세 번 깊이 쉬세요.\n몸 어디에 힘이 들어가 있는지 한 곳만 알아채세요."},
     {nm:"알아채기", s:120, ins:"오늘 내 안에서 가장 크게 들리는 목소리를\n판단하지 말고 바라보세요."},
@@ -658,11 +676,11 @@ const STAGES = {
 };
 let TM=null;
 function openCalm(dayN){
-  const d=(DAYS_W[CW]||DAYS)[dayN]; const stages=STAGES[d.ext?"ext":"daily"].map(s=> CW===2&&s.nm==="알아채기" ? {...s, ins:"오늘 내 안에서 움직이는 두려움, 교만, 욕심이 있는지\n판단하지 말고 바라보세요."} : CW===2&&s.nm==="응답" ? {...s, ins:"이 말씀이 그려 주는 하나님의 그림 하나를 붙드세요.\n그리고 한 줄 —\n“주님, 오늘도 당신의 진실한 새 그림을 주십시오.”"} : s); const scr=SCR[d.scr];
+  const d=(DAYS_W[CW]||DAYS)[dayN]; const stages=STAGES[isCore()?"short":d.ext?"ext":"daily"].map(s=> CW===3&&s.nm==="알아채기" ? {...s, ins:"오늘 내 안에서 타오르는 것이 있는지 —\n찔린 곳, 막힌 바람 —\n판단하지 말고 바라보세요."} : CW===3&&s.nm==="응답" ? {...s, ins:"노하기를 더디 하시는 하나님 앞에서\n한 줄 —\n“주님, 오늘 제 입에 온유한 말을 주십시오.”"} : CW===2&&s.nm==="알아채기" ? {...s, ins:"오늘 내 안에서 움직이는 두려움, 교만, 욕심이 있는지\n판단하지 말고 바라보세요."} : CW===2&&s.nm==="응답" ? {...s, ins:"이 말씀이 그려 주는 하나님의 그림 하나를 붙드세요.\n그리고 한 줄 —\n“주님, 오늘도 당신의 진실한 새 그림을 주십시오.”"} : s); const scr=SCR[d.scr];
   const total=stages.reduce((a,s)=>a+s.s,0);
   const ov=document.createElement("div"); ov.className="overlay calm"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-label","고요 "+Math.round(total/60)+"분");
   ov.innerHTML=`<canvas aria-hidden="true"></canvas><div class="cv">
-    <div class="top"><span>${d.ext?"고요 확장판":"고요 10분"} · ${scr.ref}</span><button type="button" data-x="close" aria-label="닫기">닫기</button></div>
+    <div class="top"><span>${d.ext?"고요 확장판":(isCore()?"짧은 고요 5분":"고요 10분")} · ${scr.ref}</span><button type="button" data-x="close" aria-label="닫기">닫기</button></div>
     <div class="stage" aria-live="polite"><div class="nm">시작할까요?</div><div class="ins">타이머가 단계마다 부드러운 소리로 알려 줍니다.\n시계를 보지 않아도 됩니다.</div><div class="time"></div><div class="text" hidden></div></div>
     <div class="prayer">나는 주의 것입니다</div>
     <div class="dots">${stages.map(()=>"<i></i>").join("")}</div>
@@ -866,7 +884,7 @@ function vHome(){
     <p class="small" style="margin:-.5em 0 .8em">${WK.sub}</p>
   </section>
   <section class="today" aria-label="오늘">
-    <div class="day">${allDone?"한 주를 모두 걸었습니다":`${n}일째 · ${d.nm} · 약 ${d.min}분`}</div>
+    <div class="day">${allDone?"한 주를 모두 걸었습니다":`${n}일째 · ${d.nm} · 약 ${isCore()?coreMin(n):d.min}분`}</div>
     <div class="title">${allDone?"소그룹에서 함께 나눠요":d.title}</div>
     <p class="small" style="margin:6px 0 14px">${allDone?"이번 주 기록을 들고 소그룹에서 나눕니다.":"누르면 고요부터 마무리까지, 한 단계씩 차례로 안내합니다."}</p>
     <button type="button" class="btn primary block" data-go="${allDone?`#/group/${w}`:`#/day/${w}/${n}`}">${label}</button>
@@ -989,7 +1007,14 @@ function vStop(){
   <p class="h-hero" style="font-size:1.45em">오늘은 여기까지만 하셔도 됩니다.</p>
   <p>이 워크북은 깊은 기억을 건드릴 수 있습니다. 힘들어지면 멈추는 것이 맞습니다.</p>
   <div class="panel soft"><p class="ph">1분 숨 고르기</p><p>넷을 세며 들이쉬고, 여섯을 세며 내쉬세요. 다섯 번.</p><p class="serif">\u201c나는 주의 것입니다.\u201d</p></div>
-  <p><b>이 마음을 혼자 견디지 마세요.</b> 믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 오늘 이야기해 주세요.</p>
+  <p><b>이 마음을 혼자 견디지 마세요.</b></p>
+  <div class="panel warn"><p class="ph">지금 도움이 필요하다면</p>
+    <p>죽고 싶은 마음이 들거나 나를 해치고 싶다면 — <a href="tel:109"><b>자살예방상담전화 109</b></a> (24시간)</p>
+    <p>마음이 너무 힘들어 누군가와 이야기해야 한다면 — <a href="tel:15770199"><b>정신건강 위기상담전화 1577-0199</b></a> (24시간)</p>
+    <p>나나 다른 사람이 지금 위험하다면 — <a href="tel:112"><b>112</b></a> · <a href="tel:119"><b>119</b></a></p>
+    <p>가정폭력이나 성폭력이라면 — <a href="tel:1366"><b>여성긴급전화 1366</b></a></p>
+    <p class="small">2026년 10월 기준 번호입니다.</p></div>
+  <p>믿을 수 있는 한 사람 — 목회자나 소그룹 리더, 가족이나 친구 — 에게 오늘 이야기해 주세요.</p>
   ${verseHTML("heb13_5",{name:S.name})}
   <button type="button" class="btn block" data-go="#/">처음 화면으로</button>`;
 }
@@ -1017,7 +1042,7 @@ function vMap(){
   ${top.map(id=>{const ph=myPhrases(id); return ph.length?`<p class="small">${TYPE[id].nm}이 하는 말: ${ph.map(esc).join(" / ")}</p>`:"";}).join("")}
   ${F1(3,"critic_name","")?`<p>내 비판자에게 붙인 이름 — <b>${esc(F1(3,"critic_name",""))}</b></p>`:""}
   ${pv?`<p>내가 새긴 아버지의 대답</p>${verseHTML(pv,{name:S.name})}`:""}
-  ${SERIES.weeks.slice(1).map(w=>`<h2 class="h2">${w.n}주 · ${w.tag}</h2>${w.n===2?w2MapHTML():`<p class="empty">${w.n}주에 채워집니다.</p>`}`).join("")}
+  ${SERIES.weeks.slice(1).map(w=>`<h2 class="h2">${w.n}주 · ${w.tag}</h2>${w.n===2?w2MapHTML():w.n===3?w3MapHTML():`<p class="empty">${w.n}주에 채워집니다.</p>`}`).join("")}
   <h2 class="h2">하나님이 나에게 하시는 말</h2>
   ${verseHTML("isa43_4",{name:S.name})}`;
 }
@@ -1035,7 +1060,7 @@ function vSources(){
   ${B("루스 헤일리 바턴, Invitation to Solitude and Silence","24쪽 — 흔들린 강물 병")}
   ${B("헨리 나우웬, Life of the Beloved","62–63쪽 — 기도의 진짜 일은 잠잠해져서 나에 대해 좋은 것을 말하는 음성을 듣는 것")}
   ${B("피터·제리 스캐지로, Emotionally Healthy Relationships 워크북","131쪽 “예수님은 마음에 계셔도, 할아버지는 뼛속에 산다”, 135쪽 가족을 돌아보는 목적, 140–143쪽 가족 계명 활동 — 3일째의 ‘우리 집의 보이지 않는 규칙’은 이 활동을 한국 가정에 맞게 새로 쓴 것입니다")}
-  ${B("박재연, 『말이 통해야 일이 통한다』","94–95쪽 — “내가 지금 판단을 사실이라고 믿고 있구나”. [말과 목소리] 기록의 한 줄은 이 문장을 내면의 목소리에 옮긴 것입니다. 2주 — 92쪽(로젠버그의 관찰 · 감정 · 욕구 · 요청에 기반), 96쪽(관찰은 ‘카메라로 찍은 듯’, 들은 말은 ‘녹음기로 듣는 것’처럼), 125쪽(지킬 수 없는 부탁 대신 지금 할 수 있는 구체적인 부탁), 238쪽(끝까지 침묵으로 듣고 말해 주어 고맙다고 말하기)")}${B("Leary (1983), A brief version of the Fear of Negative Evaluation Scale, Personality and Social Psychology Bulletin 9(3), 371–375 · Rodebaugh, Woods, Heimberg (2004), Psychological Assessment 16, 169–181","2주 2일째 — 단축판 12문항 가운데 직접 진술 8문항(1 · 3 · 5 · 6 · 8 · 9 · 11 · 12번, BFNE-S). 역채점 문항보다 신뢰도와 타당도가 높아 이 8문항이 권장됨. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음")}${B("Ashton · Lee (2009), The HEXACO-60: A short measure of the major dimensions of personality, Journal of Personality Assessment · Lee · Ashton (2004), Multivariate Behavioral Research 39(2), 329–358","2주 2일째 — HEXACO-60의 정직-겸손 10문항(진실성 6 · 30 · 54, 공정성 12 · 36 · 60, 탐욕 회피 18 · 42, 겸손 24 · 48번). 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음(예: 백만 달러 → 10억 원)")}${B("Larson · Chastain (1990), Self-concealment: Conceptualization, measurement, and health implications, Journal of Social and Clinical Psychology 9(4), 439–455","2주 2일째 — 자기은폐 척도 10문항 전체. 부정적인 개인 정보를 감추는 경향이 불안 · 우울 · 신체 증상과 이어짐. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음")}${B("Beck · McDonald (2004), Attachment to God: The Attachment to God Inventory, Journal of Psychology and Theology 32(2), 92–103","2주 3일째 — 28문항 가운데 불안 하위 척도 14문항 전체(홀수 번호, 13번 역채점), 7점. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음. 한국판 타당화 연구도 있음(기독교인 244명)")}${B("Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered: A psychometric analysis, Cognitive Therapy and Research 27(3), 247–259","1주 5일째 — 반추 척도의 두 요인, 되새김(brooding)과 성찰(reflection). 시간이 지나 더 큰 우울과 이어진 것은 되새김")}${B("김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19","대학생 360명. 자책 · 숙고 · 우울반추의 3요인, 숙고는 우울과 유의한 상관이 없었음. 5일째 문항은 이 구분을 바탕으로 새로 씀")}${B("Baumeister, Bratslavsky, Finkenauer, Vohs (2001), Bad is stronger than good, Review of General Psychology 5(4), 323–370","1주 1일째 — 나쁜 감정 · 부모 · 피드백이 같은 크기의 좋은 것보다 큰 영향을 미친다는 광범위한 문헌 검토")}${B("Kross 외 (2014), Self-talk as a regulatory mechanism: How you do it matters, Journal of Personality and Social Psychology 106(2), 304–324","1주 4일째 — 자기를 돌아볼 때 ‘나’ 대신 이름이나 ‘너’로 부르면 거리를 두고 보게 되고, 스트레스 상황에서 더 잘 해내며 다가올 일을 도전으로 받아들임(7개 연구, 585명)")}${B("Gable, Reis, Impett, Asher (2004), What do you do when things go right?, Journal of Personality and Social Psychology 87(2), 228–245","1주 5일째 — 좋은 일을 나누면 기쁨과 안녕감이 커지고, 듣는 사람이 적극적 · 건설적으로 반응할 때 더 커짐. 그런 배우자와의 관계는 친밀감과 만족이 높음")}${B("DePaulo, Kashy, Kirkendol, Wyer, Epstein (1996), Lying in everyday life, Journal of Personality and Social Psychology 70(5), 979–995","2주 1일째 — 일주일 거짓말 일기. 대학생 77명 하루 평균 두 번(만남 세 번에 한 번), 지역 주민 70명 하루 한 번꼴(다섯 번에 한 번)")}${B("Garrett, Lazzaro, Ariely, Sharot (2016), The brain adapts to dishonesty, Nature Neuroscience 19(12), 1727–1732","2주 2일째 — 자기에게 이득이 되는 거짓말은 되풀이할수록 커지고, 편도체 반응은 줄어듦. 남을 위한 거짓말은 커지지 않음")}${B("von Hippel & Trivers (2011), The evolution and psychology of self-deception, Behavioral and Brain Sciences 34(1)","2주 3일째 — 자기기만이 남을 속이는 일을 돕는다는 이론적 주장. 같은 학술지의 논평에서 실험적 검증이 필요하다는 반론도 있음")}${B("Slepian, Chun, Mason (2017), The experience of secrecy, Journal of Personality and Social Psychology 113(1), 1–33","2주 4일째 — 평균 13가지 비밀, 그중 다섯은 아무에게도 말하지 않음. 감추는 순간보다 혼자 떠올리는 일이 잦고, 그럴수록 안녕감이 낮음")}${B("Vosoughi, Roy, Aral (2018), The spread of true and false news online, Science 359(6380), 1146–1151","2주 5일째 — 2006–2017년 트위터 약 12만 6천 건. 거짓 소식이 더 멀리 · 빨리 · 깊게 퍼짐, 다시 공유될 가능성 70% 높음, 참된 소식이 1,500명에 닿는 데 약 여섯 배의 시간")}${B("Marshall B. Rosenberg, Nonviolent Communication: A Language of Life","27쪽 — 네 요소: 판단이나 평가를 섞지 않은 관찰, 느낌, 필요, 부탁. 2주 5일째 ‘말할 문장 만들기’의 뼈대")}
+  ${B("박재연, 『말이 통해야 일이 통한다』","94–95쪽 — “내가 지금 판단을 사실이라고 믿고 있구나”. [말과 목소리] 기록의 한 줄은 이 문장을 내면의 목소리에 옮긴 것입니다. 2주 — 92쪽(로젠버그의 관찰 · 감정 · 욕구 · 요청에 기반), 96쪽(관찰은 ‘카메라로 찍은 듯’, 들은 말은 ‘녹음기로 듣는 것’처럼), 125쪽(지킬 수 없는 부탁 대신 지금 할 수 있는 구체적인 부탁), 238쪽(끝까지 침묵으로 듣고 말해 주어 고맙다고 말하기)")}${B("서수균 · 권석만 (2002), 「한국판 공격성 질문지의 타당화 연구」, 『한국심리학회지: 임상』 21(2), 487–501 · 원척도 Buss · Perry (1992)","3주 1일째 — 언어적 공격성 5문항(내적 일관성 .73, 5주 검사-재검사 .83)과 적대감 8문항(.76, .75). 분노를 억제하는 사람일수록 적대감이 높았음(495–496쪽). 저자의 허락을 받아 원 문항 그대로 씀")}${B("서수균 · 권석만 (2005), 「분노사고 척도 개발과 타당화 연구: 일차적 분노사고와 이차적 분노사고」, 『한국심리학회지: 임상』 24(1), 187–206","3주 2 · 3일째 — 일차적 분노사고 20문항(타인의 부당하고 이기적인 행동에 대한 예민성 11, 친밀한 관계 상황에서 경험하는 무시와 실망감 9, 신뢰도 .86 · .80), 이차적 분노사고 가운데 타인비난 및 보복 19문항(신뢰도 .96). 저자의 허락을 받아 씀")}${B("서수균 (2009), 「비합리적 신념과 공격성 사이에서 일차적, 이차적 분노사고의 매개역할」, 『한국심리학회지: 임상』 28(3), 695–708","3주 3일째 — 이차적 분노사고가 공격성에 가장 가까운 요인으로 나타남")}${B("서수균 (2007), 「한국판 언어성 분노행동 척도의 타당화 연구」, 『한국심리학회지: 임상』 26(1), 239–250 · 원척도 Chambers (1999)","3주 5일째 — 23문항 전체(건설적 언어성 분노행동 12, 정당화 6, 반추 5, 4점). 한국판 문항 그대로, 저자의 허락을 받아 씀")}${B("Gottman · Silver, The Seven Principles for Making Marriage Work","3주 1 · 3 · 5일째 — 경멸의 모양과 해로움(pp. 44–45), 불평과 비난의 차이(p. 42), 거친 시작과 처음 3분으로 결과를 96% 예측(p. 41)")}${B("Tangney · Dearing (2002), Shame and Guilt: Emotions and Social Behavior","3주 2 · 6일째 — 수치를 잘 느낄수록 남을 탓하고 화를 내는 경향(pp. 138, 145), 수치는 부인과 방어적 분노를, 죄책감은 책임과 건설적 표현을(pp. 21, 23, 25)")}${B("Lieberman 외 (2007), Putting feelings into words, Psychological Science 18(5), 421–428","3주 4일째 — 감정에 이름을 붙이면 편도체 반응이 줄어듦(30명, fMRI)")}${B("Leary (1983), A brief version of the Fear of Negative Evaluation Scale, Personality and Social Psychology Bulletin 9(3), 371–375 · Rodebaugh, Woods, Heimberg (2004), Psychological Assessment 16, 169–181","2주 2일째 — 단축판 12문항 가운데 직접 진술 8문항(1 · 3 · 5 · 6 · 8 · 9 · 11 · 12번, BFNE-S). 역채점 문항보다 신뢰도와 타당도가 높아 이 8문항이 권장됨. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음")}${B("Ashton · Lee (2009), The HEXACO-60: A short measure of the major dimensions of personality, Journal of Personality Assessment · Lee · Ashton (2004), Multivariate Behavioral Research 39(2), 329–358","2주 2일째 — HEXACO-60의 정직-겸손 10문항(진실성 6 · 30 · 54, 공정성 12 · 36 · 60, 탐욕 회피 18 · 42, 겸손 24 · 48번). 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음(예: 백만 달러 → 10억 원)")}${B("Larson · Chastain (1990), Self-concealment: Conceptualization, measurement, and health implications, Journal of Social and Clinical Psychology 9(4), 439–455","2주 2일째 — 자기은폐 척도 10문항 전체. 부정적인 개인 정보를 감추는 경향이 불안 · 우울 · 신체 증상과 이어짐. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음")}${B("Beck · McDonald (2004), Attachment to God: The Attachment to God Inventory, Journal of Psychology and Theology 32(2), 92–103","2주 3일째 — 28문항 가운데 불안 하위 척도 14문항 전체(홀수 번호, 13번 역채점), 7점. 원 저자의 허락을 받아 번역하고 우리말 표현으로 다듬음. 한국판 타당화 연구도 있음(기독교인 244명)")}${B("Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered: A psychometric analysis, Cognitive Therapy and Research 27(3), 247–259","1주 5일째 — 반추 척도의 두 요인, 되새김(brooding)과 성찰(reflection). 시간이 지나 더 큰 우울과 이어진 것은 되새김")}${B("김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19","대학생 360명. 자책 · 숙고 · 우울반추의 3요인, 숙고는 우울과 유의한 상관이 없었음. 5일째 문항은 이 구분을 바탕으로 새로 씀")}${B("Baumeister, Bratslavsky, Finkenauer, Vohs (2001), Bad is stronger than good, Review of General Psychology 5(4), 323–370","1주 1일째 — 나쁜 감정 · 부모 · 피드백이 같은 크기의 좋은 것보다 큰 영향을 미친다는 광범위한 문헌 검토")}${B("Kross 외 (2014), Self-talk as a regulatory mechanism: How you do it matters, Journal of Personality and Social Psychology 106(2), 304–324","1주 4일째 — 자기를 돌아볼 때 ‘나’ 대신 이름이나 ‘너’로 부르면 거리를 두고 보게 되고, 스트레스 상황에서 더 잘 해내며 다가올 일을 도전으로 받아들임(7개 연구, 585명)")}${B("Gable, Reis, Impett, Asher (2004), What do you do when things go right?, Journal of Personality and Social Psychology 87(2), 228–245","1주 5일째 — 좋은 일을 나누면 기쁨과 안녕감이 커지고, 듣는 사람이 적극적 · 건설적으로 반응할 때 더 커짐. 그런 배우자와의 관계는 친밀감과 만족이 높음")}${B("DePaulo, Kashy, Kirkendol, Wyer, Epstein (1996), Lying in everyday life, Journal of Personality and Social Psychology 70(5), 979–995","2주 1일째 — 일주일 거짓말 일기. 대학생 77명 하루 평균 두 번(만남 세 번에 한 번), 지역 주민 70명 하루 한 번꼴(다섯 번에 한 번)")}${B("Garrett, Lazzaro, Ariely, Sharot (2016), The brain adapts to dishonesty, Nature Neuroscience 19(12), 1727–1732","2주 2일째 — 자기에게 이득이 되는 거짓말은 되풀이할수록 커지고, 편도체 반응은 줄어듦. 남을 위한 거짓말은 커지지 않음")}${B("von Hippel & Trivers (2011), The evolution and psychology of self-deception, Behavioral and Brain Sciences 34(1)","2주 3일째 — 자기기만이 남을 속이는 일을 돕는다는 이론적 주장. 같은 학술지의 논평에서 실험적 검증이 필요하다는 반론도 있음")}${B("Slepian, Chun, Mason (2017), The experience of secrecy, Journal of Personality and Social Psychology 113(1), 1–33","2주 4일째 — 평균 13가지 비밀, 그중 다섯은 아무에게도 말하지 않음. 감추는 순간보다 혼자 떠올리는 일이 잦고, 그럴수록 안녕감이 낮음")}${B("Vosoughi, Roy, Aral (2018), The spread of true and false news online, Science 359(6380), 1146–1151","2주 5일째 — 2006–2017년 트위터 약 12만 6천 건. 거짓 소식이 더 멀리 · 빨리 · 깊게 퍼짐, 다시 공유될 가능성 70% 높음, 참된 소식이 1,500명에 닿는 데 약 여섯 배의 시간")}${B("Marshall B. Rosenberg, Nonviolent Communication: A Language of Life","27쪽 — 네 요소: 판단이나 평가를 섞지 않은 관찰, 느낌, 필요, 부탁. 2주 5일째 ‘말할 문장 만들기’의 뼈대")}
   ${B("Jay Earley · Bonnie Weiss, Self-Therapy for Your Inner Critic / Freedom from Your Inner Critic","일곱 가지 내면 비판자 분류 — 이 워크북의 ‘일곱 목소리’는 이 분류를 바탕으로 시리즈에 맞게 다듬은 것입니다(검증된 심리 척도가 아닌 관찰 도구)")}${B("Paul Gilbert · Mary Clarke · Sarah Hempel · Jeremy Miles · Chris Irons (2004), Criticizing and reassuring oneself, British Journal of Clinical Psychology 43(1), 31–50","FSCRS(자기비판/자기공격과 자기위안 형태 척도) — 실수했을 때 나를 대하는 방식을 자기비판 · 자기공격 · 자기위안으로 나누고 0–4점으로 답하는 구조. 2일째 점검 3부는 이 구분과 응답 방식을 따르되, 문항은 이 워크북을 위해 새로 썼습니다(원척도의 자해 문항은 넣지 않고 따로 묻습니다)")}${B("조현주 · 이승훈 · 신철 · 조용원 (2011), 「한국판 자기비판/자기공격과 자기위안 형태척도의 신뢰도와 타당도 연구」, 『인지행동치료』 11(2), 137–154","대학생 401명 · 18문항 3요인 · 내적 일치도 .66–.87 · 한 달 간격 재검사 신뢰도 .64–.87")}${B("Dale G. Larson · Robert L. Chastain (1990), Self-concealment: Conceptualization, measurement, and health implications, Journal of Social and Clinical Psychology 9(4), 439–455","자기은폐 척도 — 고통스럽거나 부정적인 개인 정보를 다른 사람에게 적극적으로 숨기는 성향. 2주 2일째 점검 2부의 ‘드러날까 두려운 마음’ · ‘혼자 지고 있는 마음’의 구분")}${B("박미란 · 이지연 (2008), 「자기은폐 척도개발 및 타당화」, 『상담학연구』 9(4), 1547–1565","라슨과 채스테인의 개념에 기초한 한국판 15문항 3요인(은폐경향성 · 비밀의 소유 · 비밀누설의 두려움), 내적 일치도 .87")}${B("Paul L. Hewitt 외 (2003), The interpersonal expression of perfection: Perfectionistic self-presentation and psychological distress, Journal of Personality and Social Psychology 84(6), 1303–1325","완벽주의적 자기제시 척도 — 2주 2일째 점검 2부 ‘잘 보이려는 마음’의 구분")}${B("하정희 (2011), 「한국판 완벽주의적 자기제시 척도(PSPS-K)의 개발과 타당화」, 『상담학연구』 12(4), 1211–1230","3요인 — 완벽주의적 자기노력 · 불완전함 은폐노력(행동적) · 불완전함 은폐노력(언어적). 2주 점검의 문항은 이 척도들의 구분을 따라 새로 썼습니다")}
   <h2 class="h2">연구</h2>
   ${B("Gilbert, Clarke, Hempel, Miles, Irons (2004)","British Journal of Clinical Psychology 43, 31–50 — 자기 비판의 두 얼굴")}
@@ -1056,18 +1081,20 @@ function stepper(n){ return `<nav class="stepper" aria-label="오늘의 순서">
 const W2_CALM_PIC={1:"욕심과 교만 앞에 — 좋은 것을 감추시는 분이 아니라, 아들까지 내주시고 모든 것을 은혜로 주시는 분",2:"두려움 앞에 — 내가 덮기를 멈출 때, 덮어 주시는 분",3:"두려움 앞에 — 아무것도 내놓지 못한 나에게 먼저 찾아와 함께하시고 지키시는 분",4:"교만 앞에 — 움켜쥔 손을 꺾으시고, 진짜 이름을 고백한 자리에서 새 이름을 주시는 분",5:"서로 앞에서 — 우리를 서로의 지체로 묶으시고, 사랑 안에서 참된 것을 말하게 하시는 분",6:"두려움 없이 — 나 때문에 기뻐하시며 노래하시는 분"};
 function calmLayer(n){
   const d=(DAYS_W[CW]||DAYS)[n];
-  return `<section class="layer" id="L1">${layerHead(n,1,d.ext?"고요 — 확장판":"고요 10분", d.ext?"약 15분":"10분")}
+  return `<section class="layer" id="L1">${layerHead(n,1,isCore()?"짧은 고요 5분":d.ext?"고요 — 확장판":"고요 10분", isCore()?"5분":d.ext?"약 15분":"10분")}
     ${scriptureHTML(d.scr)}
     ${n===1?`<p class="small">처음이라면 <a href="#/guide">고요 훈련 안내</a>를 한 번 읽고 시작하세요.</p>`:""}
     ${CW===2&&n===1?`<p class="small">이번 주 고요는 설교의 첫째 연습입니다. 두려움과 교만과 욕심을 지우는 말씀 앞에 머물러, 그 말씀이 그려 주는 하나님의 그림을 붙듭니다. 하루를 돌아보는 일은 저녁, 마무리의 ‘오늘의 세 걸음’에서 합니다.</p>`:""}
     ${CW===2&&W2_CALM_PIC[n]?`<p class="small"><b>오늘 붙들 그림</b> — ${W2_CALM_PIC[n]}</p>`:""}
+    ${CW===3&&n===1?`<p class="small">이번 주 고요는 노하기를 더디 하시는 하나님 앞에 머무는 시간입니다. 말씀으로 가득한 귀가 알맞은 말로 가득한 혀를 낳습니다(사 50:4). 저녁의 말은 아침의 귀에서 결정됩니다.</p>`:""}
+    ${CW===3&&W3_CALM_PIC[n]?`<p class="small"><b>오늘 머물 하나님</b> — ${W3_CALM_PIC[n]}</p>`:""}
     ${CW===1&&n===5?`<p class="small">오늘 파트너를 만나기 전에, 내 말을 이미 다 아시는 분 앞에 먼저 앉습니다.</p>`:""}
     ${CW===1&&n===6?`<p class="small">오늘은 말씀 듣기 뒤에 <b>잠잠히 머물기 5분</b>이 더해집니다. 헨리 나우웬은 기도의 진짜 일이 잠잠해져서, 나에 대해 좋은 것을 말하는 음성을 듣는 것이라고 말했습니다. 그 음성은 요단강에서 예수께서 들으신 음성입니다.</p>`:""}
     <button type="button" class="btn primary block" data-act="calm" data-day="${n}">${IC.drop}${F(n,"calmDone",false)?"다시 하기":"타이머 시작"}</button>
-    ${fText(n,"calm_notice",CW===2?"알아채기 — 오늘 움직이는 두려움, 교만, 욕심":"알아채기 — 오늘 내 안에서 가장 크게 들린 목소리")}
+    ${isCore()?"":fText(n,"calm_notice",CW===3?"알아채기 — 오늘 타오르는 것(찔린 곳, 막힌 바람)":CW===2?"알아채기 — 오늘 움직이는 두려움, 교만, 욕심":"알아채기 — 오늘 내 안에서 가장 크게 들린 목소리")}
     ${fText(n,"calm_word","머문 단어나 구절")}
     ${n===6?fText(n,"calm_stay","머무는 동안 떠오른 것(선택)"):""}
-    ${fText(n,"calm_resp",CW===2?"응답 — 이 말씀이 그려 준 하나님의 그림 한 줄":"응답 — 한 문장 기도",CW===2?{area:true}:{})}
+    ${fText(n,"calm_resp",CW===3?"응답 — 오늘 내 입에 주실 온유한 말 한 줄":CW===2?"응답 — 이 말씀이 그려 준 하나님의 그림 한 줄":"응답 — 한 문장 기도",CW>=2?{area:true}:{})}
     ${doneBar(n,1)}</section>`;
 }
 function closeLayer(n, prayer, giveLabel="오늘 한 사람에게 건넬 말 하나", extra=""){
@@ -1075,9 +1102,30 @@ function closeLayer(n, prayer, giveLabel="오늘 한 사람에게 건넬 말 하
 }
 function curStep(n){ const c=F(n,"cur",null); if(c>=1&&c<=4) return c; for(let L=1;L<=4;L++){ if(!layerDone(n,L)) return L; } return 1; }
 const FLOW=["","고요","질문","연습","마무리"];
+/* ---------- 분량 — 오늘 꼭 할 것(약 15분) / 더 깊이 ---------- */
+function isCore(){ return !(S.settings&&S.settings.path==="deep"); }
+function coreMin(n){ return 15; }
+function pathBar(n){ const d=(DAYS_W[CW]||DAYS)[n]; const c=isCore();
+  return `<div class="pathbar" role="group" aria-label="오늘의 분량"><button type="button" data-act="path" data-v="core" aria-pressed="${c}">오늘 꼭 할 것<span>약 ${coreMin(n)}분</span></button><button type="button" data-act="path" data-v="deep" aria-pressed="${!c}">더 깊이<span>약 ${d.min}분</span></button></div>${c?`<p class="small pathnote">짧은 고요와 오늘의 핵심 하나, 저녁 카드만 펼쳐 둡니다. 접힌 ‘더 깊이’는 언제든 열어 볼 수 있습니다.</p>`:""}`; }
+function deepBox(label, html){ return isCore()?`<details class="deep"><summary><span class="nm">더 깊이 — ${label}</span></summary>${html}</details>`:html; }
+/* '꼭 할 것'에서 통째로 접는 칸 — 주: {날: [칸]} */
+const DEEP_LAYERS={1:{2:[3],3:[3],5:[3]},2:{1:[3],2:[3],3:[3],5:[2]},3:{4:[2]}};
+function coreFold(html, layers){
+  if(!layers||!layers.length||typeof document==="undefined") return html;
+  const tp=document.createElement("template"); tp.innerHTML=html;
+  layers.forEach(L=>{ const sec=tp.content.querySelector("#L"+L); if(!sec) return;
+    const head=sec.querySelector(":scope > .lh"); const kids=[...sec.children]; const bar=kids.reverse().find(c=>c.classList.contains("donebar"));
+    const det=document.createElement("details"); det.className="deep";
+    const sm=document.createElement("summary"); sm.innerHTML=`<span class="nm">더 깊이 — 오늘은 건너뛰어도 됩니다</span>`; det.appendChild(sm);
+    [...sec.childNodes].forEach(ch=>{ if(ch!==head&&ch!==bar) det.appendChild(ch); });
+    sec.insertBefore(det, bar||null); });
+  return tp.innerHTML;
+}
 function dayShell(n, inner){
   const d=(DAYS_W[CW]||DAYS)[n], cur=curStep(n);
-  return `${topbar(`${CW>1?CW+"주 ":""}${n}일째 · ${d.title}`,"#/", `약 ${d.min}분`)}
+  if(isCore()) inner=coreFold(inner,(DEEP_LAYERS[CW]||{})[n]);
+  return `${topbar(`${CW>1?CW+"주 ":""}${n}일째 · ${d.title}`,"#/", `약 ${isCore()?coreMin(n):d.min}분`)}
+  ${pathBar(n)}
   <div class="flowbar" aria-label="오늘의 순서"><div class="fb-n">${cur} / 4 단계</div><div class="fb-steps">${[1,2,3,4].map(L=>`<span class="fs ${L===cur?"now":""} ${layerDone(n,L)?"done":""}">${FLOW[L]}</span>`).join("")}</div></div>
   <div class="dayflow" data-cur="${cur}">${inner}</div>`;
 }
@@ -2077,7 +2125,7 @@ Object.assign(VERSES, {
   eph4_15:{ref:"에베소서 4:15", who:"참된 것을 칼처럼 쓰기 쉬운 사람에게 바울이", t:"오히려 사랑 안에서 참된 것을 말하며, 모든 면에서 그분에게까지 자라 갑시다.", key:"사랑 안에서 참된 것을 말하며", direct:false}
 });
 DAYS_W[2] = {
-  1:{n:1, nm:"출발", title:"속이는 말의 무게", scr:"w2_rom8", min:15},
+  1:{n:1, nm:"출발", title:"속이는 말의 무게", scr:"w2_rom8", min:20},
   2:{n:2, nm:"점검", title:"점검, 그리고 한 장면 해부", scr:"w2d2", min:25},
   3:{n:3, nm:"뿌리", title:"하나님에 대한 거짓 그림", scr:"w2d4", min:20},
   4:{n:4, nm:"이름", title:"진짜 이름으로 서기", scr:"w2_gen32", min:20},
@@ -2292,9 +2340,9 @@ const W2_NEW = {
   6:{who:"나다나엘", scr:"nath1", body:"예수께서 “그 안에는 속임이 없구나” 하신 나다나엘은 흠 없는 사람이 아니었습니다. 바로 직전에 그는 빌립에게 “나사렛에서 무슨 좋은 것이 나올 수 있겠습니까?”라고 말했습니다. 편견 섞인 의심이었지만, 그는 그것을 꾸미지 않고 그대로 말했습니다. 속임이 없다는 것은 흠이 없다는 뜻이 아니라, 있는 그대로 주님 앞에 나온다는 뜻입니다. 그리고 주님은 그런 사람에게 하늘이 열리는 것을 보여 주십니다(요 1:51).", ins:"", insBody:"", src:""}
 };
 function newFig(n){ const x=(CW===1?W1_NEW:W2_NEW)[n]; if(!x) return "";
-  return `<div class="panel soft"><p class="ph">오늘 새로 만나는 사람 — ${x.who}</p><p>${x.body}</p><details class="voice"><summary><span class="nm">본문 읽기 · ${SCR[x.scr].ref}</span></summary>${scriptureHTML(x.scr)}</details></div>`; }
+  return deepBox(`오늘 만나는 사람 · ${x.who}`, `<div class="panel soft"><p class="ph">오늘 새로 만나는 사람 — ${x.who}</p><p>${x.body}</p><details class="voice"><summary><span class="nm">본문 읽기 · ${SCR[x.scr].ref}</span></summary>${scriptureHTML(x.scr)}</details></div>`); }
 function newIns(n){ const x=(CW===1?W1_NEW:W2_NEW)[n]; if(!x||!x.ins) return "";
-  return `<div class="panel soft"><p class="ph">오늘 새로 배우는 것 — ${x.ins}</p><p>${x.insBody}</p><p class="small">${x.src}</p></div>`; }
+  return deepBox(`새로 배우는 것 · ${x.ins}`, `<div class="panel soft"><p class="ph">오늘 새로 배우는 것 — ${x.ins}</p><p>${x.insBody}</p><p class="small">${x.src}</p></div>`); }
 
 /* 날마다 다른 마무리 기도 */
 const W2_PRAY={1:"주님, 두려울 때 반쪽만 말하지 않게 하소서. 오늘도 당신의 진실한 새 그림을 주십시오.",2:"주님, 덮으려 할 때 덮기를 멈추게 하소서. 작은 거짓이 자라기 전에 당신 앞에 내놓게 하소서.",3:"주님, 움켜쥐려고 지어내는 말에서 저를 지켜 주소서. 모든 것을 은혜로 주시는 당신을 믿게 하소서.",4:"주님, 저를 이름으로 부르실 때, 진짜 이름으로 대답하게 하소서.",5:"주님, 확인하지 않은 말을 옮기지 않게 하시고, 참된 것을 사랑 안에서 말하게 하소서."};
@@ -2451,7 +2499,7 @@ function w1RumLayer(n){
   const x=w1Rum(); const done=x.answered===W1_RUM.length; const nmv=S.name?vocative(S.name):"○○아";
   return `<section class="layer" id="L2">${layerHead(n,2,"내 안의 말이 맴돌 때","")}
     <p>2일째에는 내 안에서 <b>어떤</b> 목소리가 들리는지 보았습니다. 오늘은 그 목소리가 내 안에서 <b>어떻게 움직이는지</b> 봅니다. 같은 말을 빙빙 되뇌며 나를 끌어내리는지(되새김), 아니면 무엇이 문제인지 살피고 길을 찾는지(성찰).</p>
-    <div class="panel soft"><p class="ph">오늘 새로 배우는 것 — 되새김과 성찰은 다릅니다</p><p>미국의 심리학자 놀런-혹세마 연구팀(2003)은 마음이 가라앉을 때 사람들이 보이는 반응을 분석해, 겉으로는 비슷해 보이는 두 가지를 갈라냈습니다. “나는 왜 이럴까”를 되뇌며 맴도는 <b>되새김</b>과, 원인과 할 일을 살피는 <b>성찰</b>입니다. 시간이 지나 마음을 더 무겁게 만든 것은 되새김이었고, 성찰은 그렇지 않았습니다. 한국판 척도(김소정 외, 2010)에서도 ‘자책’과 ‘숙고’가 갈렸고, 우울과 이어진 것은 자책 쪽이었습니다. 생각을 많이 하는 것이 문제가 아니라, 어떻게 생각하느냐가 문제입니다.</p><p class="small">Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered, Cognitive Therapy and Research 27(3), 247–259 · 김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19</p></div>
+    ${deepBox("새로 배우는 것 · 되새김과 성찰은 다릅니다", `<div class="panel soft"><p class="ph">오늘 새로 배우는 것 — 되새김과 성찰은 다릅니다</p><p>미국의 심리학자 놀런-혹세마 연구팀(2003)은 마음이 가라앉을 때 사람들이 보이는 반응을 분석해, 겉으로는 비슷해 보이는 두 가지를 갈라냈습니다. “나는 왜 이럴까”를 되뇌며 맴도는 <b>되새김</b>과, 원인과 할 일을 살피는 <b>성찰</b>입니다. 시간이 지나 마음을 더 무겁게 만든 것은 되새김이었고, 성찰은 그렇지 않았습니다. 한국판 척도(김소정 외, 2010)에서도 ‘자책’과 ‘숙고’가 갈렸고, 우울과 이어진 것은 자책 쪽이었습니다. 생각을 많이 하는 것이 문제가 아니라, 어떻게 생각하느냐가 문제입니다.</p><p class="small">Treynor, Gonzalez, Nolen-Hoeksema (2003), Rumination reconsidered, Cognitive Therapy and Research 27(3), 247–259 · 김소정 · 김지혜 · 윤세창 (2010), 「한국판 반추적 반응 척도(K-RRS)의 타당화 연구」, 『한국심리학회지: 임상』 29(1), 1–19</p></div>`)}
     <h3 class="h3">마음이 상한 일이 있을 때, 나는</h3><p class="small">지난 몇 주를 떠올리며 고르세요.</p>
     ${W1_RUM.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,"rm_"+p.id,["거의 없다","가끔","자주","거의 늘"])}</div>`).join("")}
     ${done?w1RumBrief():pendHTML(x.answered,W1_RUM.length)}
@@ -2637,6 +2685,7 @@ function tsInfo(n,w){
 }
 const W2_ROOTS=["두려움 — 잃을까 봐","교만 — 높아 보이려고","욕심 — 더 얻으려고","잘 모르겠다"];
 function threeSteps(n){
+  if(CW===3) return w3Card(n);
   const I=tsInfo(n); const w2=CW===2;
   const L=w2?{intro:"설교의 둘째 연습 — 하루를 돌아보며 내가 한 속이는 말을 점검하고, 그 근원에 어떤 두려움과 교만이 있었는지 분별하고, 그 옆에 실제 그림을 그리는 말을 씁니다. 1주에 배운 세 걸음(알아채기 · 말씀을 나에게 · 새 말)이 이번 주에는 이렇게 이어집니다.",s1:(W2_ANGLE[n]||{}).s1||"① 오늘 내가 한 속이는 말",s2:"② 그 앞에서 — 하나님의 참된 그림, 그리고 진짜 내 이름",h:"이 그림 앞에 진짜 내 이름을 말씀드렸어요",s3:"③ 그 옆에 — 실제 그림을 그리는 말",d:["말해 봤어요","써 두었어요","아직이에요"],dl:"그리고 —"}
     :{intro:"1주 설교에서 배운 회복의 방식 — 내 말을 알아채고, 하나님의 말씀을 나에게 들려주고, 새 말을 합니다.",s1:W1_ANGLE[n]||"① 오늘 알아챈 말 — 가장 가까운 것 하나",s2:"② 그 말 앞에서, 하나님의 말씀을 나에게",h:"소리 내어 나에게 들려줬어요",s3:"③ 오늘의 새 말",d:["말했어요","아직이에요"],dl:"저녁에 — 새 말을"};
@@ -2754,6 +2803,562 @@ function methodPanel(w){
    <p class="small">날마다 마지막 단계의 ‘오늘의 세 걸음’으로 연습합니다.</p></div>`;
 }
 
+/* ====================== 3주 「성내기를 더디 하라」 — 날 선 말 밑의 싸움 (원고 v4.2) ====================== */
+Object.assign(SCR, {
+  w3_ex34:{ ref:"출애굽기 34:6–7", gloss:"금송아지 사건 직후, 배신한 백성 앞에서 하나님이 직접 들려주신 당신의 이름입니다. 요나가 화가 나서 인용한 바로 그 이름입니다.", v:[
+    [6,"여호와께서 모세 앞으로 지나가시며 선포하셨다. “여호와, 여호와, 불쌍히 여기고 은혜로운 하나님, <b>노하기를 더디 하고</b> 한결같은 사랑과 진실이 넘치는 하나님이다."],
+    [7,"천 대에 이르기까지 한결같은 사랑을 베풀고, 악과 허물과 죄를 용서한다. 그러나 죄를 결코 그냥 넘기지는 않는다.”"]
+  ]},
+  w3_ps103:{ ref:"시편 103:8, 10, 13–14", gloss:"찔린 자리를 아시는 분은 우리를 우리 잘못대로 대하지 않으시고, 우리가 먼지임을 기억하십니다.", v:[
+    [8,"여호와는 불쌍히 여기시고 은혜로우시며, <b>노하기를 더디 하시고</b> 한결같은 사랑이 넘치신다."],
+    [10,"우리 죄를 따라 우리를 대하지 않으시고, 우리 잘못을 따라 우리에게 갚지 않으신다."],
+    [13,"아버지가 자녀를 불쌍히 여기듯, 여호와께서는 자기를 경외하는 사람들을 불쌍히 여기신다."],
+    [14,"그분은 <b>우리가 어떻게 빚어졌는지 아시고, 우리가 먼지일 뿐임을 기억하신다.</b>"]
+  ]},
+  w3_jon4:{ ref:"요나 4:4–6, 10–11", gloss:"화가 나서 언덕 위 판사석에 앉은 요나에게, 하나님은 판결 대신 질문을, 정죄 대신 그늘을 주십니다.", v:[
+    [4,"여호와께서 말씀하셨다. “<b>네 속이 이렇게 타오르는 것이 옳으냐?</b>”"],
+    [5,"요나는 성읍에서 나와 성읍 동쪽에 가 앉았다. 그는 거기에 초막을 짓고 그 그늘 아래 앉아, 성읍이 어떻게 되는지 지켜보았다."],
+    [6,"여호와 하나님이 박넝쿨 하나를 마련하셔서 요나 위로 자라 오르게 하셨다. 그것이 그의 머리 위에 그늘을 드리워 <b>그를 괴로움에서 건져 주었다.</b> 요나는 박넝쿨 때문에 몹시 기뻐했다."],
+    [10,"여호와께서 말씀하셨다. “너는 수고하지도 않았고 키우지도 않았으며, 하룻밤 사이에 났다가 하룻밤 사이에 사라진 이 박넝쿨을 아꼈다."],
+    [11,"그런데 좌우를 분별하지 못하는 사람이 십이만 명이 넘고 가축도 많은 이 큰 성읍 니느웨를, <b>내가 어찌 아끼지 않겠느냐?</b>”"]
+  ]},
+  w3_1pe2:{ ref:"베드로전서 2:21–23", gloss:"판결을 내릴 수 있는 분이 판결을 아버지께 맡기셨습니다.", v:[
+    [21,"여러분은 이 일을 위하여 부르심을 받았습니다. 그리스도께서도 여러분을 위하여 고난을 받으시고, 여러분에게 본을 남겨 주셔서 그 발자취를 따르게 하셨습니다."],
+    [22,"그분은 죄를 짓지 않으셨고, 그 입에서 아무 속임도 찾을 수 없었습니다."],
+    [23,"<b>욕을 들으셔도 맞받아 욕하지 않으셨고,</b> 고난을 받으셔도 위협하지 않으시고, <b>공의롭게 심판하시는 분께 맡기셨습니다.</b>"]
+  ]},
+  w3_pr15:{ ref:"잠언 15:1–4", gloss:"‘쏟아 낸다’는 샘물이 저절로 솟구치는 모양을 그리는 말입니다(설교 본론 4의 15:28과 같은 말).", v:[
+    [1,"<b>부드러운 대답은 분노를 가라앉히지만,</b> 거친 말은 노여움을 일으킨다."],
+    [2,"지혜로운 사람의 혀는 지식을 잘 쓰지만, 미련한 사람의 입은 어리석음을 쏟아 낸다."],
+    [3,"여호와의 눈은 어디에나 있어, 악한 사람과 선한 사람을 지켜보신다."],
+    [4,"<b>치유하는 혀는 생명나무이지만,</b> 비뚤어진 혀는 마음을 상하게 한다."]
+  ]},
+  w3_mt5:{ ref:"마태복음 5:3–9", gloss:"하나님 나라는 말싸움에서 이긴 사람이 아니라 온유한 사람의 것입니다.", v:[
+    [3,"“마음이 가난한 사람들은 복이 있다. 하늘나라가 그들의 것이다."],
+    [4,"슬퍼하는 사람들은 복이 있다. 그들이 위로를 받을 것이다."],
+    [5,"<b>온유한 사람들은 복이 있다. 그들이 땅을 물려받을 것이다.</b>"],
+    [6,"의에 주리고 목마른 사람들은 복이 있다. 그들이 배부를 것이다."],
+    [7,"자비로운 사람들은 복이 있다. 그들이 자비를 받을 것이다."],
+    [8,"마음이 깨끗한 사람들은 복이 있다. 그들이 하나님을 볼 것이다."],
+    [9,"<b>평화를 이루는 사람들은 복이 있다.</b> 그들이 하나님의 자녀라 불릴 것이다.”"]
+  ]},
+  w3_num20:{ ref:"민수기 20:10–12", v:[
+    [10,"모세와 아론이 바위 앞에 회중을 모으자, 모세가 그들에게 말했다. “<b>반역하는 자들아, 들어라.</b> 우리가 너희를 위하여 이 바위에서 물을 내야 하겠느냐?”"],
+    [11,"그리고 모세가 손을 들어 지팡이로 바위를 두 번 치니, 물이 많이 솟아 나와 회중과 그들의 가축이 마셨다."],
+    [12,"그러나 여호와께서 모세와 아론에게 말씀하셨다. “너희가 나를 믿지 않고 이스라엘 자손이 보는 앞에서 나를 거룩하게 드러내지 않았으므로, <b>너희는 이 회중을 내가 그들에게 준 땅으로 이끌어 들이지 못할 것이다.</b>”"]
+  ]},
+  w3_1sa18:{ ref:"사무엘상 18:7–9, 11", v:[
+    [7,"여인들이 춤추며 서로 화답하여 노래했다. “<b>사울은 천천을 죽이고, 다윗은 만만을 죽였다.</b>”"],
+    [8,"사울은 몹시 화가 났다. 그 말이 그의 눈에 거슬렸다. 그가 말했다. “다윗에게는 만만을 돌리고 나에게는 천천만 돌리니, 이제 그에게 더 돌아갈 것은 왕의 자리밖에 없겠구나.”"],
+    [9,"<b>그날부터 사울은 다윗을 의심의 눈으로 보았다.</b>"],
+    [11,"사울은 ‘다윗을 벽에 박아 버리겠다’ 하며 창을 던졌다. 그러나 다윗은 두 번이나 몸을 피했다."]
+  ]},
+  w3_2ki5:{ ref:"열왕기하 5:11–13", v:[
+    [11,"그러나 나아만은 화가 나서 돌아가며 말했다. “<b>내 생각에는, 그가 반드시 나와서</b> 내 앞에 서서 그의 하나님 여호와의 이름을 부르고, 그 자리 위로 손을 흔들어 이 나병을 고쳐 줄 줄 알았다."],
+    [12,"다마스쿠스의 강 아바나와 바르발이 이스라엘의 모든 물보다 낫지 않으냐? 내가 거기서 씻어도 깨끗해지지 않겠느냐?” 그러고는 몸을 돌려 화를 내며 떠났다."],
+    [13,"그의 종들이 다가와 말했다. “<b>아버지,</b> 그 예언자가 더 어려운 일을 하라고 했다면 하지 않으셨겠습니까? 그런데 ‘씻어서 깨끗해지라’고만 했으니, 얼마나 더 쉬운 일입니까?”"]
+  ]},
+  w3_2sa16:{ ref:"사무엘하 16:7, 9–12", v:[
+    [7,"시므이는 저주하며 이렇게 말했다. “꺼져라, 꺼져라. 피를 흘린 자야, 쓸모없는 자야.”"],
+    [9,"그러자 스루야의 아들 아비새가 왕에게 말했다. “이 죽은 개가 어찌 내 주 왕을 저주합니까? <b>제가 건너가서 그의 머리를 베게 해 주십시오.</b>”"],
+    [10,"왕이 말했다. “스루야의 아들들아, 너희와 내가 무슨 상관이냐? 그가 저주하는 것은 여호와께서 그에게 ‘다윗을 저주하라’ 하셨기 때문이라면, 누가 ‘왜 이렇게 하느냐’ 하고 말할 수 있겠느냐?”"],
+    [11,"다윗이 아비새와 모든 신하에게 말했다. “내 몸에서 난 아들도 내 목숨을 노리는데, 이 베냐민 사람이야 더 말할 것이 있겠느냐? <b>그를 내버려 두어라.</b>"],
+    [12,"<b>여호와께서 혹시 내 고통을 보시고, 오늘 그의 저주 대신에 나에게 선으로 갚아 주실지도 모른다.</b>”"]
+  ]},
+  w3_1sa25:{ ref:"사무엘상 25:23–24, 32–33", v:[
+    [23,"아비가일은 다윗을 보고 서둘러 나귀에서 내려, 다윗 앞에 엎드려 얼굴을 땅에 대고 절했다."],
+    [24,"그녀가 그의 발 앞에 엎드려 말했다. “<b>내 주여, 그 잘못은 저에게 돌려 주십시오.</b> 여종이 말씀드리게 해 주시고, 여종의 말을 들어 주십시오.”"],
+    [32,"다윗이 아비가일에게 말했다. “오늘 너를 보내 나를 맞게 하신 이스라엘의 하나님 여호와를 찬양한다."],
+    [33,"네 분별도 복을 받고 너도 복을 받아라. <b>오늘 네가 내가 피를 흘리지 않게, 내 손으로 직접 원수를 갚지 않게 나를 막아 주었다.</b>”"]
+  ]},
+  w3_act15:{ ref:"사도행전 15:37–39 · 디모데후서 4:11", v:[
+    ["행 15:37","바나바는 마가라고 하는 요한도 데리고 가려고 했다."],
+    ["15:38","그러나 바울은 밤빌리아에서 자기들을 떠나 함께 일하러 가지 않은 그를 데리고 가는 것이 옳지 않다고 생각했다."],
+    ["15:39","<b>그래서 심한 다툼이 일어나 서로 갈라서게 되었다.</b>"],
+    ["딤후 4:11","누가만 나와 함께 있습니다. <b>마가를 데리고 오십시오. 그는 내 일에 유익한 사람입니다.</b>"]
+  ]},
+  w3_pr18:{ ref:"잠언 18:13", v:[[13,"말을 다 듣기도 전에 대답하는 사람에게는 그것이 어리석음이요 부끄러움이 된다."]]}
+});
+DAYS_W[3] = {
+  1:{n:1, nm:"얼굴", title:"날 선 말의 얼굴", scr:"w3_ex34", min:25},
+  2:{n:2, nm:"찔릴 때", title:"찔릴 때 — 발작 버튼", scr:"w3_ps103", min:25},
+  3:{n:3, nm:"막힐 때", title:"막힐 때 — 법이 된 바람", scr:"w3_jon4", min:25},
+  4:{n:4, nm:"맡김", title:"판사석에서 내려오기", scr:"w3_1pe2", min:20},
+  5:{n:5, nm:"새 말", title:"판사의 말에서 증인의 말로", scr:"w3_pr15", min:25},
+  6:{n:6, nm:"거두기", title:"온유한 말로 거두기", scr:"w3_mt5", min:30}
+};
+const W3_CALM_PIC={1:"배신한 백성 앞에서 ‘노하기를 더디 한다’고 당신의 이름을 들려주시는 분",2:"우리 잘못대로 갚지 않으시고, 우리가 먼지임을 기억하시는 분",3:"판사석에 앉은 사람에게 판결 대신 질문을, 정죄 대신 그늘을 주시는 분",4:"욕을 들으셔도 맞받아 욕하지 않고, 판결을 아버지께 맡기신 분",5:"부드러운 대답과 치유하는 혀로 생명나무를 키우시는 분",6:"온유한 사람에게 땅을 물려주시는 분"};
+const W3_PRAY={1:"주님, 제 입의 날을 거두어 주십시오. 오늘 한 번, 멈추고 생각하고 말하게 하소서.",2:"주님, 제 찔린 자리를 아십니다. 그 아픔을 판결이 아니라 기도로 가져가게 하소서.",3:"주님, 제 바람을 법으로 세우지 않게 하소서. 구하되, 아버지의 뜻에 맡기게 하소서.",4:"주님, 판사석은 제 자리가 아닙니다. 판결 대신 묻게 하소서.",5:"주님, 진실의 무게는 그대로 두고 날만 거둔 말을 하게 하소서."};
+
+/* 날마다 새로 만나는 사람과 새로 배우는 것 (원문 확인: 가트맨 · 탱니는 목사님이 보내 주신 원서, 리버먼은 학술지 원문 초록) */
+const W3_NEW = {
+  1:{who:"모세", scr:"w3_num20", body:"성경이 땅 위에서 가장 온유했다고 말하는 사람(민 12:3)도, 지친 날에는 날 선 말을 했습니다. 물이 없다고 원망하는 백성 앞에서 모세는 “반역하는 자들아, 들어라” 하며 바위를 두 번 쳤습니다. 하나님은 물을 주셨지만, 모세는 그 일로 약속의 땅에 들어가지 못했습니다. 한 번의 날 선 말이 사십 년의 온유를 지우지는 않았지만, 그 말에는 값이 있었습니다.",
+     ins:"경멸은 관계의 독입니다", insBody:"부부의 대화를 오래 관찰해 온 심리학자 존 가트맨은 관계를 무너뜨리는 말 가운데 하나로 경멸을 꼽고, 그것이 관계에 독이 된다고 말합니다. 그가 든 경멸의 모양은 빈정거림과 냉소, 별명 부르기, 눈 굴리기, 비웃기, 그리고 적대적인 농담입니다. 목소리를 높이지 않는 돌려 찌르는 말이 바로 여기에 들어갑니다. 경멸은 상대를 역겹게 여긴다는 신호여서 그 말을 들은 사람과는 문제를 풀기가 거의 불가능하고, 해결되지 않은 채 오래 곱씹은 부정적인 생각에서 자란다고 그는 씁니다.", src:"Gottman · Silver, The Seven Principles for Making Marriage Work, pp. 44–45"},
+  2:{who:"사울", scr:"w3_1sa18", body:"여인들의 노래 한 소절이 사울을 찔렀습니다. “사울은 천천, 다윗은 만만.” 비교당한 자리, 그것이 사울의 발작 버튼이었습니다. 그날부터 그는 다윗을 의심의 눈으로 보았고, 이튿날 창을 던졌습니다. 찔린 아픔이 판결이 되자, 말은 창이 되었습니다.",
+     ins:"수치는 분노가 됩니다", insBody:"수치를 연구해 온 심리학자 준 탱니와 론다 디어링은, 수치를 잘 느끼는 사람일수록 남을 탓하고 화를 내는 경향이 연구마다 강하고 일관되게 나타났다고 씁니다. 수치는 ‘내가 한 일’이 아니라 ‘나라는 사람 전체’를 고발하기 때문에 견디기 어렵고, 그래서 처음에는 자기에게 향하던 미움을 바깥으로 돌려 남을 탓하게 된다는 것이 그들의 설명입니다. 설교의 말 그대로, 피고석을 견디지 못한 사람이 판사석으로 도망칩니다.", src:"Tangney · Dearing (2002), Shame and Guilt: Emotions and Social Behavior, pp. 138, 145"},
+  3:{who:"나아만", scr:"w3_2ki5", body:"나병을 고치러 온 장군 나아만은 ‘요단강에 가서 일곱 번 씻으라’는 말에 화가 나서 돌아섰습니다. “내 생각에는, 그가 반드시 나와서…” 그의 마음에는 고침받는 방식에 대한 법이 있었고, 그 법이 어겨지자 분노가 되었습니다. 그를 돌이킨 것은 종들의 부드러운 말이었습니다. “아버지, 더 어려운 일을 하라고 했다면 하지 않으셨겠습니까?”",
+     ins:"불평은 일을, 비난은 사람을 겨눕니다", insBody:"가트맨은 불평과 비난을 구별합니다. 불평은 특정한 행동이나 일을 말하고, 대개 세 부분으로 이루어집니다. 내 마음(“나는 정말 화가 나”), 구체적인 상황(“어젯밤 부엌을 치우지 않았네”), 그리고 바라는 것(“지금 해 줄 수 있어?”). 비난은 상대의 성품과 인격 전체를 겨눕니다(“당신은 왜 그렇게 잘 잊어버려?”). 바람이 법이 되는 순간, 불평은 비난이 됩니다.", src:"Gottman · Silver, The Seven Principles for Making Marriage Work, p. 42"},
+  4:{who:"다윗과 시므이", scr:"w3_2sa16", body:"아들에게 쫓겨 도망치던 다윗에게 시므이가 돌을 던지며 저주했습니다. 부하 아비새가 “제가 건너가서 그의 머리를 베게 해 주십시오” 했을 때, 다윗은 판결을 하나님께 맡겼습니다. “그를 내버려 두어라. 여호와께서 혹시 내 고통을 보시고 선으로 갚아 주실지도 모른다.” 판사석에 앉을 수 있는 왕이 그 자리에서 내려왔습니다.",
+     ins:"감정에 이름을 붙이면", insBody:"2007년 미국 UCLA의 리버먼 연구팀은 30명에게 부정적인 감정이 담긴 사진을 보여 주며 뇌를 촬영했습니다. 사진 속 감정에 ‘화남’, ‘두려움’ 같은 이름을 붙이게 했을 때, 감정 반응을 일으키는 편도체의 활동이 줄고 대신 전두엽의 한 부위가 활발해졌습니다. 감정에 말을 붙이는 일이 그 감정을 다스리는 길이 될 수 있음을 보여 주는 연구입니다. 오늘 내 마음에 이름을 붙여 하나님께 내놓는 기도가 그렇습니다.", src:"Lieberman 외 (2007), Putting feelings into words, Psychological Science 18(5), 421–428"},
+  5:{who:"아비가일", scr:"w3_1sa25", body:"남편 나발의 모욕에 다윗이 칼을 차고 사백 명과 함께 오고 있었습니다. 아비가일은 맞서 싸우지도 숨지도 않고, 먼저 내려와 엎드려 말했습니다. “내 주여, 그 잘못은 저에게 돌려 주십시오.” 진실은 그대로 두고 날은 거둔 그 말에, 다윗은 이렇게 답합니다. “오늘 네가 내가 피를 흘리지 않게 나를 막아 주었다.”",
+     ins:"첫 문장이 끝을 정합니다", insBody:"가트맨은 부부의 15분 대화를 관찰한 결과, 처음 3분만 보고도 그 대화가 어떻게 끝날지를 96% 예측할 수 있었다고 말합니다. 거칠게 시작한 대화는 중간에 아무리 좋게 하려 해도 결국 부정적으로 끝났습니다. 그래서 그는 거칠게 시작했다면 차라리 멈추고, 숨을 고른 뒤, 다시 시작하라고 권합니다. 아비가일의 첫마디가 다윗의 칼을 멈춘 것처럼, 첫 문장이 대화의 끝을 정합니다.", src:"Gottman · Silver, The Seven Principles for Making Marriage Work, p. 41"},
+  6:{who:"바울과 바나바, 그리고 마가", scr:"w3_act15", body:"첫 선교 여행 중간에 돌아간 마가를 두고, 바울과 바나바는 심하게 다투고 갈라섰습니다. 사도들도 날 선 다툼을 했습니다. 그러나 이야기는 거기서 끝나지 않습니다. 세월이 흐른 뒤 감옥의 바울은 이렇게 씁니다. “마가를 데리고 오십시오. 그는 내 일에 유익한 사람입니다.” 틀린 자리에서 고쳐 가는 것, 그것이 새 언어를 배우는 사람의 길입니다.",
+     ins:"수치가 아니라 죄책감이 사과를 낳습니다", insBody:"탱니와 디어링에 따르면, ‘나는 형편없는 사람이다’라는 수치는 사람을 바로잡는 쪽으로 이끌기보다 부인과 방어적인 분노를 부릅니다. 그러나 ‘내가 한 그 일이 잘못이었다’는 특정한 행동에 대한 죄책감은 책임을 받아들이고 바로잡게 합니다. 죄책감을 잘 느끼는 사람은 화가 나도 더 직접적이고 건설적으로 표현했습니다. 그래서 좋은 사과는 “나는 쓰레기야”가 아니라 “내가 한 그 말이 잘못이었어”로 시작합니다.", src:"Tangney · Dearing (2002), Shame and Guilt, pp. 21, 23, 25"}
+};
+function w3Fig(n){ const x=W3_NEW[n]; if(!x) return ""; return deepBox(`오늘 만나는 사람 · ${x.who}`, `<div class="panel soft"><p class="ph">오늘 새로 만나는 사람 — ${x.who}</p><p>${x.body}</p><details class="voice"><summary><span class="nm">본문 읽기 · ${SCR[x.scr].ref}</span></summary>${scriptureHTML(x.scr)}</details></div>`); }
+function w3Ins(n){ const x=W3_NEW[n]; if(!x) return ""; return deepBox(`새로 배우는 것 · ${x.ins}`, `<div class="panel soft"><p class="ph">오늘 새로 배우는 것 — ${x.ins}</p><p>${x.insBody}</p><p class="small">${x.src}</p></div>`); }
+
+/* 새 말 여섯 — 원고가 앱으로 넘긴 것 */
+const W3_WORDS = {
+  1:{nm:"멈추는 말", word:"잠깐, 생각하고 말할게.", why:"날 선 말은 반응이고, 온유한 말은 응답입니다. “의인의 마음은 어떻게 대답할지 깊이 생각한다”(잠 15:28). 돌아올 시간을 약속하는 것이 벌주는 침묵과 다른 점입니다.",
+     ex:["(집) “엄마가 지금 좀 답답해서 목소리가 커지려고 해. 물 한 잔 마시고 오 분 뒤에 다시 하자.”","(직장) “이건 제가 바로 답하면 날이 설 것 같아요. 정리해서 오후에 말씀드릴게요.”","(누구에게나) “잠깐만. 생각 좀 하고 말할게.”"]},
+  2:{nm:"이름 붙인 말", word:"나는 ~해서 서운했어.", why:"판결 대신 내 마음에 이름을 붙입니다. 찔린 자리를 고발이 아니라 고백으로 말합니다.",
+     ex:["“나는 약속이 늦어져서 서운했어.”","“그 말을 들었을 때 부족한 사람이 된 것 같아서 속상했어.”","“나는 내 말이 무시당한 것 같아서 화가 났어.”"]},
+  3:{nm:"부탁의 말", word:"~해 줄 수 있어?", why:"바람을 법으로 세우지 않고 부탁으로 말합니다. 부탁하기 전에 스스로 물어보세요. 거절당해도 괜찮은가. 괜찮지 않다면 그것은 부탁이 아니라 법입니다(로젠버그).",
+     ex:["“퇴근하면 십 분만 쉬고 싶은데, 그동안 아이들 좀 봐 줄 수 있어?”","“회의 자료를 하루 전에 받을 수 있을까요?”","“다음엔 미리 말해 줄 수 있어?”"]},
+  4:{nm:"묻는 말", word:"무슨 일 있었어?", why:"하나님은 가인에게도 요나에게도 판결 대신 물으셨습니다. “말을 다 듣기도 전에 대답하는 사람에게는 그것이 어리석음이요 부끄러움이 된다”(잠 18:13).",
+     ex:["“오늘 무슨 일 있었어?”","“어디서부터 막혔는지 같이 볼까?”","“그렇게 말한 데는 이유가 있었을 것 같은데, 들어 봐도 될까요?”"]},
+  5:{nm:"증언의 말", word:"내가 본 건 ~야.", why:"판사는 사람 전체에 판결을 내리고(“너는 맨날 이 모양이야”), 증인은 본 것과 내 마음과 바라는 것을 말합니다. ‘맨날 · 항상 · 원래’를 빼면 판결이 증언이 됩니다(요 18:23).",
+     ex:["“오늘 이 문제에서 막혔구나. 아빠도 세 번 설명했는데 잘 안 돼서 답답했어. 어디부터 모르겠는지 같이 찾아볼까?”","“어제 회의에서 제 말이 두 번 끊겼어요. 저는 좀 위축됐습니다.”","“이번 주에 설거지가 세 번 남아 있었어. 나는 좀 지쳤어. 오늘은 같이 해 줄래?”"]},
+  6:{nm:"인정하는 말", word:"내가 잘못했어. 미안해.", why:"‘그렇지만’ 없이 사과합니다. “기분 나빴다면 미안해”는 진짜 화해를 거의 일으키지 못합니다(샌디). 판결이 이미 내려졌기에, 변명하지 않아도 됩니다.",
+     ex:["“아까 내가 ‘맨날’이라고 한 건 사실이 아니었어. 당신을 애들 앞에서 깎아내렸어. 미안해.”","“제가 회의에서 언성을 높였습니다. 죄송합니다.”","“네 말을 끝까지 안 듣고 화부터 냈어. 미안해.”"]}
+};
+function w3WordPanel(n){
+  const w=W3_WORDS[n]; if(!w) return "";
+  return `<div class="panel soft"><p class="ph">오늘의 새 말 — ${w.nm}</p><p class="serif" style="font-size:1.2em;font-weight:700">“${w.word}”</p><p class="small">${w.why}</p>
+    ${w.ex.map(e=>`<p class="small">${e}</p>`).join("")}</div>
+  ${fChips(n,"w_aloud","소리 내어 세 번 말해 보세요",["소리 내어 말해 봤어요"])}
+  ${fText(n,"w_mine","내 말투로 고쳐 쓴 오늘의 새 말",{ph:w.word})}
+  ${fChips(n,"w_where","오늘 이 말을 써 볼 자리",["집에서","직장에서","교회에서","친구 사이에서","운전할 때","온라인에서"],{multi:true})}`;
+}
+
+/* 월요일 — 날 선 말의 얼굴(행동 점검, 이 워크북의 자체 문항) */
+const W3_FACE={burst:"대놓고 터지는 말",jab:"돌려 찌르는 말",blame:"탓하는 말",swallow:"삼키는 쪽",back:"되받는 쪽",witness:"증인의 말"};
+const W3_SIT=[
+  {id:"m1",q:"아이나 후배에게 같은 것을 세 번째 설명했는데 또 “몰라요” 할 때, 나는 대개",o:[{v:"a",c:"burst",t:"“몇 번을 말해야 알아듣니?”"},{v:"b",c:"jab",t:"크게 한숨 쉬고 “됐다, 내가 하고 말지.”"},{v:"c",c:"swallow",t:"아무 말 없이 꾹 참는다"},{v:"d",c:"witness",t:"“여기서 막혔구나. 어디부터 모르겠는지 같이 찾아볼까?”"}]},
+  {id:"m2",q:"가족이 부탁한 일을 또 잊었을 때, 나는 대개",o:[{v:"a",c:"blame",t:"“당신은 맨날 이래.”"},{v:"b",c:"jab",t:"“역시 기대한 내가 잘못이지.”"},{v:"c",c:"swallow",t:"혼자 해 버리고 말을 안 한다"},{v:"d",c:"witness",t:"“이번에도 빠졌네. 다음엔 메모해 두면 좋겠어.”"}]},
+  {id:"m3",q:"운전 중에 누가 갑자기 끼어들 때, 나는 대개",o:[{v:"a",c:"burst",t:"차 안에서 험한 말을 쏟아 낸다"},{v:"b",c:"jab",t:"옆 사람에게 그 운전자를 한참 흉본다"},{v:"c",c:"swallow",t:"꾹 참다가 그날 내내 기분이 상해 있다"},{v:"d",c:"witness",t:"“놀랐네. 급한 일이 있나 보다.” 하고 넘긴다"}]},
+  {id:"m4",q:"회의나 모임에서 내 의견이 무시당했다고 느낄 때, 나는 대개",o:[{v:"a",c:"jab",t:"빈정거리는 농담을 던진다"},{v:"b",c:"blame",t:"“그러니까 일이 이 모양이지.”"},{v:"c",c:"swallow",t:"입을 닫고 그 뒤로 말하지 않는다"},{v:"d",c:"witness",t:"“제 말이 잘 전달되지 않은 것 같아요. 다시 말씀드려도 될까요?”"}]},
+  {id:"m5",q:"누군가 나에게 날 선 말을 했을 때, 나는 대개",o:[{v:"a",c:"back",t:"같은 칼로 되받아친다"},{v:"b",c:"swallow",t:"삼키고 혼자 곱씹는다"},{v:"c",c:"jab",t:"차갑게 대하며 며칠 말을 안 한다"},{v:"d",c:"witness",t:"“방금 그 말은 좀 아팠어요. 무슨 일 있었어요?”"}]},
+  {id:"m6",q:"내 실수가 드러나 손해가 생겼을 때, 나는 대개",o:[{v:"a",c:"blame",t:"“애초에 누가 이렇게 하자고 했어?”"},{v:"b",c:"jab",t:"괜히 옆 사람에게 짜증을 낸다"},{v:"c",c:"swallow",t:"혼자 자책하며 아무에게도 말하지 않는다"},{v:"d",c:"witness",t:"“제 실수예요. 어떻게 메울지 같이 보죠.”"}]},
+  {id:"m7",q:"지친 저녁, 집이 엉망인데 아무도 치우지 않을 때, 나는 대개",o:[{v:"a",c:"burst",t:"“이 집은 나만 치우니?” 하고 큰 소리를 낸다"},{v:"b",c:"jab",t:"말없이 거칠게 치우며 문을 쾅 닫는다"},{v:"c",c:"swallow",t:"속으로 삭이며 혼자 치운다"},{v:"d",c:"witness",t:"“나 오늘 많이 지쳤어. 같이 치워 줄 수 있어?”"}]},
+  {id:"m8",q:"SNS에서 나와 생각이 아주 다른 글을 볼 때, 나는 대개",o:[{v:"a",c:"burst",t:"거친 댓글을 단다"},{v:"b",c:"jab",t:"비꼬는 댓글이나 반응을 남긴다"},{v:"c",c:"swallow",t:"속으로 욕하며 넘긴다"},{v:"d",c:"witness",t:"궁금한 것을 묻거나, 그냥 지나간다"}]}
+];
+function w3Sit(){ const cnt={}; let a=0; W3_SIT.forEach(s=>{ const o=s.o.find(x=>x.v===F(1,"sit_"+s.id,null,3)); if(o){ a++; cnt[o.c]=(cnt[o.c]||0)+1; } });
+  const faces=Object.keys(W3_FACE).filter(k=>k!=="witness"&&cnt[k]).sort((x,y)=>cnt[y]-cnt[x]); return {cnt, answered:a, faces}; }
+const W3_FAV=["“맨날 왜 그래.”","“그러니까 내가 뭐랬어.”","“됐어, 말을 말자.”","“몇 번을 말해야 알아듣니?”","“너는 생각이 있는 거니?”","“또, 또, 핑계 댄다.”","“너 때문에 이렇게 됐잖아.”","“알아서 해.”"];
+function w3Favs(){ const a=(F(1,"fav",[],3)||[]).slice(); const own=(F(1,"fav_own","",3)||"").trim(); if(own) a.push(`“${own.replace(/^[“"]|[”"]$/g,"")}”`); return a; }
+function w3SitBrief(){
+  const s=w3Sit(); if(s.answered<W3_SIT.length) return "";
+  const c=s.cnt, top=s.faces.slice(0,2), wn=c.witness||0;
+  const p1 = top.length? `여덟 상황 가운데 날 선 쪽을 고른 것은 ${W3_SIT.length-wn}번이고, 가장 자주 나온 얼굴은 ${joinKo(top.map(k=>`‘${W3_FACE[k]}’`))}입니다.` : "여덟 상황 모두에서 증인의 말을 고르셨습니다.";
+  const read={burst:"화가 바로 밖으로 나가고, 문제가 아니라 사람을 겨누기 쉽습니다.",jab:"목소리는 높이지 않지만, 농담과 비꼼과 차가운 침묵으로 벌을 줍니다. 가트맨이 경멸의 모양으로 든 것들입니다.",blame:"‘맨날’, ‘너 때문에’로 화살을 상대에게 돌립니다.",swallow:"밖에서는 삼키지만, 삼킨 말은 사라지지 않고 가장 안전하다고 믿는 사람 앞에서 터지기 쉽습니다(원고의 민주 씨).",back:"받은 칼을 같은 칼로 돌려줍니다. 싸움이 커집니다."};
+  const p2 = top.map(k=>`‘${W3_FACE[k]}’ — ${read[k]}`).join(" ");
+  const p3 = wn? `반대로 ${wn}번은 증인의 말을 고르셨습니다. 이미 내 안에 있는 새 말입니다.` : "";
+  return briefBox(`월요일 브리핑 — ${nmOf()}의 날 선 말`,[{h:"요약",p:p1},{h:"얼굴마다",p:p2},{h:"이미 있는 새 말",p:p3},{h:"앞으로",p:"화요일과 수요일에 이 얼굴 밑의 두 입구와 법정을 보고, 금요일에 말 전체를 봅니다."}]);
+}
+
+/* 월요일 — 평소의 나: 한국판 공격성 질문지(AQ-K, 서수균 · 권석만 2002, 『한국심리학회지: 임상』 21(2), 493쪽 표 1) 언어적 공격성 5 · 적대감 8. 원문 그대로(띄어쓰기만 바로잡음), 두 하위 척도 모두 역채점 없음, 5점. 저자 허락(2026년 10월) */
+const W3_AQ = [
+  {id:"va1",f:"va",no:1,t:"나는 친구와 의견이 다를 때 솔직하게 얘기한다."},
+  {id:"va2",f:"va",no:2,t:"나는 다른 사람과 의견 충돌이 잦다."},
+  {id:"va3",f:"va",no:3,t:"사람들이 나를 짜증 나게 하면, 나도 그에 맞서 그들에게 한마디 해 줄 수 있다."},
+  {id:"va4",f:"va",no:4,t:"나는 다른 사람과 의견이 다를 때, 흔히 논쟁을 벌이게 된다."},
+  {id:"va5",f:"va",no:5,t:"친구들은 내가 따지기를 좋아한다고 말한다."},
+  {id:"ho1",f:"ho",no:1,t:"나는 때로 시기나 질투에 차 있다."},
+  {id:"ho2",f:"ho",no:2,t:"내가 부당하게 대우받고 있다고 느낄 때가 때때로 있다."},
+  {id:"ho3",f:"ho",no:3,t:"다른 사람들은 항상 운이 좋아 보인다."},
+  {id:"ho4",f:"ho",no:4,t:"나는 때로는 스스로도 놀랄 정도로 심한 적대감에 휩싸이곤 한다."},
+  {id:"ho5",f:"ho",no:5,t:"나는 소위 ‘내 친구’라는 자들이 나에 대해 몰래 이야기하고 다닌다는 것을 알고 있다."},
+  {id:"ho6",f:"ho",no:6,t:"나는 지나치게 친한 척하는 낯선 사람을 보면 의심이 든다."},
+  {id:"ho7",f:"ho",no:7,t:"나는 때로 사람들이 내가 모르게 나를 비웃고 있다는 느낌이 든다."},
+  {id:"ho8",f:"ho",no:8,t:"누가 내게 지나치게 친절하면, 나는 그 사람이 내게 원하는 것이 있어서 그러지 않나 생각된다."}
+];
+const W3_AQ_PTS=["전혀 그렇지 않다","약간 그렇다","웬만큼 그렇다","꽤 그렇다","매우 그렇다"];
+function w3Aq(){ return w3Score(W3_AQ,1,"aq_",5); }
+function w3AqBrief(){
+  const Q=w3Aq(); if(!Q.done) return ""; const va=Q.sub.va, ho=Q.sub.ho; const s=w3Sit();
+  const pv = va>=2.5 ? `의견이 다르면 말로 맞서는 결이 강합니다(${va.toFixed(1)}). 이 척도에는 솔직함도 들어 있어서, 이 결 자체가 나쁜 것은 아닙니다. 다만 이 결이 화와 만나면 대놓고 터지는 말이나 되받는 말이 되기 쉽습니다. 진실을 말하되 사랑 안에서(엡 4:15).`
+    : va>=1.5 ? `의견이 다를 때 말로 맞서는 결이 어느 정도 있습니다(${va.toFixed(1)}).`
+    : `말로 맞서기보다 물러서는 편입니다(${va.toFixed(1)}). 다툼은 적지만, 해야 할 말까지 삼키고 있지는 않은지 살펴보세요.`;
+  const ht=w3Top(W3_AQ,1,"aq_",["ho"],3);
+  const ph = ho>=2.5 ? `사람을 의심하고 원망하는 결이 있습니다(${ho.toFixed(1)}).${ht.length?` 특히 ${ht.join(", 그리고 ")}가 나와 꽤 같다고 답하셨습니다.`:""} 이 결은 같은 일도 ‘찔림’으로 읽게 만듭니다. 이 척도를 타당화한 연구에서 분노를 억누르는 사람일수록 적대감이 높았습니다. 삼킨 화는 사라지지 않고 의심과 원망으로 남습니다.`
+    : ho>=1.5 ? `때때로 부당하게 대우받는다고 느끼거나, 남의 친절 뒤를 먼저 읽는 결이 있습니다(${ho.toFixed(1)}).`
+    : `사람을 의심하거나 원망하는 결은 크지 않은 편입니다(${ho.toFixed(1)}).`;
+  let pc="";
+  if(s.answered===W3_SIT.length){ const hot=(s.cnt.burst||0)+(s.cnt.back||0);
+    if(va<1.5&&hot>=3) pc="평소에는 말로 맞서는 편이 아닌데, 아래 상황들에서는 터지거나 되받는 쪽을 여러 번 고르셨습니다. 평소의 나와 달리 요즘 날이 서 있다는 신호일 수 있습니다.";
+    else if(va>=2.5&&(s.cnt.witness||0)>=4) pc="말로 맞서는 결이 있지만, 아래 상황들에서는 증인의 말을 자주 고르셨습니다. 그 힘을 이번 주에 지켜 가세요.";
+    else if(ho>=2.5&&(s.cnt.swallow||0)>=3) pc="원망의 결이 있고, 아래 상황들에서 삼키는 쪽을 자주 고르셨습니다. 삼킨 말이 원망으로 쌓이는 길입니다. 화요일의 ‘이름 붙인 말’이 특히 필요합니다."; }
+  return briefBox(`평소의 나 — ${nmOf()}의 결`,[{h:"말로 맞서는 결",p:pv},{h:"의심과 원망의 결",p:ph},{h:"요즘과 겹쳐 보면",p:pc}]);
+}
+
+/* 진단 척도 — 원 저자 허락(2026년 10월, 목사님) */
+const W3_PTS = {
+  pri:["전혀 일치하지 않음","약간 일치함","어느 정도 일치함","상당히 일치함","거의 정확히 일치함"],
+  sec:["전혀 하지 않는다","가끔 한다","종종 한다","자주 한다","항상 한다"],
+  vb:["거의 그렇지 않다","가끔 그렇다","자주 그렇다","거의 항상 그렇다"]
+};
+/* 일차적 분노사고 척도 20문항(서수균 · 권석만, 2005, 『한국심리학회지: 임상』 24(1), 193쪽 표 1, 원문 그대로 · 띄어쓰기만 바로잡음). f: p1 부당 · 이기적 행동에 대한 예민성(11), p2 친밀한 관계의 무시와 실망(9) */
+const W3_PRI = [
+  {id:"a1",f:"p1",no:1,t:"내가 미리 전화를 걸어 얘기를 했는데도 상대가 약속을 이행하지 않으면, 이는 나를 무시하는 것이라는 생각이 든다."},
+  {id:"a2",f:"p1",no:2,t:"내 말을 들어 보지도 않고 화부터 내는 사람을 보면, 이 사람은 날 이해하려 하지 않는다는 생각이 든다."},
+  {id:"a3",f:"p1",no:3,t:"발표 준비 기간 동안 한 번도 관심을 보이지 않던 동료가 발표를 앞두고 내게 어떻게 되어 가냐고 물어 왔다. 이 동료가 너무 염치도 없고 이기적이다."},
+  {id:"a4",f:"p1",no:4,t:"나에게 거짓말을 한 것이 들통이 났는데도 미안하다는 말 한마디 없다는 게 정말 참을 수가 없다. 그럴 때는 그 사람이 날 대수롭지 않게 생각한다고 느껴진다."},
+  {id:"a5",f:"p1",no:5,t:"누가 자기 입장에서만 생각하고 내 성격과 태도가 잘못되었다고 고치라고 하면, 이는 날 너무 만만하게 보는 것이다."},
+  {id:"a6",f:"p1",no:6,t:"자기도 어려운 것을 다른 사람에게 시키는 사람을 보면, 그 사람이 다른 사람을 배려할 줄 모른다는 생각이 든다."},
+  {id:"a7",f:"p1",no:7,t:"누가 자기 기분대로 나를 대하면, 이 사람이 나를 만만히 보고 이런다는 생각이 든다."},
+  {id:"a8",f:"p1",no:8,t:"누가 연락도 없이 나를 기다리게 하면, 내 시간을 빼앗았다는 생각과 함께 이기적이라는 생각이 든다."},
+  {id:"a9",f:"p1",no:9,t:"바빠서 정신이 없는데 나를 굳이 만나고 싶어 하고 자기한테로 오라고 고집하면, 나는 그 사람이 다른 사람의 상황을 전혀 고려해 주지 않는 자기 자신만 생각하는 이기적인 사람이라는 생각이 든다."},
+  {id:"a10",f:"p1",no:10,t:"잘못을 하고도 내게 사과하지 않다니, 이는 나를 무시하는 것이다."},
+  {id:"a11",f:"p1",no:11,t:"부모님이 내 얘기는 들어 보시지도 않고 무조건 화만 내시면, 내 생각은 전혀 해 주질 않는다는 생각이 든다."},
+  {id:"b1",f:"p2",no:1,t:"믿었던 친구의 태도가 삐딱하면, 그가 자기 감정대로 행동하고 남을 배려하지 않는다는 생각이 든다."},
+  {id:"b2",f:"p2",no:2,t:"친하다고 생각했던 사람이 내 말이나 행동을 받아 주지 않으면, 나를 무시한다는 생각이 든다."},
+  {id:"b3",f:"p2",no:3,t:"누가 나를 무시하는 듯한 말투로 얘기하면, 그 사람이 나를 우습게 본다고 여겨진다."},
+  {id:"b4",f:"p2",no:4,t:"친한 사이인 줄 알았던 사람이 갑자기 냉랭한 태도를 보이며 오히려 날 비판하면, 내가 이해받지 못하고 수용받지 못한다는 생각이 든다."},
+  {id:"b5",f:"p2",no:5,t:"아끼던 사람이 나에 대해 험담을 뒤에서 하고 다니면, 내가 바보같이 여겨지고 그 사람에 대한 나의 믿음이 헛되다는 생각이 든다."},
+  {id:"b6",f:"p2",no:6,t:"중요하다고 여겼던 사람이 내게 중요한 어떤 사실을 얘기해 주지 않으면, 나는 배신감을 느낀다."},
+  {id:"b7",f:"p2",no:7,t:"누가 내 말을 무시하면, 내 자신이 그 사람에게 보잘것없는 존재라는 생각이 든다."},
+  {id:"b8",f:"p2",no:8,t:"다른 사람을 심하게 비난하는 사람을 보면, 너무 이기적이고 자기 감정밖에 모른다는 생각이 든다."},
+  {id:"b9",f:"p2",no:9,t:"믿었던 친구가 날 비난하고 내게 공격적인 행동을 하면, 나는 배신감을 느낀다."}
+];
+/* 이차적 분노사고 척도 '타인비난 및 보복' 19문항(같은 논문 195쪽 표 2, 원문 그대로 · 띄어쓰기만 바로잡음). f: s1 */
+const W3_SEC = [
+  {id:"s1",f:"s1",no:1,t:"뭐 이런 인간이 다 있나."},
+  {id:"s2",f:"s1",no:2,t:"혼을 내줘야겠구만."},
+  {id:"s3",f:"s1",no:3,t:"그 사람도 기분 나쁘게 해 주고 싶다."},
+  {id:"s4",f:"s1",no:4,t:"잘못하고도 사과도 안 하다니. 너무 기가 막힌다."},
+  {id:"s5",f:"s1",no:5,t:"앞으로 이 사람을 무시해 줘야지."},
+  {id:"s6",f:"s1",no:6,t:"인간쓰레기처럼 보이게 다른 사람에게 이 사람의 실체를 다 알릴까 보다."},
+  {id:"s7",f:"s1",no:7,t:"욕을 퍼붓고 싶다."},
+  {id:"s8",f:"s1",no:8,t:"이 사람 버릇을 단단히 고쳐 주자."},
+  {id:"s9",f:"s1",no:9,t:"재수 없다."},
+  {id:"s10",f:"s1",no:10,t:"나쁜 놈!"},
+  {id:"s11",f:"s1",no:11,t:"이걸 그냥 확 엎어 버려."},
+  {id:"s12",f:"s1",no:12,t:"자신의 잘못을 시인할 때까지 모든 방법을 동원해서 괴롭히고 싶다."},
+  {id:"s13",f:"s1",no:13,t:"저 사람이 치면 나도 그럴 것이다."},
+  {id:"s14",f:"s1",no:14,t:"이번에는 절대 그냥 넘어갈 수 없다."},
+  {id:"s15",f:"s1",no:15,t:"한 대 패 주고 싶다."},
+  {id:"s16",f:"s1",no:16,t:"앞으로 이 사람에게는 말대꾸도 안 하고 쳐다보지도 말아야지."},
+  {id:"s17",f:"s1",no:17,t:"따지고 싶다."},
+  {id:"s18",f:"s1",no:18,t:"이 자식을 죽여 버려!"},
+  {id:"s19",f:"s1",no:19,t:"앞으로 잘해 주지 말자."}
+];
+/* 한국판 언어성 분노행동 척도 23문항(서수균, 2007, 『한국심리학회지: 임상』 26(1), 부록) — 한국판 문항 그대로. c 건설적, j 정당화, r 반추 */
+const W3_VB = [
+  {id:"v1",f:"c",s:1,t:"문제를 해결하기 위해서"},
+  {id:"v2",f:"c",s:1,t:"건설적인 해결에 이르는 데 다른 사람이 도움이 되지 않을까 해서"},
+  {id:"v3",f:"c",s:1,t:"그 상황에 대한 해결책을 찾을 수 있는지를 알아보기 위해서"},
+  {id:"v4",f:"c",s:1,t:"타인의 관점에서 이해해 보려는 노력으로"},
+  {id:"v5",f:"j",s:1,t:"사람들을 내 편으로 만들기 위해서"},
+  {id:"v6",f:"c",s:1,t:"그 상황에서 내가 할 수 있는 가능한 역할들을 더 잘 이해하기 위해서"},
+  {id:"v7",f:"j",s:1,t:"내가 옳다는 것을 보여 주기 위해서"},
+  {id:"v8",f:"c",s:1,t:"앞으로 닥칠 갈등을 최소화하기 위해서"},
+  {id:"v9",f:"c",s:1,t:"다음에는 그 상황에서 보다 건설적으로 대처하기 위해서"},
+  {id:"v10",f:"c",s:1,t:"양쪽이 모두 좋은 감정을 갖도록 하기 위해서"},
+  {id:"v11",f:"j",s:1,t:"다른 사람들이 얼마나 잘못했나를 보여 주기 위해서"},
+  {id:"v12",f:"j",s:1,t:"동정심을 얻기 위해서"},
+  {id:"v13",f:"j",s:1,t:"내 잘못이 없었다는 것을 남들에게 알리기 위해서"},
+  {id:"v14",f:"j",s:1,t:"모든 사람이 그 상황에서의 내 입장을 알도록 하기 위해서"},
+  {id:"v15",f:"r",s:2,t:"나를 화나게 했던 상황에 대해서 반복해서 다시 얘기를 나누고 싶어진다."},
+  {id:"v16",f:"r",s:2,t:"그 일에 대해서 계속해서 곰곰이 생각한다."},
+  {id:"v17",f:"r",s:2,t:"원한을 품는다."},
+  {id:"v18",f:"r",s:2,t:"훨씬 더 불안해진다."},
+  {id:"v19",f:"c",s:2,t:"내가 분노를 느꼈던 사람을 더 잘 이해하게 된다."},
+  {id:"v20",f:"c",s:2,t:"다른 사람에 대해서 더 좋은 감정을 갖게 된다."},
+  {id:"v21",f:"r",s:2,t:"내가 상대방을 싫어하는 것이 정당하다고 느낀다."},
+  {id:"v22",f:"c",s:2,t:"내가 해결책에 좀 더 가까워졌음을 느끼게 된다."},
+  {id:"v23",f:"c",s:2,t:"상황이 내가 생각했던 것만큼 나빠 보이지는 않게 된다."}
+];
+const W3_SUB = {
+  va:{nm:"말로 맞서는 결 — 언어적 공격성",src:"한국판 공격성 질문지 — 언어적 공격성(서수균 · 권석만, 2002)"},
+  ho:{nm:"의심과 원망의 결 — 적대감",src:"한국판 공격성 질문지 — 적대감(같은 논문)"},
+  p1:{nm:"부당함에 대한 예민성",gate:"막힐 때",src:"일차적 분노사고 척도 — 타인의 부당하고 이기적인 행동에 대한 예민성(서수균 · 권석만, 2005)"},
+  p2:{nm:"무시와 실망",gate:"찔릴 때",src:"일차적 분노사고 척도 — 친밀한 관계 상황에서 경험하는 무시와 실망감(같은 논문)"},
+  s1:{nm:"판결과 보복의 생각",src:"이차적 분노사고 척도 — 타인비난 및 보복(같은 논문)"},
+  j:{nm:"판사의 말 — 정당화",src:"한국판 언어성 분노행동 척도 — 정당화(서수균, 2007)"},
+  r:{nm:"곱씹는 말 — 반추",src:"같은 척도 — 반추"},
+  c:{nm:"증인의 말 — 건설적 말",src:"같은 척도 — 건설적 언어성 분노행동"}
+};
+function w3Score(items, day, prefix, k){ const sub={}; let a=0; items.forEach(p=>{ const v=F(day,prefix+p.id,null,3); if(v===null) return; a++; (sub[p.f]=sub[p.f]||{s:0,c:0}); sub[p.f].s+=v*4/(k-1); sub[p.f].c++; });
+  const o={}; Object.keys(sub).forEach(f=>o[f]=sub[f].s/sub[f].c); return {sub:o, answered:a, done:items.length>0&&a===items.length}; }
+function w3Pri(){ return w3Score(W3_PRI,2,"pa_",5); }
+function w3Sec(){ return w3Score(W3_SEC,3,"sa_",5); }
+function w3Vb(){ return w3Score(W3_VB,5,"vb_",4); }
+function w3Bars(sub, keys){ return `<div class="bars">${keys.filter(k=>sub[k]!=null).map(k=>`<div class="bar"><span class="nm">${W3_SUB[k].nm}</span><span class="tr"><span class="tk ${k==="c"?"in":"out"}"><i style="width:${sub[k]/4*100}%"></i></span><span class="small">${sub[k].toFixed(1)} · ${rdLv(sub[k])}</span></span></div>`).join("")}</div>`; }
+function w3Items(n, items, prefix, labels, stem){ return `${stem?`<p class="small">${stem}</p>`:""}${items.map(p=>`<div class="phrase"><div class="t">${p.t}</div>${fSeg(n,prefix+p.id,labels)}</div>`).join("")}`; }
+function w3Wait(name){ return `<div class="panel warn"><p class="ph">점검 문항을 넣는 중입니다</p><p>${name}의 문항은 원문을 받는 대로 이 자리에 들어갑니다. 오늘은 아래의 다른 연습부터 해 주세요.</p></div>`; }
+const W3_NOQUOTE=new Set(["s15","s18"]); /* 척도에는 넣고 브리핑에서 돌려 인용하지는 않는 강한 문항 */
+function w3Top(items, day, prefix, keys, k){ return items.filter(p=>keys.includes(p.f)&&!W3_NOQUOTE.has(p.id)&&(F(day,prefix+p.id,0,3)||0)>=k).map(p=>qb(p.t)).slice(0,2); }
+
+/* 화요일 브리핑 — 두 입구 */
+function w3PriBrief(){
+  const P=w3Pri(); if(!P.done) return ""; const a=P.sub.p2, b=P.sub.p1;
+  const gate = a-b>=0.5 ? {k:"stab",nm:"버튼이 눌리는 사람",d:"가까운 사람에게 무시당하거나 실망할 때 가장 쉽게 타오릅니다. 찔리는 입구가 큽니다."}
+    : b-a>=0.5 ? {k:"block",nm:"법이 많은 사람",d:"남의 부당하고 이기적인 행동 앞에서 가장 쉽게 타오릅니다. 막힌 바람이 법이 되는 입구가 큽니다."}
+    : (a>=2&&b>=2) ? {k:"both",nm:"두 입구가 다 열린 사람",d:"찔릴 때도 막힐 때도 쉽게 타오릅니다. 가인처럼 두 입구가 함께 있습니다."}
+    : {k:"low",nm:"비교적 잔잔한 사람",d:"두 입구 모두 크게 열려 있지 않습니다."};
+  const ta=w3Top(W3_PRI,2,"pa_",["p2"],3), tb=w3Top(W3_PRI,2,"pa_",["p1"],3);
+  return briefBox(`화요일 브리핑 — ${nmOf()}의 두 입구`,[
+    {h:"요약",p:`${nmOf()}의 분노는 ‘${gate.nm}’ 쪽입니다. ${gate.d} 찔릴 때(무시와 실망) ${a.toFixed(1)}(${rdLv(a)}), 막힐 때(부당함에 대한 예민성) ${b.toFixed(1)}(${rdLv(b)}) — 0에서 4 사이.`},
+    {h:"찔릴 때",p:a>=1.5?`가까운 사람의 말과 태도에서 무시와 실망을 쉽게 읽습니다.${ta.length?` 특히 ${ta.join(", 그리고 ")}가 내 생각과 상당히 일치한다고 답하셨습니다.`:""} 탱니의 연구처럼, 찔린 자리에 수치가 묻어 있으면 그 아픔은 쉽게 남을 탓하는 말이 됩니다.`:"가까운 사람에게 무시당하거나 실망하는 자리에서 크게 타오르지는 않는 편입니다."},
+    {h:"막힐 때",p:b>=1.5?`남의 부당하고 이기적인 행동에 예민합니다.${tb.length?` 특히 ${tb.join(", 그리고 ")}가 내 생각과 상당히 일치한다고 답하셨습니다.`:""} 정의에 대한 감각은 좋은 것이지만, 그 감각이 ‘이래야 한다’는 내 법이 되면 판결로 이어집니다. 내일 그 법을 봅니다.`:"남의 부당한 행동 앞에서도 비교적 덜 타오르는 편입니다."},
+    {h:"오늘과 내일",p:gate.k==="stab"?"오늘의 새 말 ‘이름 붙인 말’이 특히 필요한 자리입니다. 찔린 자리를 고발이 아니라 고백으로 말해 보세요.":gate.k==="block"?"내일의 ‘법을 부탁으로’가 특히 필요한 자리입니다.":"오늘의 버튼 지도와 내일의 법 바꾸기를 함께 해 보세요."}
+  ]);
+}
+/* 수요일 브리핑 — 법정 */
+function w3SecBrief(){
+  const S3=w3Sec(); if(!S3.done) return ""; const v=S3.sub.s1; const tt=w3Top(W3_SEC,3,"sa_",["s1"],3);
+  return briefBox(`수요일 브리핑 — ${nmOf()}의 마음의 법정`,[
+    {h:"요약",p:`화가 났을 때 남을 비난하고 갚아 주려는 생각이 떠오르는 정도는 ${v.toFixed(1)}(${rdLv(v)})입니다 — 0에서 4 사이. 이 척도를 만든 서수균 · 권석만은 이 생각을 ‘타인을 경멸하고 모욕하거나, 정신적 혹은 물리적으로 보복하는 내용’이라고 정의합니다. 설교에서 윌라드가 말한 경멸, 곧 상대를 고려할 가치도 없는 존재로 만드는 생각입니다.`},
+    {h:"보이는 것",p:v>=2.5?`화가 나면 마음속에서 판결과 형 선고가 자주 내려집니다.${tt.length?` 특히 ${tt.join(", 그리고 ")} 같은 생각이 자주 떠오른다고 답하셨습니다.`:""} 이 생각은 분노를 겉으로 터뜨리는 정도, 말과 몸의 공격성과 뚜렷하게 이어져 있었고(같은 논문), 서수균의 후속 연구(2009)에서도 공격성에 가장 가까이 닿아 있는 생각으로 나타났습니다. 법정의 문을 닫는 일이 이번 주의 중심입니다.`:v>=1.5?`때때로 판사석에 앉습니다. 특히 가까운 사람 앞에서 그 자리가 쉬워집니다.`:"화가 나도 판결과 보복의 생각은 자주 떠오르지 않는 편입니다. 그 자리에서 내려오는 힘이 이미 있습니다."},
+    {h:"판사석에서 내려오는 길",p:"요나에게 하나님은 판결 대신 물으셨습니다. “네 속이 이렇게 타오르는 것이 옳으냐?” 내일은 그 질문을 따라, 판결 문장을 질문으로 바꾸는 연습을 합니다."},
+    {h:"",p:(F(3,"sa_s18",0,3)||0)>=3?"‘이 자식을 죽여 버려!’ 같은 생각이 자주 떠오른다고 답하셨습니다. 화가 날 때 스치는 말일 수 있지만, 그런 생각이 자주 들거나 행동으로 옮기고 싶어질 때가 있다면 혼자 견디지 마시고 꼭 목회자나 상담가, 믿을 수 있는 사람에게 도움을 구하세요.":""}
+  ]);
+}
+/* 금요일 브리핑 — 말 */
+function w3VbBrief(){
+  const V=w3Vb(); if(!V.done) return ""; const c=V.sub.c, j=V.sub.j, r=V.sub.r; const des=(j+r)/2;
+  const tj=w3Top(W3_VB,5,"vb_",["j"],2), tr=w3Top(W3_VB,5,"vb_",["r"],2);
+  return briefBox(`금요일 브리핑 — ${nmOf()}의 말`,[
+    {h:"요약",p:`화난 이야기를 할 때의 말은 판사의 말(정당화) ${j.toFixed(1)}, 곱씹는 말(반추) ${r.toFixed(1)}, 증인의 말(건설적 말) ${c.toFixed(1)}입니다 — 0에서 4 사이.`},
+    {h:"판사의 말",p:j>=2?`화난 이야기를 하는 까닭이 ‘내가 옳고 네가 틀렸다’를 보이는 데 쏠려 있습니다.${tj.length?` 특히 ${tj.join(", 그리고 ")}를 자주 고르셨습니다.`:""}`:"내가 옳다는 것을 보이려고 화난 이야기를 하는 일은 많지 않은 편입니다."},
+    {h:"곱씹는 말",p:r>=2?`이야기하고 나서도 되씹고 원한을 품기 쉽습니다.${tr.length?` 특히 ${tr.join(", 그리고 ")}에 자주 그렇다고 답하셨습니다.`:""} 서론의 레이지룸처럼, 쏟아 낸 이야기가 곱씹기로 이어지는 자리입니다.`:"이야기한 뒤에 오래 되씹는 편은 아닙니다."},
+    {h:"증인의 말",p:c>=2?"이해하려고, 해결하려고 말하는 힘이 이미 있습니다. 서수균의 연구에서 이 말은 분노를 다스리는 힘과 함께 갔습니다. 그 힘을 가장 가까운 사람 앞에서도 쓰는 것이 다음 걸음입니다.":"이해하고 해결하려고 말하는 쪽은 아직 약합니다. 오늘의 ‘판결 문장을 증언으로’가 그 연습입니다."},
+    {h:"",p:des-c>=1?"지금은 판사의 말이 증인의 말보다 큽니다. 새 언어는 원래 어색합니다. 하루에 한 문장씩이면 충분합니다.":""}
+  ]);
+}
+/* 종합 진단 — 분노의 지도 */
+function w3Synth(){
+  const s=w3Sit(), P=w3Pri(), S3=w3Sec(), V=w3Vb(), Q=w3Aq(); const have=[s.answered===W3_SIT.length,P.done,S3.done,V.done,Q.done].filter(Boolean).length; if(have<2) return "";
+  const L=[];
+  if(Q.done) L.push(`평소 — 말로 맞서는 결 ${rdLv(Q.sub.va)}, 의심과 원망의 결 ${rdLv(Q.sub.ho)}.`);
+  if(P.done){ const a=P.sub.p2,b=P.sub.p1; L.push(`입구 — ${a-b>=0.5?"찔릴 때가 큽니다(무시와 실망).":b-a>=0.5?"막힐 때가 큽니다(부당함에 대한 예민성).":"두 입구가 비슷합니다."}`); }
+  if(S3.done) L.push(`법정 — 판결과 보복의 생각은 ${rdLv(S3.sub.s1)}입니다.`);
+  if(V.done) L.push(`말 — 판사의 말 ${rdLv(V.sub.j)}, 곱씹는 말 ${rdLv(V.sub.r)}, 증인의 말 ${rdLv(V.sub.c)}.`);
+  if(s.faces.length) L.push(`얼굴 — 가장 자주 나온 얼굴은 ‘${W3_FACE[s.faces[0]]}’입니다.`);
+  const R=[];
+  if(P.done&&s.answered===W3_SIT.length&&P.sub.p2>=2&&(s.cnt.swallow||0)>=3) R.push("찔림이 크고 삼키는 쪽이 많습니다. 원고의 민주 씨처럼, 밖에서 삼킨 말이 가장 안전하다고 믿는 사람 앞에서 한꺼번에 터지기 쉬운 길입니다. ‘이름 붙인 말’로 삼키지 않고 말하는 연습이 필요합니다.");
+  if(P.done&&s.answered===W3_SIT.length&&P.sub.p1>=2&&(s.cnt.blame||0)>=2) R.push("막힘이 크고 탓하는 말이 많습니다. 샌디의 주일 아침처럼, 내 편안함이 법이 되어 가족을 피고석에 세우기 쉬운 길입니다. ‘부탁의 말’로 법을 부탁으로 바꿔 보세요.");
+  if(S3.done&&s.answered===W3_SIT.length&&S3.sub.s1>=2&&(s.cnt.jab||0)>=2) R.push("판결의 생각이 크고 돌려 찌르는 말이 많습니다. 앨런더의 점심시간 농담처럼, 웃음 속에서 판결이 집행되는 길입니다. 가트맨이 경멸이라고 부른 자리라, 농담 한 번에도 멈춤이 필요합니다.");
+  if(V.done&&V.sub.r>=2&&S3.done&&S3.sub.s1>=2) R.push("판결의 생각과 곱씹는 말이 함께 큽니다. 마음의 법정이 한 번으로 끝나지 않고 재판을 거듭 여는 자리입니다. 바울의 말처럼 해가 지기 전에(엡 4:26) 그 재판을 하나님께 맡겨 보세요.");
+  if(V.done&&V.sub.c>=2.5) R.push("증인의 말이 이미 단단합니다. 이번 주에는 그 말을 가장 가까운 사람, 가장 잘 버튼이 눌리는 자리에서 써 보는 것이 다음 걸음입니다.");
+  if(Q.done){ const va=Q.sub.va, ho=Q.sub.ho;
+    if(ho>=2.5&&P.done&&P.sub.p2>=2.5) R.push("평소의 의심과 원망이 요즘의 찔림을 키웁니다. 상처가 클수록 ‘역시 그렇지’ 하는 해석이 먼저 옵니다. 그 해석이 사실인지 묻는 ‘묻는 말’이 필요합니다.");
+    if(ho>=2.5&&S3.done&&S3.sub.s1>=2.5) R.push("마음의 법정이 이번 주에 처음 열린 것이 아니라 오래 열려 있었습니다. 판결을 맡기는 연습이 한 주로 끝나지 않을 수 있습니다. 소그룹과 목회자와 함께 길게 걸어가세요.");
+    if(va>=2.5&&V.done&&V.sub.j>=2.5) R.push("말로 맞서는 결과 판사의 말이 서로를 붙듭니다. ‘멈추는 말’이 가장 먼저입니다.");
+    if(va<1.5&&S3.done&&S3.sub.s1>=2.5&&(s.cnt.swallow||0)>=3) R.push("겉으로는 다스리지만 속의 법정은 열려 있습니다. 원고의 민주 씨처럼 쌓였다가 한꺼번에 터질 수 있는 자리입니다.");
+    if(va<1.5&&ho<1.5&&((P.done&&Math.max(P.sub.p1,P.sub.p2)>=2.5)||(S3.done&&S3.sub.s1>=2.5))) R.unshift("먼저 — 평소의 결은 잔잔한데 요즘 점수가 높습니다. 성격이 아니라 요즘 겪는 일이 크다는 신호일 가능성이 큽니다. 아래 해석들도 ‘요즘의 나’로 읽고, 무엇이 마음을 누르고 있는지 먼저 살피세요.");
+  }
+  if(!R.length) R.push("입구와 법정과 말 사이에 뚜렷한 연결 고리는 보이지 않습니다. 날마다의 새 말 하나씩을 그대로 이어 가면 됩니다.");
+  const safe = (S3.done&&S3.sub.s1>=3.5) ? "갚아 주고 싶은 생각이 매우 자주 든다고 답하셨습니다. 이 진단은 거울일 뿐이지만, 그 생각이 오래 이어진다면 혼자 견디지 마시고 목회자나 상담가와 이야기해 주세요." : "";
+  return briefBox(`종합 진단 — ${nmOf()}의 분노의 지도`,[{h:"지도",p:L.join(" ")},{h:"겹쳐 읽으면",p:R.join(" ")},{h:"",p:safe}]);
+}
+function w3SrcNote(){ return `<p class="small" style="margin-top:12px">이 점검은 검증된 척도의 문항을 원 저자의 허락을 받아 쓴 것입니다. 분노사고 척도는 검사-재검사 신뢰도가 높지 않아, 지금의 스트레스나 최근 몇 주에 겪은 일에 따라 점수가 달라질 수 있다고 저자들은 밝힙니다(논문 199, 203쪽). 점수는 다른 사람과 비교하는 기준이 아니라, 내 안에서 무엇이 상대적으로 큰지를 보는 거울입니다. 임상 진단이 아닙니다. 근거는 [더보기 → 출처]에 있습니다.</p>`; }
+
+/* 저녁 카드 — 오늘의 세 걸음 (3주) */
+const W3_ANGLE={1:{x:"face",l:"그 말은 어떤 얼굴이었나요?"},2:{x:"gate",l:"어느 입구로 들어왔나요?"},3:{x:"law",l:"그 밑에 내가 세운 법"},4:{x:"ask",l:"그 판결 문장을 질문으로 바꾸면"},5:{x:"wit",l:"증인의 말로 다시 쓰면"},6:{x:"",l:""}};
+function w3Card(n){
+  const favs=w3Favs(); const ang=W3_ANGLE[n]||{}; const w=W3_WORDS[n];
+  const x = ang.x==="face" ? fChips(n,"ts_x",ang.l,Object.keys(W3_FACE).filter(k=>k!=="witness").map(k=>W3_FACE[k]))
+    : ang.x==="gate" ? fChips(n,"ts_x",ang.l,["찔릴 때 — 무시나 실망","막힐 때 — 바람이 막힘","둘 다","잘 모르겠다"])
+    : ang.x==="law" ? fText(n,"ts_x",ang.l,{ph:"예: 퇴근하면 집은 조용해야 한다"})
+    : ang.x==="ask" ? fText(n,"ts_x",ang.l,{ph:"예: “너는 왜 맨날 그래?” → “오늘 무슨 일 있었어?”"})
+    : ang.x==="wit" ? fText(n,"ts_x",ang.l,{area:true,ph:"본 것 · 내 마음 · 바라는 것"}) : "";
+  return `<div class="panel soft" style="margin-top:8px"><p class="ph">오늘의 세 걸음</p>
+    <p class="small">날 선 말을 버리고 새 말을 배우는 저녁의 자리입니다. 오늘 나온 날 선 말 하나, 그 밑을 한 번 보고, 그 옆에 새 말을 씁니다. 이 줄들이 모여 토요일에 ‘나의 말 사전’이 됩니다.</p>
+    <div class="lbl">① 오늘 나온 날 선 말</div>
+    ${favs.length?fChips(n,"ts_old","",favs):""}
+    ${fText(n,"ts_old_own",favs.length?"또는 그대로 적기":"오늘 나온 날 선 말 그대로")}
+    ${x}
+    <div class="lbl" style="margin-top:14px">② 오늘의 새 말 — ${w?w.nm:"이번 주의 새 말"}</div>
+    ${fChips(n,"ts_used","",["써 봤어요","소리 내어 연습만 했어요","아직이에요"])}
+    <div class="lbl" style="margin-top:14px">③ 나의 말 사전에 한 줄 — 옛 말 대신</div>
+    ${fText(n,"ts_new","이 새 말로",{ph:w?w.word:"내가 해 보고 싶은 새 말"})}
+  </div>`;
+}
+function w3DictRows(){ const rows=[]; for(let d=1;d<=6;d++){ const old=(F(d,"ts_old_own","",3)||"").trim()||F(d,"ts_old",null,3); const nw=(F(d,"ts_new","",3)||"").trim(); const mine=(F(d,"w_mine","",3)||"").trim(); if(old||nw||mine) rows.push({d, old:old||"", nw:nw||mine||""}); } return rows; }
+function w3DictHTML(){ const rows=w3DictRows(); const favs=w3Favs();
+  if(!rows.length&&!favs.length) return `<p class="empty">저녁의 ‘오늘의 세 걸음’에 적은 줄이 여기에 모입니다.</p>`;
+  return `<div class="tablewrap"><table class="simple"><tr><th>날</th><th>옛 말</th><th>새 말</th></tr>${rows.map(r=>`<tr><td>${r.d}일째</td><td>${esc(r.old)}</td><td>${esc(r.nw)}</td></tr>`).join("")}${favs.filter(f=>!rows.some(r=>r.old===f)).map(f=>`<tr><td>단골</td><td>${esc(f)}</td><td class="small">아직</td></tr>`).join("")}</table></div>`; }
+function w3Close(n){ return closeLayer(n, `<div class="quote">${W3_PRAY[n]||""}</div>`, "오늘 새 말로 건넬 한 문장"); }
+
+/* ---------- 3주 1일째 ---------- */
+function vW3Day1(){
+  const n=1; const s=w3Sit();
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"날 선 말의 얼굴","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <h3 class="h3">1. 평소의 나</h3>
+    <p class="small">이번 주의 다른 점검들은 요즘의 마음을 봅니다. 이 점검은 평소의 나를 봅니다. 몇 주가 지나 다시 해도 비슷하게 나오는, 오래된 결을 재는 척도입니다(한국판 공격성 질문지, 서수균 · 권석만 2002). 각 문장이 나에게 얼마나 해당하는지 고르세요.</p>
+    ${w3Items(n,W3_AQ,"aq_",W3_AQ_PTS,"")}
+    ${w3Aq().done?`${w3AqBrief()}${w3Bars(w3Aq().sub,["va","ho"])}`:pendHTML(w3Aq().answered,W3_AQ.length)}
+    <h3 class="h3">2. 이런 순간, 나는 대개</h3>
+    <p>날 선 말은 네 얼굴로 나옵니다. 말하는 쪽에서 대놓고 터지는 말, 돌려 찌르는 말, 탓하는 말, 그리고 듣는 쪽에서 되받거나 삼키는 것입니다. 우리 대부분은 한 사람 안에 이 자리들을 다 가지고 있습니다. 오늘은 내가 어느 얼굴을 가장 자주 쓰는지 봅니다.</p>
+    <p class="small">바람직한 대답이 아니라, 실제로 하는 쪽을 고르세요.</p>
+    ${W3_SIT.map(x=>fOpts(n,"sit_"+x.id,x.q,x.o)).join("")}
+    ${s.answered===W3_SIT.length?w3SitBrief():pendHTML(s.answered,W3_SIT.length)}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"나의 말 사전 — 시작","")}
+    <p>화날 때마다 습관처럼 나오는 말이 누구에게나 두세 개씩 있습니다. 이번 주에는 그 말을 하나씩 새 말로 바꾸어 ‘나의 말 사전’을 만듭니다. 먼저 내 단골 날 선 말을 찾아 적습니다.</p>
+    ${fChips(n,"fav","내 단골 날 선 말",W3_FAV,{multi:true})}
+    ${fText(n,"fav_own","목록에 없는 내 단골 말")}
+    ${fText(n,"fav_first","그 말을 내가 언제 처음 들었는지 떠오르나요? (선택)",{hint:"우리의 날 선 말은 대개 우리가 들으며 자란 말입니다. 떠오르지 않으면 비워 두어도 됩니다."})}
+    ${w3WordPanel(n)}
+    ${doneBar(n,3)}</section>`+w3Close(n));
+}
+/* ---------- 3주 2일째 ---------- */
+function vW3Day2(){
+  const n=2; const P=w3Pri();
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"두 입구 — 찔릴 때와 막힐 때","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <p>날 선 말이 들어오는 입구는 둘입니다. 찔릴 때(가까운 사람에게 무시당하거나 실망할 때)와 막힐 때(내 바람이 막히고 남이 부당하게 굴 때)입니다. 서수균 · 권석만이 만든 일차적 분노사고 척도는 화가 날 때 머릿속에 먼저 떠오르는 생각을 바로 이 두 갈래로 잽니다.</p>
+    ${W3_PRI.length?`<h3 class="h3">화가 났던 상황에서, 내 생각은</h3>${w3Items(n,W3_PRI,"pa_",W3_PTS.pri,"화가 나는 상황에서 흔히 하게 되는 생각들입니다. 그 상황에 처했을 때 내가 경험하는 생각이나 느낌과 얼마나 일치하는지 고르세요. 겪어 보지 않은 상황이라면, 그 상황에 있다고 상상하고 고르면 됩니다. 옳고 그른 답은 없습니다.")}
+    ${P.done?`${w3PriBrief()}${w3Bars(P.sub,["p2","p1"])}${w3SrcNote()}`:pendHTML(P.answered,W3_PRI.length)}`:w3Wait("일차적 분노사고 척도")}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"발작 버튼 지도","")}
+    ${deepBox("발작 버튼 지도", `<p>다른 말은 다 넘어가는데 유독 그 말만 들으면 순식간에 터지는 말이 있습니다. 버튼은 상대의 손에 있는 것 같지만, 실은 내 안에 있습니다. 오래된 상처 위에 생기기 때문입니다.</p>
+    ${fChips(n,"btn","나를 순식간에 터지게 하는 말",["“그것도 못 해?”","“다 너 잘되라고 하는 말이야.”","“너한테 뭘 기대하겠니.”","“너는 왜 이렇게 이해심이 없니?”","“또 시작이다.”","“네가 뭘 안다고.”"],{multi:true})}
+    ${fText(n,"btn_own","목록에 없는 내 버튼")}
+    ${fText(n,"btn_acc","그 말이 들릴 때 내 안에서 들리는 고발",{ph:"예: 너는 부족한 사람이야"})}
+    <p class="small">혹시 오래된 상처나 부끄러운 기억이 떠오른다면, 혼자 파헤치지 마시고 소그룹 리더나 목회자와 함께 들여다보세요.</p>`)}
+    ${w3WordPanel(n)}
+    ${doneBar(n,3)}</section>`+w3Close(n));
+}
+/* ---------- 3주 3일째 ---------- */
+function vW3Day3(){
+  const n=3; const S3=w3Sec();
+  const laws=[1,2,3].map(i=>(F(n,"law"+i,"",3)||"").trim());
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"마음의 법정","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <p>찔린 아픔과 막힌 실망이 날 선 말이 되는 것은, 그것이 마음의 법정으로 들어가 판결이 될 때입니다. 이차적 분노사고 척도의 ‘타인비난 및 보복’은 화가 난 뒤 머릿속에서 내려지는 그 판결과 형 선고의 생각을 잽니다.</p>
+    ${W3_SEC.length?`<h3 class="h3">최근 몇 주 동안 화가 났던 상황에서</h3>${w3Items(n,W3_SEC,"sa_",W3_PTS.sec,"화가 나는 상황에서 자연스럽게 떠오르는 생각들입니다. 최근 몇 주 동안 화가 났던 상황에서 이런 생각이 머릿속에 얼마나 자주 떠올랐는지 고르세요. 거친 말도 그대로 실었습니다. 솔직하게 답할수록 거울이 정확해집니다.")}
+    ${S3.done?`${w3SecBrief()}${w3Bars(S3.sub,["s1"])}${w3Synth()}${w3SrcNote()}`:pendHTML(S3.answered,W3_SEC.length)}`:w3Wait("이차적 분노사고 척도")}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"법을 부탁으로","")}
+    ${deepBox("법을 부탁으로", `<p>막힌 바람은 법이 되어 들어옵니다. ‘쉬고 싶다’가 ‘퇴근하면 집은 조용해야 한다’가 되고, ‘존중받고 싶다’가 ‘너는 내 말에 토를 달면 안 된다’가 됩니다. 내가 세운 법 세 개를 적어 보세요.</p>
+    ${[1,2,3].map(i=>fText(n,"law"+i,`내 법 ${i}`,{ph:i===1?"예: 퇴근하면 집은 조용해야 한다":i===2?"예: 아이들은 한 번 말하면 들어야 한다":"예: 내 말에 토를 달면 안 된다"})).join("")}
+    ${laws.some(Boolean)?`<div class="panel soft"><p class="ph">이제 부탁으로 — ‘해야 한다’ 대신 ‘했으면 좋겠다’, ‘~해 줄 수 있어?’</p><p class="small">본보기: “퇴근하면 집은 조용해야 한다” 대신 “퇴근하면 십 분만 조용히 쉬었으면 좋겠어. 그동안 아이들 좀 봐 줄 수 있어?”</p></div>${[1,2,3].filter(i=>laws[i-1]).map(i=>fText(n,"req"+i,`“${laws[i-1]}” 대신`,{ph:"~했으면 좋겠어 / ~해 줄 수 있어?"})).join("")}<p class="small">그리고 스스로 물어보세요. 거절당해도 괜찮은가. 괜찮지 않다면, 그것은 아직 부탁이 아니라 법입니다.</p>
+    ${fChips(n,"law_ok","거절당해도 괜찮은가요?",["괜찮아요","아직 괜찮지 않아요"])}`:""}`)}
+    ${w3WordPanel(n)}
+    ${doneBar(n,3)}</section>`+w3Close(n));
+}
+/* ---------- 3주 4일째 ---------- */
+function vW3Day4(){
+  const n=4; const favs=w3Favs();
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"판사석에서 내려오기","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <p>요나는 끝까지 날 선 말을 했지만, 하나님은 한 번도 날 선 말로 답하지 않으셨습니다. 판결 대신 질문을, 정죄 대신 그늘을 주셨습니다. 그리고 예수님은 막힌 바람을 숨기지 않으시되 아버지께 맡기셨습니다. 오늘은 그 두 가지를 해 봅니다.</p>
+    <h3 class="h3">1. 내 마음에 이름을 붙여 하나님께</h3>
+    ${fChips(n,"feel","지금 내 마음에 가장 가까운 이름",["답답함","서운함","억울함","부끄러움","무시당한 느낌","지침","두려움","실망"],{multi:true})}
+    ${fText(n,"feel_pray","하나님께 — “주님, 저는 ~해서 속이 탑니다.”",{area:true,ph:"예: 주님, 아이가 못 알아들으니 제가 부족한 부모 같아서 속이 탑니다."})}
+    <h3 class="h3">2. 막힌 바람을 아버지께 맡기는 기도</h3>
+    <div class="quote">아빠, 아버지, 아버지께서는 모든 일을 하실 수 있습니다. 이 잔을 내게서 거두어 주십시오. 그러나 내가 원하는 대로가 아니라, 아버지께서 원하시는 대로 해 주십시오.<span class="ref">마가복음 14:36 · NJHV</span></div>
+    ${fText(n,"want","“주님, 저는 ~를 원합니다.”",{ph:"예: 이 숙제가 빨리 끝나기를 원합니다"})}
+    ${fText(n,"yield","“그런데 주님이 이 시간에 원하시는 것은 ~일지 모르겠습니다.”",{ph:"예: 이 아이가 사랑받고 있다고 느끼는 것"})}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"판결 문장을 질문으로","")}
+    <p>“너는 왜 맨날 그래?”는 질문의 모양을 한 판결입니다. 진짜 질문은 답을 들을 준비가 된 질문입니다. 내 단골 날 선 말 하나를 골라 진짜 질문으로 바꿔 보세요.</p>
+    ${favs.length?fChips(n,"ask_from","바꿀 판결 문장",favs):fText(n,"ask_from","바꿀 판결 문장")}
+    ${fText(n,"ask_to","진짜 질문으로",{ph:"예: 오늘 무슨 일 있었어?"})}
+    <div class="quote">말을 다 듣기도 전에 대답하는 사람에게는 그것이 어리석음이요 부끄러움이 된다.<span class="ref">잠언 18:13 · NJHV</span></div>
+    ${w3WordPanel(n)}
+    ${doneBar(n,3)}</section>`+w3Close(n));
+}
+/* ---------- 3주 5일째 ---------- */
+function vW3Day5(){
+  const n=5; const V=w3Vb(); const v=(F(n,"wit_from","",3)||""); const draft=[F(n,"wit_see","",3),F(n,"wit_feel","",3),F(n,"wit_ask","",3)].filter(x=>(x||"").trim());
+  const badW=/맨날|항상|원래|늘\s|또\s|너 때문에|당신 때문에/.test(draft.join(" "));
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"내 말 — 판사의 말과 증인의 말","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <p>서수균이 우리말로 옮긴 언어성 분노행동 척도는, 화가 났을 때 그 이야기를 <b>왜</b> 하는지와, 하고 나서 <b>어떻게 되는지</b>를 잽니다. 내가 옳다는 것을 보이려고 하는지, 되씹고 원한을 품게 되는지, 아니면 이해하고 해결하려고 하는지입니다.</p>
+    <h3 class="h3">가 · 내가 내 분노에 대해 이야기를 나누려는 것은 ___ 하기 위해서이다</h3>
+    ${w3Items(n,W3_VB.filter(p=>p.s===1),"vb_",W3_PTS.vb,"")}
+    <h3 class="h3">나 · 내 분노에 대해 이야기를 나눈 뒤에 나는 ___</h3>
+    ${w3Items(n,W3_VB.filter(p=>p.s===2),"vb_",W3_PTS.vb,"")}
+    ${V.done?`${w3VbBrief()}${w3Bars(V.sub,["j","r","c"])}${w3Synth()}${w3SrcNote()}`:pendHTML(V.answered,W3_VB.length)}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"판결 문장을 증언으로","")}
+    ${deepBox("판결 문장을 증언으로", `<p>판사는 사람 전체에 판결을 내립니다. 증인은 본 것을 말하고, 자기 마음을 말하고, 바라는 것을 부탁합니다. 가트맨이 말한 불평의 세 부분도 이것입니다. 내가 한 판결 문장 하나를 증언으로 고쳐 써 보세요.</p>
+    ${fText(n,"wit_from","내가 한 판결 문장",{ph:"예: 너는 맨날 이 모양이야"})}
+    ${fText(n,"wit_see","1. 내가 본 것 — 카메라로 찍은 듯",{ph:"예: 오늘 이 문제를 세 번 설명했는데 아직 막혀 있네"})}
+    ${fText(n,"wit_feel","2. 내 마음",{ph:"예: 아빠도 답답했어"})}
+    ${fText(n,"wit_ask","3. 바라는 것 — 부탁으로",{ph:"예: 어디부터 모르겠는지 같이 찾아볼까?"})}
+    ${badW?`<p class="small" style="color:var(--warn)">‘맨날 · 항상 · 원래 · 너 때문에’ 같은 말이 들어 있습니다. 한 번의 일을 그 사람 전체로 만드는 판결의 말입니다. 빼고 다시 써 보세요.</p>`:""}
+    ${draft.length===3&&!badW?`<div class="panel soft"><p class="ph">증인의 말</p><p>${draft.map(esc).join(" ")}</p><p class="small">첫 문장이 대화의 끝을 정합니다. 소리 내어 한 번 말해 보세요.</p></div>`:""}`)}
+    <p class="small">폭언이 되풀이되는 관계, 나를 해치는 관계라면 이 연습은 그런 관계를 참고 견디라는 뜻이 아닙니다. 거리를 두고, 믿을 수 있는 사람과 목회자의 도움을 구하세요.</p>
+    ${w3WordPanel(n)}
+    ${doneBar(n,3)}</section>`+w3Close(n));
+}
+/* ---------- 3주 6일째 ---------- */
+function vW3Day6(){
+  const n=6; const apo=(F(n,"apo","",3)||""); const flags=[]; if(/그렇지만|하지만|근데|그런데|그래도/.test(apo)) flags.push("‘그렇지만 · 하지만’"); if(/기분\s*나빴다면|상처받았다면|~?했다면\s*미안/.test(apo)) flags.push("‘~했다면 미안’"); if(/너도|당신도/.test(apo)) flags.push("‘너도 · 당신도’");
+  const prayer=`아버지,\n노하기를 더디 하시는 아버지 앞에서 제 입을 봅니다.\n찔리면 판결하고, 막히면 법을 세우고,\n가장 가까운 사람을 피고석에 세우던 말들을 고백합니다.\n\n요나에게 판결 대신 질문을, 정죄 대신 그늘을 주신 아버지,\n욕을 들으셔도 맞받아 욕하지 않으신 예수님,\n제 찔린 자리를 아시니 그 아픔을 아버지께 가져갑니다.\n제 바람을 법이 아니라 기도로 맡깁니다.\n판사석은 제 자리가 아님을 고백합니다.\n\n${S.name?esc(S.name):"저"}에게 새 말을 가르쳐 주십시오.\n멈추는 말, 이름 붙인 말, 부탁의 말,\n묻는 말, 증언의 말, 그리고 그렇지만 없는 사과를.\n진실의 무게는 그대로 두고 날만 거둔 말을 하게 하십시오.\n\n여호와여, 내 입 앞에 파수꾼을 세우시고,\n내 입술의 문을 지켜 주소서.\n\n예수 그리스도의 이름으로 기도합니다. 아멘.`;
+  return dayShell(n, calmLayer(n)+`
+  <section class="layer" id="L2">${layerHead(n,2,"그렇지만 없는 사과","")}
+    ${w3Fig(n)}${w3Ins(n)}
+    <p>우리는 또 틀릴 것입니다. 그때는 고치면 됩니다. 해가 지기 전에 돌아가, ‘그렇지만’ 없이 사과하십시오. 아담의 “하나님께서 저와 함께 있게 하신 그 여자가”는 성경의 첫 ‘그렇지만’이었습니다.</p>
+    ${fText(n,"apo","이번 주에 해야 할 사과 한 문장",{area:true,ph:"예: 아까 내가 ‘맨날’이라고 한 건 사실이 아니었어. 당신을 애들 앞에서 깎아내렸어. 미안해."})}
+    ${apo.trim()?(flags.length?`<p class="small" style="color:var(--warn)">${flags.join(", ")}가 들어 있습니다. 판결을 내려놓은 사람은 변명하지 않아도 됩니다. 빼고 다시 써 보세요.</p>`:`<p class="small">‘그렇지만’ 없는 사과입니다. 내가 한 일을 구체적으로 말하고, 미안하다고 말했는지 한 번 더 보세요.</p>`):""}
+    ${fChips(n,"apo_done","",["사과했어요","아직이에요"])}
+    ${w3WordPanel(n)}
+    ${doneBar(n,2)}</section>
+  <section class="layer" id="L3">${layerHead(n,3,"한 주 거두기","")}
+    <h3 class="h3">나의 말 사전</h3>
+    ${w3DictHTML()}
+    <p class="small">이 표를 화면 캡처해 두거나, 소그룹에서 한 줄을 나눠 보세요.</p>
+    <details class="voice"><summary><span class="nm">이번 주 진단 다시 보기</span></summary>${[w3AqBrief(),w3SitBrief(),w3PriBrief(),w3SecBrief(),w3VbBrief(),w3Synth()].filter(Boolean).join("")||`<p class="empty">월 · 화 · 수 · 금요일의 점검을 하면 나타납니다.</p>`}</details>
+    <h3 class="h3">설교 한 문장</h3>
+    <p class="serif" style="font-size:1.25em;font-weight:700;line-height:1.55">온유한 말은, 판결을 하나님께 맡긴 사람이 진실의 무게는 그대로 두고 날만 거둔 말입니다.</p>
+    ${fChips(n,"share","소그룹에서 나눌 것",["내가 화날 때 자주 하는 말 하나","그 대신 해 보고 싶은 새 말 하나","이번 주 써 본 새 말","그렇지만 없는 사과를 해 본 일"],{multi:true})}
+    ${doneBar(n,3)}</section>
+  <section class="layer" id="L4">${layerHead(n,4,"훈련 기도문","")}
+    <div class="quote" style="white-space:pre-line">${prayer}</div>
+    ${w3Card(n)}
+    ${fText(n,"thanks","오늘 감사한 것 한 줄")}
+    ${doneBar(n,4)}</section>`);
+}
+/* ---------- 3주 이번 주 · 소그룹 · 지도 ---------- */
+function vWeek3(){
+  const W=SERIES.weeks[2];
+  return `${topbar(`3주 · ${W.tag}`,"#/more")}
+  <p class="h-hero">${W.q}</p><p class="lead">${W.sub}</p>
+  <h2 class="h2">이번 주에 발견할 것</h2>
+  <p>참으면 병이 되고, 터뜨리면 번집니다. 야고보는 참으라고도 터뜨리라고도 하지 않고 ‘더디 하라’고 했습니다. 날 선 말은 찔리거나 막힌 마음이 판사석에 앉아 내리는 판결입니다. 그러나 판사석은 우리 자리가 아닙니다. 노하기를 더디 하시는 하나님은 요나에게 판결 대신 질문을, 정죄 대신 그늘을 주셨고, 요나보다 더 큰 이가 그 대답을 채우셨습니다.</p>
+  <h2 class="h2">이번 주의 여섯 날 — 날마다 새 말 하나</h2>
+  ${[1,2,3,4,5,6].map(k=>`<a class="list-link" href="#/day/3/${k}"><span><span class="s">${k}일째 · ${DAYS_W[3][k].nm} · 약 ${DAYS_W[3][k].min}분 · 새 말: ${W3_WORDS[k].nm}</span><br><span class="t">${DAYS_W[3][k].title}</span></span><span class="s">${dayState(k,3)==="done"?"마침":dayState(k,3)==="part"?"진행 중":""}</span></a>`).join("")}
+  <a class="list-link" href="#/group/3"><span><span class="s">6일째 뒤</span><br><span class="t">소그룹 — 함께 나누기</span></span></a>
+  <h2 class="h2">설교 한 문장</h2>
+  <p class="serif" style="font-size:1.25em;font-weight:700;line-height:1.55">온유한 말은, 판결을 하나님께 맡긴 사람이 진실의 무게는 그대로 두고 날만 거둔 말입니다.</p>`;
+}
+function vGroup3(){
+  return `${topbar("소그룹 · 3주","#/week/3","약 60분")}
+  <h2 class="h2">나눔 규칙</h2>
+  <ol style="padding-left:1.2em"><li>여기서 들은 것은 여기에 둡니다</li><li>조언하지 않습니다 — 요약과 공감만</li><li>판단 대신 질문합니다</li><li>다른 사람 이야기 말고, 내 이야기를 합니다</li><li>말하지 않을 권리가 있습니다</li></ol>
+  <h2 class="h2">질문</h2>
+  <ol style="padding-left:1.2em">
+    <li><b>내가 화날 때 자주 하는 말 하나, 그 대신 해 보고 싶은 새 말 하나</b> — 나의 말 사전에서 한 줄을 나눕니다.</li>
+    <li><b>내 입구</b> — 나는 찔릴 때 더 타오르나요, 막힐 때 더 타오르나요? 그 밑에 어떤 법이 있었나요?</li>
+    <li><b>이번 주 써 본 새 말</b> — 어색했던 것, 뜻밖이었던 것.</li>
+    <li><b>요나의 마지막 질문</b> — 내가 속으로 ‘당해도 싸다’고 여기는 그 사람을, “너도 나와 함께 아끼지 않겠느냐.” 말할 수 있는 만큼만.</li>
+  </ol>
+  <div class="field"><label for="gp3">서로를 위한 기도 제목</label><textarea id="gp3" data-g="prayer">${esc(((S.w3||{}).group||{}).prayer||"")}</textarea></div>
+  <details class="voice"><summary><span class="nm">리더에게</span></summary>
+    <p>질문 4에서 누군가 폭언이나 학대의 관계를 꺼내면, 그것은 참고 견딜 일이 아닙니다. 판단 없이 듣고, 모임 뒤에 목회자에게 연결합니다.</p></details>`;
+}
+function w3MapHTML(){
+  const s=w3Sit(), P=w3Pri(), S3=w3Sec(), V=w3Vb(), Q=w3Aq(); const rows=w3DictRows(); const any=Q.answered||s.answered||P.answered||S3.answered||V.answered||rows.length||w3Favs().length;
+  if(!any) return `<p class="empty">3주에 채워집니다.</p>`;
+  return `${s.faces.length?`<p>내 날 선 말의 가장 잦은 얼굴 — <b>${W3_FACE[s.faces[0]]}</b></p>`:""}
+    ${w3Synth()}
+    <h3 class="h3">나의 말 사전</h3>${w3DictHTML()}`;
+}
+VIEWS_W[3] = [null, vW3Day1, vW3Day2, vW3Day3, vW3Day4, vW3Day5, vW3Day6];
+
 
 function view(){
   const r=route(); CW=1;
@@ -2761,9 +3366,9 @@ function view(){
   switch(r[0]){
     case undefined: CW=homeWeek(); return vHome();
     case "intro": return vIntro(r[1]);
-    case "week": CW=+r[1]||1; return CW===2 ? vWeek2() : vWeek(r[1]);
+    case "week": CW=+r[1]||1; return CW===2 ? vWeek2() : CW===3 ? vWeek3() : vWeek(r[1]);
     case "day": { const W=+r[1]||1, n=Math.min(6,Math.max(1,+r[2]||1)); CW=W; if(!VIEWS_W[W]) return vWeek(W); return VIEWS_W[W][n](); }
-    case "group": { const W=+r[1]||1; CW=W; return W===1 ? vGroup() : W===2 ? vGroup2() : vWeek(W); }
+    case "group": { const W=+r[1]||1; CW=W; return W===1 ? vGroup() : W===2 ? vGroup2() : W===3 ? vGroup3() : vWeek(W); }
     case "log": return vLog();
     case "more": return vMore();
     case "library": return vLibrary();
@@ -2808,11 +3413,11 @@ document.addEventListener("input", e=>{
   if(t.dataset.f){ const [n,k]=t.dataset.f.split("|"); setF(+n,k,t.value); if(n==="2"&&k==="own"){ clearTimeout(t._rt); t._rt=setTimeout(()=>{},0);} }
   if(t.dataset.r){ const [n,k]=t.dataset.r.split("|"); setF(+n,k,+t.value); const o=t.parentElement.querySelector("output"); if(o) o.textContent=t.value; t.setAttribute("aria-valuetext",t.value); }
   if(t.hasAttribute("data-name")){ S.name=t.value.trim(); save(); }
-  if(t.dataset.g){ S["w"+CW].group[t.dataset.g]=t.value; save(); }
+  if(t.dataset.g){ const k="w"+CW; S[k]=S[k]||{days:{},group:{}}; S[k].group=S[k].group||{}; S[k].group[t.dataset.g]=t.value; save(); }
 });
 document.addEventListener("change", e=>{
   const t=e.target;
-  if(t.dataset.f && (t.dataset.f==="2|own" || /\|(ts_own|scene_own|o_fact|scene4)$/.test(t.dataset.f))) render(true);
+  if(t.dataset.f && (t.dataset.f==="2|own" || /\|(ts_own|scene_own|o_fact|scene4|law[123]|wit_see|wit_feel|wit_ask|apo)$/.test(t.dataset.f))) render(true);
   if(t.hasAttribute("data-name") && route()[0]==="day") render(true);
   if(t.dataset.r){ const [n,k]=t.dataset.r.split("|"); if((n==="6"&&k==="belief6")||(n==="6"&&k.startsWith("t_"))||k==="belief_pct"||k==="belief_after"||k==="belief4") render(true); }
   if(t.id==="imp" && t.files && t.files[0]){
@@ -2824,6 +3429,7 @@ document.addEventListener("click", async e=>{
   const el=e.target.closest("[data-go],[data-act],[data-chip],[data-seg],[data-done],[data-prev],[data-dx],[data-sig],[data-set],[data-jump],[data-wiz],[data-wiz-set],[data-read],[data-fill]");
   if(!el) return;
   const ds=el.dataset;
+  if(ds.act==="path"){ S.settings=S.settings||{}; S.settings.path=ds.v; save(); render(true); return; }
   if(ds.go){ if(ds.go==="#/finish-intro"){ S.onboarded=true; save(); location.hash="#/"; return; } if(location.hash===ds.go) render(); else location.hash=ds.go; return; }
   if(ds.jump){ const t=document.getElementById(ds.jump); if(t) t.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"}); return; }
   if(ds.chip){ const [n,k,multi]=ds.chip.split("|"); const val=ds.val;
